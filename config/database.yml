@@ -19,10 +19,10 @@ test: &test
   timeout: 5000
 
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: postgresql
+  username: myapp
+  password: password
+  database: vergleichsportal_production
 
 cucumber:
   <<: *test
