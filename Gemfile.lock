@@ -29,6 +29,8 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
+    awesome_print (1.1.0)
+    bcrypt-ruby (3.0.1)
     better_errors (0.7.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -61,6 +63,8 @@ GEM
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     chunky_png (1.2.7)
+    code_analyzer (0.3.1)
+      sexp_processor
     coderay (1.0.9)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -69,6 +73,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.1)
+    colored (1.2)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -87,6 +92,12 @@ GEM
     database_cleaner (0.9.1)
     debug_inspector (0.0.2)
     diff-lcs (1.2.1)
+    domain_name (0.5.7)
+      unf (~> 0.0.3)
+    draper (1.1.0)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      request_store (~> 1.0.3)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -98,6 +109,8 @@ GEM
       railties (>= 3.0.0)
     faker (1.1.2)
       i18n (~> 0.5)
+    faraday (0.8.6)
+      multipart-post (~> 1.1)
     fastercsv (1.5.5)
     ffi (1.4.0)
     foreman (0.61.0)
@@ -135,25 +148,51 @@ GEM
       sprockets (>= 2.0.3)
       tilt (>= 1.3.3)
     hpricot (0.8.6)
+    httpauth (0.2.0)
     i18n (0.6.4)
+    jbuilder (1.0.2)
+      activesupport (>= 3.0.0)
     journey (1.0.4)
     jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.7.7)
+    jwt (0.1.5)
+      multi_json (>= 1.0)
+    libv8 (3.11.8.13)
     listen (0.7.3)
     lumberjack (1.0.2)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    mechanize (2.5.1)
+      domain_name (~> 0.5, >= 0.5.1)
+      mime-types (~> 1.17, >= 1.17.2)
+      net-http-digest_auth (~> 1.1, >= 1.1.1)
+      net-http-persistent (~> 2.5, >= 2.5.2)
+      nokogiri (~> 1.4)
+      ntlm-http (~> 0.1, >= 0.1.1)
+      webrobots (~> 0.0, >= 0.0.9)
     meta_request (0.2.2)
       rack-contrib
       railties
     method_source (0.8.1)
     mime-types (1.21)
     multi_json (1.6.1)
+    multipart-post (1.2.0)
+    net-http-digest_auth (1.2.1)
+    net-http-persistent (2.8)
     nokogiri (1.5.6)
+    ntlm-http (0.1.1)
+    oauth (0.4.7)
+    oauth2 (0.8.1)
+      faraday (~> 0.8)
+      httpauth (~> 0.1)
+      jwt (~> 0.1.4)
+      multi_json (~> 1.0)
+      rack (~> 1.2)
+    pg (0.14.1)
     polyglot (0.3.3)
     pry (0.9.12)
       coderay (~> 1.0.5)
@@ -166,6 +205,8 @@ GEM
       rack (>= 0.4)
     rack-contrib (1.1.0)
       rack (>= 0.9.1)
+    rack-protection (1.4.0)
+      rack
     rack-ssl (1.3.3)
       rack
     rack-test (0.6.2)
@@ -178,6 +219,14 @@ GEM
       activesupport (= 3.2.12)
       bundler (~> 1.0)
       railties (= 3.2.12)
+    rails_best_practices (1.13.4)
+      activesupport
+      awesome_print
+      code_analyzer
+      colored
+      erubis
+      i18n
+      ruby-progressbar
     railties (3.2.12)
       actionpack (= 3.2.12)
       activesupport (= 3.2.12)
@@ -188,6 +237,20 @@ GEM
     rake (10.0.3)
     rdoc (3.12.2)
       json (~> 1.4)
+    redis (3.0.3)
+    redis-namespace (1.2.1)
+      redis (~> 3.0.0)
+    ref (1.0.2)
+    request_store (1.0.5)
+    resque (1.23.0)
+      multi_json (~> 1.0)
+      redis-namespace (~> 1.0)
+      sinatra (>= 0.9.2)
+      vegas (~> 0.1.2)
+    resque-scheduler (2.0.0)
+      redis (>= 2.0.1)
+      resque (>= 1.20.0)
+      rufus-scheduler
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -203,12 +266,15 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
+    ruby-progressbar (1.0.2)
     ruby2ruby (2.0.3)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
     ruby_parser (3.1.1)
       sexp_processor (~> 4.1)
     rubyzip (0.9.9)
+    rufus-scheduler (2.0.17)
+      tzinfo (>= 0.3.23)
     sass (3.2.6)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -223,11 +289,19 @@ GEM
     simple_form (2.1.0)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    sinatra (1.3.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.3)
+      tilt (~> 1.3, >= 1.3.3)
     slim (1.3.6)
       temple (~> 0.5.5)
       tilt (~> 1.3.3)
     slop (3.4.3)
-    spork (1.0.0rc3)
+    sorcery (0.8.1)
+      bcrypt-ruby (~> 3.0.0)
+      oauth (~> 0.4.4)
+      oauth2 (~> 0.8.0)
+    spork (0.9.2)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -236,6 +310,9 @@ GEM
     sqlite3 (1.3.7)
     temple (0.5.5)
     terminal-table (1.4.5)
+    therubyracer (0.11.4)
+      libv8 (~> 3.11.8.12)
+      ref
     thor (0.17.0)
     tilt (1.3.4)
     timers (1.1.0)
@@ -246,7 +323,13 @@ GEM
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    unf (0.0.5)
+      unf_ext
+    unf_ext (0.0.6)
     uniform_notifier (1.2.0)
+    vegas (0.1.11)
+      rack (>= 1.0.0)
+    webrobots (0.1.0)
     websocket (1.0.7)
     xpath (1.0.0)
       nokogiri (~> 1.3)
@@ -258,36 +341,46 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  better_errors
-  binding_of_caller
-  brakeman
-  bullet
-  capybara
-  celluloid
-  coffee-rails (~> 3.2.1)
-  compass-rails
+  better_errors (~> 0.7.0)
+  binding_of_caller (~> 0.7.1)
+  brakeman (~> 1.9.3)
+  bullet (~> 4.3.1)
+  capybara (~> 2.0.2)
+  celluloid (~> 0.12.4)
+  coffee-rails (~> 3.2.2)
+  compass-rails (~> 1.0.3)
   cucumber-rails
-  database_cleaner
-  factory_girl_rails
-  faker
-  foreman
-  guard
-  guard-cucumber
-  guard-rspec
-  guard-spork
-  haml
-  haml-rails
-  hogan_assets
-  hpricot
-  jquery-rails
-  meta_request
-  puma
+  database_cleaner (~> 0.9.1)
+  draper (~> 1.1.0)
+  factory_girl_rails (~> 4.2.1)
+  faker (~> 1.1.2)
+  foreman (~> 0.61.0)
+  guard (~> 1.6.2)
+  guard-cucumber (~> 1.3.2)
+  guard-rspec (~> 2.5.0)
+  guard-spork (~> 1.5.0)
+  haml (~> 4.0.0)
+  haml-rails (~> 0.4)
+  hogan_assets (~> 1.5.1)
+  hpricot (~> 0.8.6)
+  jbuilder (~> 1.0.2)
+  jquery-rails (~> 2.2.1)
+  mechanize (~> 2.5.1)
+  meta_request (~> 0.2.2)
+  nokogiri (~> 1.5.6)
+  pg (~> 0.14.1)
+  puma (~> 1.6.3)
   rails (= 3.2.12)
-  rspec-rails (~> 2.0)
-  ruby_parser
-  sass-rails (~> 3.2.3)
-  simple_form
-  spork (~> 1.0rc)
-  sqlite3
-  uglifier (>= 1.0.3)
-  zurb-foundation
+  rails_best_practices (~> 1.13.4)
+  resque (~> 1.23.0)
+  resque-scheduler (~> 2.0.0)
+  rspec-rails (~> 2.13.0)
+  ruby_parser (~> 3.1.1)
+  sass-rails (~> 3.2.6)
+  simple_form (~> 2.1.0)
+  sorcery (~> 0.8.1)
+  spork (~> 0.9.2)
+  sqlite3 (~> 1.3.7)
+  therubyracer
+  uglifier (~> 1.3.0)
+  zurb-foundation (~> 4.0.3)

@@ -13,6 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require foundation
+//= require hogan.js
+//= require_tree ./templates
 //= require_tree .
 
 $(document).foundation();
+
+
