@@ -1,17 +1,16 @@
 Vergleichsportal::Application.configure do
-  config.after_initialize do 
+  config.after_initialize do
 
-  Bullet.enable = true 
+  Bullet.enable = true
 
-  Bullet.alert = true 
+  Bullet.alert = true
 
-  Bullet.bullet_logger = true 
+  Bullet.bullet_logger = true
 
-  Bullet.console = true 
+  Bullet.console = true
 
-  Bullet.rails_logger = true 
+  Bullet.rails_logger = true
 
-  Bullet.disable_browser_cache = true 
 
 end
   # Settings specified here will take precedence over those in config/application.rb
