@@ -8,9 +8,11 @@ Getting Started:
 ================
 
      $ rvm use ruby 1.9.3
+     $ bundle install
      $ cp .env.sample .env
      $ vim .env
-     $ bundle install
+     $ cp config/database.yml.example config/database.yml
+     $ vim config/database.yml
      $ bundle exec foreman start
 
 API
