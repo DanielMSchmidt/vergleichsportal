@@ -7,7 +7,7 @@ Diese Software entsteht im Zuge des Softwareprojekts der CAU Kiel. Es wird ein V
 Getting Started:
 ================
 
-You need to have rvm installed to run this project.
+You need to have rvm installed to run this project and [Redis](http://redis.io/topics/quickstart) must be installed.
 If you haven't installed ruby 1.9.3 yet, do
 
      $ rvm install ruby-1.9.3

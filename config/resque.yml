@@ -1,0 +1,2 @@
+development: localhost:6379
+production: redis1.ae.github.com:6379
