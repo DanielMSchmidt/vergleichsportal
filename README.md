@@ -7,12 +7,21 @@ Diese Software entsteht im Zuge des Softwareprojekts der CAU Kiel. Es wird ein V
 Getting Started:
 ================
 
+You need to have rvm installed to run this project.
+If you haven't installed ruby 1.9.3 yet, do
+
+     $ rvm install ruby-1.9.3
+
+and get a coffee, this one will take a while.
+
      $ rvm use ruby 1.9.3
      $ bundle install
      $ cp .env.sample .env
      $ vim .env
      $ cp config/database.yml.example config/database.yml
      $ vim config/database.yml
+     $ gem install mailcatcher
+     $ mailcatcher
      $ bundle exec foreman start
 
 API
