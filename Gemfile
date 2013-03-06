@@ -20,6 +20,7 @@ group :production do
 end
 
 group :development, :test do
+  gem "html2haml", "~> 1.0.1"
   gem 'haml-rails', '~> 0.4'
   gem 'hpricot', '~> 0.8.6'
   gem 'ruby_parser', '~> 3.1.1'
