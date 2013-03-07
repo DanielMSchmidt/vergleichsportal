@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Vergleichsportal by DanielMSchmidt</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Vergleichsportal</h1>
+          <h2></h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/DanielMSchmidt/vergleichsportal/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/DanielMSchmidt/vergleichsportal/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/DanielMSchmidt/vergleichsportal" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>Volkers Verrücktes Vergleichsportal Server + Webseite</h1>
+
+<p>Diese Software entsteht im Zuge des Softwareprojekts der CAU Kiel. Es wird ein Vergleichsportal für Bücher, CDs, DVDs und eBooks entwickelt, welches es ermöglicht Preise von verschiedenen Anbietern zu vergleichen.</p>
+
+<h1>Getting Started:</h1>
+
+<p>You need to have rvm installed to run this project and <a href="http://redis.io/topics/quickstart">Redis</a> must be installed.
+If you haven't installed ruby 1.9.3 yet, do</p>
+
+<pre><code> $ rvm install ruby-1.9.3
+</code></pre>
+
+<p>and get a coffee, this one will take a while.</p>
+
+<pre><code> $ rvm use ruby 1.9.3
+ $ bundle install
+ $ cp .env.sample .env
+ $ vim .env
+ $ cp config/database.yml.example config/database.yml
+ $ vim config/database.yml
+ $ gem install mailcatcher
+ $ mailcatcher
+ $ bundle exec foreman start
+</code></pre>
+
+<h1>API</h1>
+
+<p>All routes should be understood as RESTful routes &amp; your response is allways in JSON:</p>
+
+<p><img src="http://www.wobblini.net/images/routes.png" alt="" title="REST"></p>
+
+<p>Additionally you will get meaningful <a href="http://suso.suso.org/docs/infosheets/HTTP_status_codes.gif">http status codes</a> back! Errors will be rendered in JSON.</p>
+
+<h2>/api</h2>
+
+<p>The root is for searching and it only takes GET-Requests. The pattern is like this:</p>
+
+<pre><code>{
+  "isbn": "978-3453146976"
+}
+</code></pre>
+
+<p>or</p>
+
+<pre><code>{
+  "text": "Per Anhalter durch die Galaxis! DVD"
+}
+</code></pre>
+
+<p>or more advanced (price doesn't need to have "from" or "to")</p>
+
+<pre><code>[
+  {
+    "text": "Per Anhalter durch die Galaxis!"
+  },
+  {
+    "author": "Garth Jennings"
+  },
+  {
+    "category": "DVD"
+  },
+  {
+    "price": {
+      "from": 0,
+      "to": 40
+    }
+  }
+]
+</code></pre>
+
+<p>And you will get the item back like this:</p>
+
+<pre><code>{
+  "id": 4,
+  "type": "Disk",
+  "identifier": "978-3453146976",
+  "price": [
+    {
+      "provider": "ebay",
+      "price": "12.5"
+    },
+    {
+      "provider": "buecher.de",
+      "price": "13.7"
+    }
+  ],
+  "desc": "Lorem ipsum...",
+  "images": [
+    "image_1": "www.placehold.it/test1.png",
+    "image_2": "www.placehold.it/test2.png"
+  ]
+}
+</code></pre>
+
+<h2>/api/users</h2>
+
+<ul>
+<li>
+<p>GET</p>
+
+<p>Send a GET-Request with header</p>
+
+<pre><code>{
+  "authentication":
+  {
+    "username": "valid-user",
+    "password": "valid-password"
+  }
+}
+</code></pre>
+
+<p>and you will get a 202 status code. <br>
+If you send an invalid user password combination or no authentication string you will get an 406 error code.</p>
+</li>
+<li>
+<p>POST</p>
+
+<p>Send a POST-Request with body</p>
+
+<pre><code>{
+    "username": "valid-user",
+    "password": "valid-password"
+}
+</code></pre>
+
+<p>you will get a 201 status code if the user is created.</p>
+
+<p>If the user already exists or the password is too short / long you will get a 406 status code with the header <br></p>
+
+<pre><code>{
+  "errors": [
+    {
+      "username": "This username already exists"
+    },
+    {
+      "password": "This password is too short"
+    }
+  ]
+}
+</code></pre>
+</li>
+<li>
+<p>PUT</p>
+
+<p>Send a PUT-Request with the header <br></p>
+
+<pre><code>{
+  "authentication":
+  {
+    "username": "valid-user",
+    "password": "valid-password"
+  }
+}
+</code></pre>
+
+<p>and the body like this (with only the changed attribute)</p>
+
+<pre><code>{
+  "username": "new-valid-user"
+}
+</code></pre>
+
+<p>you will get a 202 status code, if the authentication goes wrong a 401 as always and if the username is taken or the password is too short / long you will get the same respnose like in the POST-Request</p>
+</li>
+<li>
+<p>DELETE</p>
+
+<p>Send a DELETE-Request with the header</p>
+
+<pre><code>{
+  "authentication":
+  {
+    "username": "valid-user",
+    "password": "valid-password"
+  }
+}
+</code></pre>
+
+<p>and you will get a 202 status code if the user was found. If it wasn't found (e.g. 2 parallel requests for the same user) you will get a 410 status code</p>
+</li>
+</ul><p>**** NOTE: Please note, that the articles are returned as shown in the root route ****</p>
+
+<h2>/api/carts</h2>
+
+<ul>
+<li>
+<p>GET</p>
+
+<p>Send a GET-Request with header</p>
+
+<pre><code>{
+  "authentication":
+  {
+    "username": "valid-user",
+    "password": "valid-password"
+  }
+}
+</code></pre>
+
+<p>and you will get a 200 status code, the body will look like this:</p>
+
+<pre><code>[
+  {
+    "id": 12,
+    "items": [
+      {
+        "id": 4,
+        "type": "Disk",
+        "identifier": "978-3453146976",
+        "price": [
+          {
+            "provider": "ebay",
+            "price": 12.5
+          },
+          {
+            "provider": "buecher.de",
+            "price": 13.7
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "type": "Book",
+        "identifier": "978-3446237360",
+        "price": [
+          {
+            "provider": "ebay",
+            "price": 32.5
+          }
+        ]
+      }
+    ],
+    "total": [
+      {
+        "ebay": 50
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "items": [
+      {
+        "id": 1,
+        "type": "E-Book",
+        "identifier": "978-3453446976",
+        "price": [
+          {
+            "provider": "ebay",
+            "price": 12.5
+          },
+          {
+            "provider": "buecher.de",
+            "price": 13.7
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "type": "Book",
+        "identifier": "978-3455237360",
+        "price": [
+          {
+            "provider": "ebay",
+            "price": 322.5
+          } ,
+          {
+            "provider": "buecher.de",
+            "price": 123.7
+          }
+        ]
+      }
+    ],
+    "total": [
+      {
+        "ebay": 500
+      },
+      {
+        "buecher.de": 600
+      }
+    ]
+  }
+]
+</code></pre>
+
+<p>If you send an invalid user password combination you will get an 401 error code.</p>
+
+<p>In the array of cart you will get their unique identifier, a list of their items (with ids and prices at providers which have them) and the total amount (only by the providers which have all the searched products)</p>
+</li>
+<li>
+<p>POST</p>
+
+<p>Send a POST-Request with header</p>
+
+<pre><code>{
+  "authentication":
+  {
+    "username": "valid-user",
+    "password": "valid-password"
+  }
+}
+</code></pre>
+
+<p>you will get a 201 status code if the cart is created and you will get the empty cart:</p>
+
+<pre><code>{
+  "id": 1337,
+  "items": [],
+  "total": []
+}
+</code></pre>
+</li>
+<li>
+<p>PUT</p>
+
+<p>Send a PUT-Request with the header <br></p>
+
+<pre><code>{
+  "authentication":
+  {
+    "username": "valid-user",
+    "password": "valid-password"
+  }
+}
+</code></pre>
+
+<p>and the body like this:</p>
+
+<pre><code>{
+  "item_id": 137
+}
+</code></pre>
+
+<p>you will get a 202 status code and the new cart and if the authenticationentication goes wrong a 401 as always.</p>
+</li>
+<li>
+<p>DELETE</p>
+
+<p>Send a DELETE-Request with the header</p>
+
+<pre><code>{
+  "authentication":
+  {
+    "username": "valid-user",
+    "password": "valid-password"
+  },
+  "id": 34
+}
+</code></pre>
+
+<p>and you will get a 202 status code if the cart was found. If it wasn't found you will get a 404 status code.</p>
+</li>
+</ul><h2>/api/providers</h2>
+
+<ul>
+<li>
+<p>GET</p>
+
+<p>Send a GET-Request with header</p>
+
+<pre><code> {
+   "authentication":
+   {
+     "username": "valid-user",
+     "password": "valid-password"
+   }
+ }
+</code></pre>
+
+<p>and you will get a 202 status code and a body like this:</p>
+
+<pre><code> [
+   {
+     "ebay": {
+       "activity" : "active",
+       "url" : "www.ebay.de"
+     }
+   },
+   {
+     "Buch.de": {
+       "activity" : "inactive",
+       "url" : "www.buch.de"
+     }
+   }
+ ]
+</code></pre>
+</li>
+<li>
+<p>POST</p>
+
+<p>Send a POST-Request and you will get a 400 status code</p>
+</li>
+<li>
+<p>PUT</p>
+
+<p>Send a PUT-Request with the header</p>
+
+<pre><code> {
+   "authentication":
+   {
+     "username": "valid-user",
+     "password": "valid-password"
+   }
+ }
+</code></pre>
+
+<p>and the body (the rating in percentage)</p>
+
+<pre><code> {
+   "comment": "Ich fand e-Bay klasse!",
+   "rating": 99
+ }
+</code></pre>
+
+<p>you will get a 202 status code as the comment and / or rating is created and if the authentication goes wrong a 401 as always</p>
+</li>
+<li>
+<p>DELETE</p>
+
+<p>Send a DELETE-Request and you will get a 400 status code</p>
+</li>
+</ul>
+        </section>
+
+        <footer>
+          Vergleichsportal is maintained by <a href="https://github.com/DanielMSchmidt">DanielMSchmidt</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
