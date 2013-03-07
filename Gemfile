@@ -37,6 +37,7 @@ group :development, :test do
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'capybara', '~> 2.0.2'
   gem 'spork', '~> 0.9.2'
+  gem 'rb-fsevent', '~> 0.9'
   gem 'guard', '~> 1.6.2'
   gem 'guard-rspec', '~> 2.5.0'
   gem 'guard-spork', '~> 1.5.0'

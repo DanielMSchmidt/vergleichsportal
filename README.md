@@ -21,7 +21,11 @@ and get a coffee, this one will take a while.
      $ cp config/database.yml.example config/database.yml
      $ vim config/database.yml
      $ gem install mailcatcher
+
+To start the development you have to do each time
+
      $ mailcatcher
+     $ redis-server
      $ bundle exec foreman start
 
 API
