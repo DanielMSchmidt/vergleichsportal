@@ -38,6 +38,7 @@ group :development, :test do
   gem 'capybara', '~> 2.0.2'
   gem 'spork', '~> 0.9.2'
   gem 'rb-fsevent', '~> 0.9'
+  gem "shoulda", "~> 3.3.2"
   gem 'guard', '~> 1.6.2'
   gem 'guard-rspec', '~> 2.5.0'
   gem 'guard-spork', '~> 1.5.0'
