@@ -8,7 +8,7 @@ class Article < ActiveRecord::Base
   has_many :carts, through: :article_cart_relations
   has_many :comments, as: :commentable
   has_many :ratings, as: :rateable
-  has_many :images, as: :imageable
+  has_many :images, as: :imageable, dependent: :destroy
   has_many :prices
 
 
