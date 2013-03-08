@@ -17,5 +17,17 @@
     = javascript_include_tag "vendor/custom.modernizr"
     = csrf_meta_tags
   %body
-    = yield
+    = render "layouts/navigation"
+
+    .three.columns
+      %p
+        %a.button.expand{"data-reveal-id" => "cart-modal", :href => "#", :style => "background-image: url(images/cart.png); background-repeat: no-repeat; height: 37.65625px; background-position: 84px 7px;"}
+    .three.columns
+      %p
+        %img{:src => "http://placehold.it/205x720&text=Werbung"}/    
+    .row
+      .nine.columns
+        = yield
+
+    = yield :modal
     = javascript_include_tag "application"
