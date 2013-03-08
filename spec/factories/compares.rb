@@ -2,5 +2,6 @@
 
 FactoryGirl.define do
   factory :compare do
+    cart_id 1
   end
 end
