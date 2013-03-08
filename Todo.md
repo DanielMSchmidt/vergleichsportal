@@ -2,4 +2,5 @@
 
 - Write Tests for API
 - Add Step definitions
-- Providers: Image_url zu image blob ändern
+- Providers: change Image_url to image blob
+- permission_role_assignments: rescaffold in singular
