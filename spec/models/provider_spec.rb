@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Provider do
   let(:provider) { FactoryGirl.create(:provider) }
   let(:rating) { FactoryGirl.create(:rating) }
+
   describe "validations" do
     it "should validate presence of image_url" do
       should validate_presence_of(:image_url)
@@ -25,7 +26,7 @@ describe Provider do
 
     it "should delete its ratings if deleted" do
       rating
-      expect {provider.delete}.to change{Rating.count}.by(-1)
+      expect {provider.destroy}.to change{Rating.count}.by(-1)
     end
   end
 
