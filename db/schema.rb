@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308111833) do
+ActiveRecord::Schema.define(:version => 20130308140059) do
 
   create_table "advertisments", :force => true do |t|
     t.string   "img_url"
@@ -64,6 +64,13 @@ ActiveRecord::Schema.define(:version => 20130308111833) do
     t.string   "imageable_type"
   end
 
+  create_table "permission_role_assignments", :force => true do |t|
+    t.integer  "role_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "permissions", :force => true do |t|
     t.string   "value"
     t.datetime "created_at", :null => false
@@ -111,6 +118,7 @@ ActiveRecord::Schema.define(:version => 20130308111833) do
     t.string   "crypted_password"
     t.string   "salt"
     t.boolean  "active"
+    t.integer  "role_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end
