@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308111833) do
+ActiveRecord::Schema.define(:version => 20130308202902) do
 
   create_table "advertisments", :force => true do |t|
     t.string   "img_url"
@@ -21,11 +21,18 @@ ActiveRecord::Schema.define(:version => 20130308111833) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "article_cart_relations", :force => true do |t|
+  create_table "article_cart_assignments", :force => true do |t|
     t.integer  "article_id"
     t.integer  "cart_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "article_query_assignments", :force => true do |t|
+    t.integer  "article_id"
+    t.integer  "search_query_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "articles", :force => true do |t|
@@ -44,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20130308111833) do
 
   create_table "comments", :force => true do |t|
     t.text     "value"
+    t.integer  "user_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "commentable_id"
@@ -62,6 +70,13 @@ ActiveRecord::Schema.define(:version => 20130308111833) do
     t.datetime "updated_at",     :null => false
     t.integer  "imageable_id"
     t.string   "imageable_type"
+  end
+
+  create_table "permission_role_assignments", :force => true do |t|
+    t.integer  "role_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "permissions", :force => true do |t|
@@ -88,6 +103,8 @@ ActiveRecord::Schema.define(:version => 20130308111833) do
 
   create_table "ratings", :force => true do |t|
     t.integer  "value"
+    t.integer  "user_id"
+    t.integer  "provider_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "rateable_id"
@@ -106,11 +123,19 @@ ActiveRecord::Schema.define(:version => 20130308111833) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "user_role_assignments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "crypted_password"
     t.string   "salt"
     t.boolean  "active"
+    t.integer  "role_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end

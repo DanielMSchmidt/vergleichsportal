@@ -5,7 +5,7 @@ describe Cart do
 
   describe "relations" do
     it "should have many articles" do
-      should have_many(:articles).through(:article_cart_relations)
+      should have_many(:articles).through(:article_cart_assignments)
     end
 
     it "should have many compares" do

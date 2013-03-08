@@ -1,9 +1,8 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  factory :rating do
-    value       1
-    user_id     1
-    provider_id 1
+  factory :user_role_assignment do
+    user_id 1
+    role_id 1
   end
 end

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Article do
-
   let(:article) { FactoryGirl.create(:article) }
   let(:provider) { FactoryGirl.create(:provider) }
+  let(:image) { FactoryGirl.create(:image) }
 
   describe "attributes" do
     describe "ean" do
@@ -41,7 +41,7 @@ describe Article do
 
   describe "relations" do
     it "should have many carts" do
-      should have_many(:carts).through(:article_cart_relations)
+      should have_many(:carts).through(:article_cart_assignments)
     end
     it "should have many comments" do
       should have_many(:comments)
@@ -52,8 +52,15 @@ describe Article do
     it "should have many images" do
       should have_many(:images)
     end
+    it "should have images which are dependent destroy" do
+      image #has to be there so that image get instanciated
+      expect{ article.destroy }.to change{Image.count}.by(-1)
+    end
     it "should have many prices" do
       should have_many(:prices)
+    end
+    it "should have many queries" do
+      should have_many(:search_queries).through(:article_query_assignments)
     end
 
     describe "the number of prices" do

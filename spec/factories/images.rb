@@ -2,6 +2,8 @@
 
 FactoryGirl.define do
   factory :image do
-    url "MyString"
+    url             "MyString"
+    imageable_id    1
+    imageable_type  "Article"
   end
 end

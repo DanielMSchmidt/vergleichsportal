@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :provider do
     name "MyString"
-    url "MyString"
-    image_url "MyString"
+    url "www.google.com"
+    image_url "www.google.de/test.png"
   end
 end
