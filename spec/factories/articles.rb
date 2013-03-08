@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :article do
     name "MyString"
-    ean "MyString"
+    ean "9783453146976"
     description "MyText"
   end
 end

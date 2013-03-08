@@ -3,7 +3,7 @@ class Article < ActiveRecord::Base
   validates_format_of :ean, with: /^((\d{7}-?\d{5}-?\d)|(\d{8}-?\d{4}-?\d)|(\d{9}-?\d{3}-?\d))$/
   validates_presence_of :description, :name
   validate :it_has_at_least_one_price_per_provider
-  
+
   has_many :article_cart_relations
   has_many :carts, through: :article_cart_relations
   has_many :comments, as: :commentable
@@ -11,7 +11,7 @@ class Article < ActiveRecord::Base
   has_many :images, as: :imageable
   has_many :prices
 
-  
+
   def it_has_at_least_one_price_per_provider
     if Provider.count > self.prices.count
       errors.add(:prices, 'There has to be at least one price per provider')
