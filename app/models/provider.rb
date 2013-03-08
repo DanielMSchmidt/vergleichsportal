@@ -5,4 +5,5 @@ class Provider < ActiveRecord::Base
   validates :url, url: true
 
   has_many :prices
+  has_many :ratings, dependent: :destroy
 end
