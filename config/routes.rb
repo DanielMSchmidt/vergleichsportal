@@ -1,4 +1,7 @@
 Vergleichsportal::Application.routes.draw do
+  resources :articles
+
+
   get "api/search"
 
   resources :providers
