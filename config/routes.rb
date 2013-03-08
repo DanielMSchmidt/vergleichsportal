@@ -1,4 +1,10 @@
 Vergleichsportal::Application.routes.draw do
+  get "home/index"
+
+  get "home/search_results"
+
+  get "home/admin"
+
   resources :carts
 
 
