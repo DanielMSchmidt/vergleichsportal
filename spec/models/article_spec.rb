@@ -41,7 +41,7 @@ describe Article do
 
   describe "relations" do
     it "should have many carts" do
-      should have_many(:carts).through(:article_cart_relations)
+      should have_many(:carts).through(:article_cart_assignments)
     end
     it "should have many comments" do
       should have_many(:comments)

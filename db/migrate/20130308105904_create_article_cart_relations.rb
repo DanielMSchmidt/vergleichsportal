@@ -1,6 +1,6 @@
 class CreateArticleCartRelations < ActiveRecord::Migration
   def change
-    create_table :article_cart_relations do |t|
+    create_table :article_cart_assignments do |t|
       t.integer :article_id
       t.integer :cart_id
 

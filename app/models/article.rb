@@ -4,8 +4,8 @@ class Article < ActiveRecord::Base
   validates_presence_of :description, :name
   validate :it_has_at_least_one_price_per_provider
 
-  has_many :article_cart_relations
-  has_many :carts, through: :article_cart_relations
+  has_many :article_cart_assignments
+  has_many :carts, through: :article_cart_assignments
   has_many :comments, as: :commentable
   has_many :ratings, as: :rateable
   has_many :images, as: :imageable, dependent: :destroy
