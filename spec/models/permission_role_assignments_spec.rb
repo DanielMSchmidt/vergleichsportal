@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PermissionRoleAssignments do
+describe PermissionRoleAssignment do
   describe "validations" do
     it "should validate presence of role_id" do
       should validate_presence_of(:role_id)
