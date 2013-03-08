@@ -11,12 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308092709) do
+ActiveRecord::Schema.define(:version => 20130308111833) do
 
   create_table "advertisments", :force => true do |t|
     t.string   "img_url"
     t.string   "link_url"
     t.boolean  "active"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "article_cart_relations", :force => true do |t|
+    t.integer  "article_id"
+    t.integer  "cart_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -37,8 +44,10 @@ ActiveRecord::Schema.define(:version => 20130308092709) do
 
   create_table "comments", :force => true do |t|
     t.text     "value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
   end
 
   create_table "compares", :force => true do |t|
@@ -48,8 +57,10 @@ ActiveRecord::Schema.define(:version => 20130308092709) do
 
   create_table "images", :force => true do |t|
     t.string   "url"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "imageable_id"
+    t.string   "imageable_type"
   end
 
   create_table "permissions", :force => true do |t|
@@ -60,8 +71,10 @@ ActiveRecord::Schema.define(:version => 20130308092709) do
 
   create_table "prices", :force => true do |t|
     t.decimal  "value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "article_id"
+    t.integer  "provider_id"
   end
 
   create_table "providers", :force => true do |t|
@@ -74,8 +87,10 @@ ActiveRecord::Schema.define(:version => 20130308092709) do
 
   create_table "ratings", :force => true do |t|
     t.integer  "value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "rateable_id"
+    t.string   "rateable_type"
   end
 
   create_table "roles", :force => true do |t|
