@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(:version => 20130308140059) do
   create_table "ratings", :force => true do |t|
     t.integer  "value"
     t.integer  "user_id"
+    t.integer  "provider_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "rateable_id"
