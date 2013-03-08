@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308140059) do
+ActiveRecord::Schema.define(:version => 20130308202902) do
 
   create_table "advertisments", :force => true do |t|
     t.string   "img_url"
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(:version => 20130308140059) do
     t.integer  "cart_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "article_query_assignments", :force => true do |t|
+    t.integer  "article_id"
+    t.integer  "search_query_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "articles", :force => true do |t|
@@ -44,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20130308140059) do
 
   create_table "comments", :force => true do |t|
     t.text     "value"
+    t.integer  "user_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "commentable_id"
@@ -111,6 +119,13 @@ ActiveRecord::Schema.define(:version => 20130308140059) do
 
   create_table "search_queries", :force => true do |t|
     t.string   "value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "user_role_assignments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "role_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
