@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Article do
+
+  let(:article) { FactoryGirl.create(:article) }
+  let(:provider) { FactoryGirl.create(:provider) }
+
   describe "attributes" do
     describe "ean" do
       it "should be valid with a right ean-13" do
@@ -51,9 +55,16 @@ describe Article do
     it "should have many prices" do
       should have_many(:prices)
     end
+
     describe "the number of prices" do
-      it "should be invalid without a price"
-      it "should be valid with a price"
+      it "should be invalid without a price per provider" do
+        Provider.stub(:count).and_return(1)
+        should raise_error
+      end
+      it "should be valid with one price per provider" do
+        article.prices.create(value: 10.3, provider_id: provider.id)
+        article.should be_valid
+      end
     end
   end
 end
