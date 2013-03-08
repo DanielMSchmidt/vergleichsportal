@@ -1,5 +1,5 @@
 - content_for :head do 
-= reder :partial => "search_head"
+  = reder :partial => "shared/search_head"
 - end 
 
 %h3{:style => "margin-bottom: 19px;"}
@@ -53,12 +53,12 @@
             %img{:src => "images/cart_in.png"}/
 
 - content_for :modal do 
-= render :partial => "login-modal"
-= render :partial => "register-modal"
-= render :partial => "forgot-password-modal" 
-= render :partial => "add-comment-modal" 
-= render :partial => "cart-modal"
-= render :partial => "switch-cart-modal" 
-= render :partial => "compare-cart-modal" 
-= render :partial => "rate-providers-modal" 
+  = render :partial => "shared/modal/login"
+  = render :partial => "shared/modal/register"
+  = render :partial => "shared/modal/forgot_password" 
+  = render :partial => "shared/modal/add_comment" 
+  = render :partial => "shared/modal/cart"
+  = render :partial => "shared/modal/switch_cart" 
+  = render :partial => "shared/modal/compare_cart" 
+  = render :partial => "shared/modal/rate_providers" 
 - end 

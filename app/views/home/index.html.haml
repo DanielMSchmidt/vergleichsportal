@@ -1,6 +1,7 @@
-<% content_for :head do %>
-<% render :partial => "search_head" %>
-<% end %>
+- content_for :head do
+	= render :partial => "shared/search_head"
+- end
+
 %h3 Volkers Verrücktes Vergleichsportal
 %h3
   %small Worum geht es?
@@ -10,13 +11,13 @@
 %p Ground round pastrami pork loin tenderloin jerky. Jerky spare ribs biltong, ham hock ham capicola pork. Jerky turducken pork, meatloaf sausage capicola swine corned beef turkey short loin. Tongue prosciutto pork loin, ground round spare ribs venison kielbasa strip steak.
 %p Hamburger bresaola turkey t-bone, leberkas salami pork chop ham hock beef ribs. Rump biltong meatball venison, short ribs pork loin shank shankle corned beef beef. Cow salami jowl short loin hamburger fatback. Short ribs pork belly shoulder pastrami drumstick salami corned beef ham hock bresaola. Swine filet mignon cow sausage ball tip. Cow ribeye ground round, sausage pork loin pig beef ball tip turkey boudin.
 %p Prosciutto ball tip filet mignon andouille frankfurter chicken rump sausage meatball. Filet mignon meatloaf ground round andouille ham hock pork. Bresaola short loin meatball chuck hamburger pig. Turkey venison chuck, tongue fatback tail swine jerky corned beef shank kielbasa prosciutto ribeye ham tri-tip. Rump bacon pork belly meatloaf shoulder short loin meatball kielbasa pork loin tongue bresaola brisket corned beef jowl prosciutto. Beef ribs shankle short ribs pork belly corned beef fatback pork chop tongue biltong boudin strip steak sirloin meatloaf pancetta.
-<% content_for :modal do %>
-<% render :partial => "rate-providers-modal" %>
-<% render :partial => "compare-cart-modal" %>
-<% render :partial => "switch-cart-modal" %>
-<% render :partial => "cart-modal" %>
-<% render :partial => "add-comment-modal" %>
-<% render :partial => "forgot-password-modal" %>
-<% render :partial => "login-modal" %>
-<% render :partial => "register-modal" %>
-<% end %>
+- content_for :modal do
+	= render :partial => "shared/modal/rate_providers"
+	= render :partial => "shared/modal/compare_cart"
+	= render :partial => "shared/modal/switch_cart" 
+	= render :partial => "shared/modal/cart" 
+	= render :partial => "shared/modal/add_comment" 
+	= render :partial => "shared/modal/forgot_password"
+	= render :partial => "shared/modal/login" 
+	= render :partial => "shared/modal/register" 
+- end 
