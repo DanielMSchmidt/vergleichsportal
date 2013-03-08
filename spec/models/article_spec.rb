@@ -59,6 +59,9 @@ describe Article do
     it "should have many prices" do
       should have_many(:prices)
     end
+    it "should have many queries" do
+      should have_many(:search_queries).through(:article_query_assignments)
+    end
 
     describe "the number of prices" do
       it "should be invalid without a price per provider" do

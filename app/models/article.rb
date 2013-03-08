@@ -5,11 +5,13 @@ class Article < ActiveRecord::Base
   validate :it_has_at_least_one_price_per_provider
 
   has_many :article_cart_assignments
+  has_many :article_query_assignments
   has_many :carts, through: :article_cart_assignments
   has_many :comments, as: :commentable
   has_many :ratings, as: :rateable
   has_many :images, as: :imageable, dependent: :destroy
   has_many :prices
+  has_many :search_queries, through: :article_query_assignments
 
 
   def it_has_at_least_one_price_per_provider
