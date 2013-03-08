@@ -1,2 +1,16 @@
-%h1 Home#admin
-%p Find me in app/views/home/admin.html.haml
+<% content_for :head do %>
+%h3 Admin Dashboard
+<% end %>
+%ul.accordion
+  %li.active
+    <%= render :partial => "users" %>
+  %li
+    <%= render :partial => "admin/prvider" %>
+  %li
+    <%= render :partial => "admin/ad" %>
+  %li
+    <%= render :partial => "admin/statistic" %>
+<% content_for :modal do %>
+<%= render :partial => "admin/user-delete-modal" %>
+<%= render :partial => "admin/edit-user-modal" %>
+<% end %>

@@ -1,2 +1,64 @@
-%h1 Home#search_results
-%p Find me in app/views/home/search_results.html.haml
+- content_for :head do 
+= reder :partial => "search_head"
+- end 
+
+%h3{:style => "margin-bottom: 19px;"}
+  Suchergebnisse:
+  %small "The Hitchhiker’s Guide to the Galaxy"
+%ul.accordion
+  %li.active
+    .title
+      %h5 Per Anhalter durch die Galaxis
+      %h3
+        %small ISBN-13: 978-3453146976
+    .content
+      .row
+        .four.columns
+          %img{:src => "http://placehold.it/350x350"}/
+          %img{:src => "http://placehold.it/350x350"}/
+        .four.columns.offset-by-one
+          %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 			veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate 			velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 			mollit anim id est laborum.
+        .two.columns.offset-by-one
+          %a.button{:href => "#"}
+            %img{:src => "images/cart_in.png"}/
+  %li
+    .title
+      %h5 Per Anhalter durch die Galaxis
+      %h3
+        %small ASIN: B0009HBEGI
+    .content
+      .row
+        .four.columns
+          %img{:src => "http://placehold.it/350x350"}/
+          %img{:src => "http://placehold.it/350x350"}/
+        .four.columns.offset-by-one
+          %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 			veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 			esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est 			laborum.
+        .two.columns.offset-by-one
+          %a.button{:href => "#"}
+            %img{:src => "images/cart_in.png"}/
+  %li
+    .title
+      %h5 Das Restaurant am Ende des Universums: Roman
+      %h3
+        %small ISBN-13: 978-3453146983
+    .content
+      .row
+        .four.columns
+          %img{:src => "http://placehold.it/350x350"}/
+          %img{:src => "http://placehold.it/350x350"}/
+        .four.columns.offset-by-one
+          %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        .two.columns.offset-by-one
+          %a.button{:href => "#"}
+            %img{:src => "images/cart_in.png"}/
+
+- content_for :modal do 
+= render :partial => "login-modal"
+= render :partial => "register-modal"
+= render :partial => "forgot-password-modal" 
+= render :partial => "add-comment-modal" 
+= render :partial => "cart-modal"
+= render :partial => "switch-cart-modal" 
+= render :partial => "compare-cart-modal" 
+= render :partial => "rate-providers-modal" 
+- end 
