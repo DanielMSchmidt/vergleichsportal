@@ -1,4 +1,7 @@
 Vergleichsportal::Application.routes.draw do
+  resources :advertisments
+
+
   get "user_sessions/new"
 
   get "user_sessions/create"
