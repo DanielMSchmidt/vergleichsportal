@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20130308111833) do
   end
 
   create_table "compares", :force => true do |t|
+    t.integer  "cart_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
