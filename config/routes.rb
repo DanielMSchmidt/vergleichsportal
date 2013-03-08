@@ -1,4 +1,7 @@
 Vergleichsportal::Application.routes.draw do
+  resources :providers
+
+
   root to: 'home index search admin#index'
 
   # The priority is based upon order of creation:
