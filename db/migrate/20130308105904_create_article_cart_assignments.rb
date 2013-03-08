@@ -1,4 +1,4 @@
-class CreateArticleCartRelations < ActiveRecord::Migration
+class CreateArticleCartAssignments < ActiveRecord::Migration
   def change
     create_table :article_cart_assignments do |t|
       t.integer :article_id
