@@ -1,4 +1,7 @@
 Vergleichsportal::Application.routes.draw do
+  resources :carts
+
+
   resources :users
 
 
