@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 20130308140059) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "article_cart_relations", :force => true do |t|
+  create_table "article_cart_assignments", :force => true do |t|
     t.integer  "article_id"
     t.integer  "cart_id"
     t.datetime "created_at", :null => false
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20130308140059) do
 
   create_table "ratings", :force => true do |t|
     t.integer  "value"
+    t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "rateable_id"
