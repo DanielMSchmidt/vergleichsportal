@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Article do
   let(:article) { FactoryGirl.create(:article) }
   let(:provider) { FactoryGirl.create(:provider) }
-  let(:image) { FactoryGirl.create(:image) }
+  let!(:image) { FactoryGirl.create(:image) }
 
   describe "attributes" do
     #TODO: Refactor this part with let (https://www.relishapp.com/rspec/rspec-core/v/2-13/docs/helper-methods/let-and-let!) and different factories
@@ -54,7 +54,6 @@ describe Article do
       should have_many(:images)
     end
     it "should have images which are dependent destroy" do
-      image #has to be there so that image get instanciated
       expect{ article.destroy }.to change{Image.count}.by(-1)
     end
     it "should have many prices" do
