@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-#TODO: Refactor with let (https://www.relishapp.com/rspec/rspec-core/v/2-13/docs/helper-methods/let-and-let!)
+#TODO: Refactor with custom matcher for url
 
 describe Advertisment do
   describe "validation of attributes" do
