@@ -4,7 +4,7 @@ gem 'rails', '3.2.12'
 gem 'simple_form', '~> 2.1.0'
 gem 'foreman', '~> 0.61.0'
 gem 'puma', '~> 1.6.3'
-gem "celluloid", "~> 0.12.4"
+gem 'celluloid', '~> 0.12.4'
 gem 'haml', '~> 4.0.0'
 gem 'jbuilder', '~> 1.0.2'
 gem 'jquery-rails', '~> 2.2.1'
@@ -14,13 +14,14 @@ gem 'sorcery', '~> 0.8.1'
 gem 'resque', '~> 1.23.0'
 gem 'resque-scheduler', '~> 2.0.0'
 gem 'draper', '~> 1.1.0'
+gem 'active_model_serializers', '~> 0.7.0'
 
 group :production do
   gem 'pg', '~> 0.14.1'
 end
 
 group :development, :test do
-  gem "html2haml", "~> 1.0.1"
+  gem 'html2haml', '~> 1.0.1'
   gem 'haml-rails', '~> 0.4'
   gem 'hpricot', '~> 0.8.6'
   gem 'ruby_parser', '~> 3.1.1'
@@ -38,7 +39,7 @@ group :development, :test do
   gem 'capybara', '~> 2.0.2'
   gem 'spork', '~> 0.9.2'
   gem 'rb-fsevent', '~> 0.9'
-  gem "shoulda", "~> 3.3.2"
+  gem 'shoulda', '~> 3.3.2'
   gem 'guard', '~> 1.6.2'
   gem 'guard-rspec', '~> 2.5.0'
   gem 'guard-spork', '~> 1.5.0'
