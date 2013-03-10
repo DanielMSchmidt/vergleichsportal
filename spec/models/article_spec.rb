@@ -17,26 +17,12 @@ describe Article do
         a.should be_invalid
       end
     end
-    describe "description" do
-      it "should be present" do
-        a = Article.new(ean:"123456789-123-1", description:"Beschreibung", name:"Volkerchen")
-        a.should be_valid
-      end
-      it "shouldn't not be present" do
-        a = Article.new(ean:"123456789-123-1", name:"Volkerchen")
-        a.should be_invalid
-      end
+    it "should validate presence of description" do
+      should validate_presence_of(:description)
     end
 
-    describe "name" do
-      it "should be present" do
-        a = Article.new(ean:"123456789-123-1", description:"Beschreibung", name:"Volkerchen")
-        a.should be_valid
-      end
-      it "shouldn't not be present" do
-        a = Article.new(ean:"123456789-123-1", description:"Volkerchen")
-        a.should be_invalid
-      end
+    it "should validate presence of name" do
+      should validate_presence_of(:name)
     end
   end
 
