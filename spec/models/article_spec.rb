@@ -6,6 +6,7 @@ describe Article do
   let(:image) { FactoryGirl.create(:image) }
 
   describe "attributes" do
+    #TODO: Refactor this part with let (https://www.relishapp.com/rspec/rspec-core/v/2-13/docs/helper-methods/let-and-let!) and different factories
     describe "ean" do
       it "should be valid with a right ean-13" do
         a = Article.new(ean:"1234567-12345-1", description:"Beschreibung", name:"Volker")
