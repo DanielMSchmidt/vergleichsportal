@@ -5,7 +5,12 @@ describe User do
     it "should validate presence of email" do
       should validate_presence_of(:email)
     end
-    it "should validate presence of email" do
+
+    it "should validate uniqueness of email" do
+      should validate_uniqueness_of(:email)
+    end
+
+    it "should validate presence of role_id" do
       should validate_presence_of(:role_id)
     end
   end
