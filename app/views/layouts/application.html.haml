@@ -4,7 +4,7 @@
 /[if IE 7 ] <html class="ie7" lang="en">
 /[if IE 8 ] <html class="ie8" lang="en">
 / [if (gte IE 9)|!(IE)]><!
-%html{:lang => "de"}
+%html{:lang => "de", :class => "js no-touch svg inlinessvg svgclippaths no-ie8compat"}
   / <![endif]
   %head
     %meta{:charset => "utf-8"}/
@@ -16,7 +16,7 @@
     = stylesheet_link_tag "application"
     = javascript_include_tag "vendor/custom.modernizr"
     = csrf_meta_tags
-  %body
+  %body{:style => "zoom:1;"}
     = render "layouts/navigation"
 
     .three.columns
