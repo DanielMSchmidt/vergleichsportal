@@ -18,14 +18,13 @@
     = csrf_meta_tags
   %body{:style => "zoom:1;"}
     = render "layouts/navigation"
-
-    .large-3.columns
-      %p
-        %a.button.expand{"data-reveal-id" => "cart-modal", :href => "#", :style => "background-image: url(images/cart.png); background-repeat: no-repeat; height: 37.65625px; background-position: 84px 7px;"}
-    .large-3.columns
-      %p
-        %img{:src => "http://placehold.it/205x720&text=Werbung"}/    
     .row
+      .large-3.columns
+        %p
+          %img{:src => "http://placehold.it/205x720&text=Werbung"}/
+      .large-3.columns
+        %p
+          %a.button.expand{"data-reveal-id" => "cart-modal", :href => "#", :style => "background-image: url(images/cart.png); background-repeat: no-repeat; height: 37.65625px; background-position: 84px 7px;"}
       .large-9.columns
         = yield
 
