@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  authenticates_with_sorcery!
   attr_accessible :active, :crypted_password, :email, :salt, :role_id
 
   has_many :user_role_assignments
