@@ -5,7 +5,9 @@ Vergleichsportal::Application.routes.draw do
 
   get "password_resets/update"
 
-  get "home/index"
+  get "home/index" => "home#index"
+  
+  get "/" => "home#index"
 
   get "home/search_results"
 
