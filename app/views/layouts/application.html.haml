@@ -17,7 +17,7 @@
     = javascript_include_tag "vendor/custom.modernizr"
     = csrf_meta_tags
   %body{:style => "zoom:1;"}
-    = render "layouts/navigation"
+    = render "layouts/navigation_login"
 
     .row
       .three.columns
@@ -30,4 +30,5 @@
         = yield
 
     = yield :modal
+    = yield :login_modal
     = javascript_include_tag "application"
