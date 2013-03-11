@@ -7,8 +7,6 @@ Vergleichsportal::Application.routes.draw do
 
   get "home/index" => "home#index"
   
-  get "home/admin" => "home#admin"
-
   get "/" => "home#index"
 
   get "home/search_results"
