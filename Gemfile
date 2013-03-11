@@ -52,7 +52,6 @@ group :assets do
   gem 'therubyracer', platforms: :ruby
   gem 'hogan_assets', '~> 1.5.1'
   gem 'compass-rails', '~> 1.0.3'
-  gem 'zurb-foundation', '~> 4.0.3'
   gem 'uglifier', '~> 1.3.0'
 end
 

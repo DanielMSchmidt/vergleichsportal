@@ -1,0 +1,11 @@
+= simple_form_for(@user) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :email
+    = f.input :crypted_password
+    = f.input :salt
+    = f.input :active
+
+  .form-actions
+    = f.button :submit

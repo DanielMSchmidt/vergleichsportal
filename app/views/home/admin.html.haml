@@ -1,0 +1,15 @@
+-content_for :head do 
+  %h3 Admin Dashboard
+
+%ul.accordion
+  %li.active
+    = render :partial => "home/admin/users"
+  %li
+    = render :partial => "home/admin/provider"
+  %li
+    = render :partial => "home/admin/ad" 
+  %li
+    = render :partial => "home/admin/statistic" 
+- content_for :modal do 
+  = render :partial => "home/admin/user_delete" 
+  = render :partial => "home/admin/edit_user" 

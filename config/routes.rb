@@ -1,5 +1,43 @@
 Vergleichsportal::Application.routes.draw do
-  root to: 'home index search admin#index'
+
+  get "/" => "home#index"
+
+  get "password_resets/create"
+
+  get "password_resets/edit"
+
+  get "password_resets/update"
+
+
+
+  get "home/index" => "home#index" 
+
+  get "home/search" => "home#search_results"
+
+  get "home/admin" => "home#admin"
+
+  resources :carts
+
+
+  resources :users
+
+
+  resources :advertisments
+
+
+  get "user_sessions/new"
+
+  get "user_sessions/create"
+
+  get "user_sessions/destroy"
+
+  resources :articles
+
+
+  get "api/search"
+
+  resources :providers
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
