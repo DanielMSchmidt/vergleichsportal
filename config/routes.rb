@@ -1,12 +1,12 @@
 Vergleichsportal::Application.routes.draw do
 
-  get "/" => "home#index"
-
   get "password_resets/create"
 
   get "password_resets/edit"
 
   get "password_resets/update"
+
+  resources :password_resets
 
 
 
@@ -18,11 +18,19 @@ Vergleichsportal::Application.routes.draw do
 
   resources :carts
 
+  resources :users do
+    member do
+      get :activate
+    end
+  end
 
-  resources :users
 
+  resources :user_sessions
 
   resources :advertisments
+
+  match 'login' => 'user_sessions#new', :as => :login
+  match 'logout' => 'user_sessions#destroy', :as => :logout
 
 
   get "user_sessions/new"
@@ -38,7 +46,9 @@ Vergleichsportal::Application.routes.draw do
 
   resources :providers
 
+  root to: 'home#index'
 
+<<<<<<< HEAD
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -95,4 +105,6 @@ Vergleichsportal::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+=======
+>>>>>>> ab65ae3b22638f7109ce1bd63c1d6f230793df9b
 end

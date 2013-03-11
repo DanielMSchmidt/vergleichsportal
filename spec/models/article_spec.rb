@@ -3,9 +3,10 @@ require 'spec_helper'
 describe Article do
   let(:article) { FactoryGirl.create(:article) }
   let(:provider) { FactoryGirl.create(:provider) }
-  let(:image) { FactoryGirl.create(:image) }
+  let!(:image) { FactoryGirl.create(:image) }
 
   describe "attributes" do
+    #TODO: Refactor this part with custom matcher for ean
     describe "ean" do
       it "should be valid with a right ean-13" do
         a = Article.new(ean:"1234567-12345-1", description:"Beschreibung", name:"Volker")
@@ -16,26 +17,12 @@ describe Article do
         a.should be_invalid
       end
     end
-    describe "description" do
-      it "should be present" do
-        a = Article.new(ean:"123456789-123-1", description:"Beschreibung", name:"Volkerchen")
-        a.should be_valid
-      end
-      it "shouldn't not be present" do
-        a = Article.new(ean:"123456789-123-1", name:"Volkerchen")
-        a.should be_invalid
-      end
+    it "should validate presence of description" do
+      should validate_presence_of(:description)
     end
 
-    describe "name" do
-      it "should be present" do
-        a = Article.new(ean:"123456789-123-1", description:"Beschreibung", name:"Volkerchen")
-        a.should be_valid
-      end
-      it "shouldn't not be present" do
-        a = Article.new(ean:"123456789-123-1", description:"Volkerchen")
-        a.should be_invalid
-      end
+    it "should validate presence of name" do
+      should validate_presence_of(:name)
     end
   end
 
@@ -53,7 +40,6 @@ describe Article do
       should have_many(:images)
     end
     it "should have images which are dependent destroy" do
-      image #has to be there so that image get instanciated
       expect{ article.destroy }.to change{Image.count}.by(-1)
     end
     it "should have many prices" do

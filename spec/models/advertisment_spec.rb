@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+#TODO: Refactor with custom matcher for url
+
 describe Advertisment do
   describe "validation of attributes" do
 
