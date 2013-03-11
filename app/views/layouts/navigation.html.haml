@@ -1,18 +1,18 @@
 / Header and Nav
 .row
-  .large-3.columns
+  .three.columns
     %h1
       %img{:src => "http://placehold.it/400x100&text=Logo"}/
-  .large-2.columns.large-offset-7
+  .two.columns.offset-by-seven
     %img{:src => "/images/ger.gif"}/
     %img{:src => "/images/gb.gif"}/
 .row{:style => "height: 51px;"}
-  .large-3.columns
+  .three.columns
     .row
-      .large-6.column
+      .six.column
         %a.button.expand{"data-reveal-id" => "edit-user-modal", :href => "#"} Profil
-      .large-6.column
+      .six.column
         %a.button.expand{:href => "#", :style => "padding-left: 9px;"} Abmelden
-  .large-9.columns
+  .nine.columns
     = yield :head
 / End Header and Nav

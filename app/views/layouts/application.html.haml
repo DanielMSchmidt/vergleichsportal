@@ -4,7 +4,7 @@
 /[if IE 7 ] <html class="ie7" lang="en">
 /[if IE 8 ] <html class="ie8" lang="en">
 / [if (gte IE 9)|!(IE)]><!
-%html{:lang => "en"}
+%html{:lang => "de", :class => "js no-touch svg inlinessvg svgclippaths no-ie8compat"}
   / <![endif]
   %head
     %meta{:charset => "utf-8"}/
@@ -13,20 +13,20 @@
     / Set the viewport width to device width for mobile
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
     %title= content_for?(:title) ? yield(:title) : "Untitled"
-    = stylesheet_link_tag    "application"
+    = stylesheet_link_tag "application"
     = javascript_include_tag "vendor/custom.modernizr"
     = csrf_meta_tags
   %body{:style => "zoom:1;"}
     = render "layouts/navigation"
 
-    .large-3.columns
+    .three.columns
       %p
         %a.button.expand{"data-reveal-id" => "cart-modal", :href => "#", :style => "background-image: url(images/cart.png); background-repeat: no-repeat; height: 37.65625px; background-position: 84px 7px;"}
-    .large-3.columns
+    .three.columns
       %p
         %img{:src => "http://placehold.it/205x720&text=Werbung"}/    
     .row
-      .large-9.columns
+      .nine.columns
         = yield
 
     = yield :modal
