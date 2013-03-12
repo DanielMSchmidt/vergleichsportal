@@ -14,6 +14,7 @@ gem 'sorcery', '~> 0.8.1'
 gem 'resque', '~> 1.23.0'
 gem 'resque-scheduler', '~> 2.0.0'
 gem 'draper', '~> 1.1.0'
+gem 'ebayapi', '~> 0.12.0'
 
 group :production do
   gem 'pg', '~> 0.14.1'
