@@ -1,6 +1,7 @@
 :url: http://www.buch.de
 :search_form: quicksearch
 :search_field: sq
+:link_class: pm_titelDetailsAction
 :book:
   :name: .detailsTitle .pm_titel
   :ean: .primaerfeatures .ean .value

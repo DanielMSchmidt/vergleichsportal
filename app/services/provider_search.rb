@@ -2,16 +2,16 @@ require 'mechanize'
 require 'yaml'
 class ProviderSearch 
 
-	def initialize(provider, searchTerm, options={})
-		@provider = YAML.load_file "config/#{provider}.yml"
+	def initialize(searchTerm, options={})
+		@provider = YAML.load_file "config/buch_de.yml"
 		@searchTerm = searchTerm
 		@options = options
 		@agent = Mechanize.new
 	end
 
-	def perform
+	def perform		
 		links = getBookLinksFor(@searchTerm)
-		links.take(@options[:count] || 5).collect{|link| getBookDataFor(link, @provider)}	
+		links.take(@options[:count] || 5).collect{|link| getBookDataFor(link)}	
 	end
 
 	def getBookLinksFor(searchTerm) 
@@ -22,10 +22,10 @@ class ProviderSearch
 		buch_form[@provider[:search_field]] = searchTerm
 
 		page = @agent.submit(buch_form, buch_form.buttons.first)
-		books = page.links_with(:class => "pm_titelDetailsAction").collect{|link| link.href}
+		books = page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
 	end
 
-	def getBookDataFor(link, provider)
+	def getBookDataFor(link)
 		page = @agent.get(link)
 		book = {}
 		@provider[:book].each do |key, value|
