@@ -18,6 +18,7 @@ class AdvertismentsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @advertisment }
+      format.js
     end
   end
 
@@ -46,9 +47,11 @@ class AdvertismentsController < ApplicationController
       if @advertisment.save
         format.html { redirect_to @advertisment, notice: 'Advertisment was successfully created.' }
         format.json { render json: @advertisment, status: :created, location: @advertisment }
+        format.js { render action: "show"}
       else
         format.html { render action: "new" }
         format.json { render json: @advertisment.errors, status: :unprocessable_entity }
+        format.js {render action: "new"}
       end
     end
   end
@@ -56,15 +59,17 @@ class AdvertismentsController < ApplicationController
   # PUT /advertisments/1
   # PUT /advertisments/1.json
   def update
-    @advertisment = Advertisment.find(params[:id])
+    @advertisment = AdInactivevertisment.find(params[:id])
 
     respond_to do |format|
       if @advertisment.update_attributes(params[:advertisment])
         format.html { redirect_to @advertisment, notice: 'Advertisment was successfully updated.' }
         format.json { head :no_content }
+        format.js {render action: "show"}
       else
         format.html { render action: "edit" }
         format.json { render json: @advertisment.errors, status: :unprocessable_entity }
+        format.js { render action: "edit"}
       end
     end
   end

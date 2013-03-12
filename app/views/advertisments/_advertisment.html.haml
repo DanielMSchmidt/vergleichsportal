@@ -1,0 +1,16 @@
+.row.advertisment{:id => advertisment.id}
+    .five.columns
+        %p
+            %img{:src => advertisment.img_url}/
+
+    .seven.columns
+        = simple_form_for(advertisment, remote: true) do |f|
+            = f.error_notification
+
+            .form-inputs
+                = f.input :img_url
+                = f.input :link_url
+                = f.input :active
+
+            .form-actions
+                = f.button :submit

@@ -8,5 +8,8 @@ class HomeController < ApplicationController
   end
 
   def admin
+  	@advertisments = Advertisment.all
+  	@advertisment = Advertisment.new
+
   end
 end
