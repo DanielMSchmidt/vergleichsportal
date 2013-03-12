@@ -6,3 +6,4 @@
   :ean: .primaerfeatures .ean .value
   :author: .b9_author
   :description: ! '#pm_kurzbeschreibung .redaktion'
+  :price: .b9sellbox .b9Price .pm_preis
