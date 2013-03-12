@@ -1,6 +1,6 @@
 require 'mechanize'
 require 'yaml'
-class ProviderSearch 
+class Buch_deSearch 
 
 	def initialize(searchTerm, options={})
 		@provider = YAML.load_file "config/buch_de.yml"
