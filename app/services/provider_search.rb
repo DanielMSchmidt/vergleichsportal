@@ -1,6 +1,9 @@
 require 'mechanize'
 require 'yaml'
-class ProviderSearch 
+require 'celluloid'
+class ProviderSearch
+  include Celluloid
+
 
 	def initialize(provider, searchTerm, options={})
 		@provider = YAML.load_file "config/#{provider}.yml"
@@ -11,10 +14,10 @@ class ProviderSearch
 
 	def perform
 		links = getBookLinksFor(@searchTerm)
-		links.take(@options[:count] || 5).collect{|link| getBookDataFor(link, @provider)}	
+		links.take(@options[:count] || 5).collect{|link| getBookDataFor(link, @provider)}
 	end
 
-	def getBookLinksFor(searchTerm) 
+	def getBookLinksFor(searchTerm)
 		page = @agent.get(@provider[:url])
 
 		buch_form = page.form(@provider[:search_form])
