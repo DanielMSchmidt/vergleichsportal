@@ -21,12 +21,32 @@ class Ebay
     response.parsed_response['GeteBayOfficialTimeResponse']['Timestamp']
   end
 
+  def self.getItemByKeywords
+    format :xml
+
+    headers(ebay_headers.merge({"X-EBAY-SOA-GLOBAL-ID" => " EBAY-DE", "X-EBAY-SOA-OPERATION-NAME" => "findItemsByKeywords"}))
+
+    requestXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+    <findItemsByKeywordsRequest xmlns=\"http://www.ebay.com/marketplace/search/v1/services\">
+      <keywords> Dan Brown </keywords>
+      <outputSelector> PictureURLSuperSize </outputSelector>
+      <outputSelector> AspectHistogram </outputSelector>
+    </findItemsByKeywordsRequest>"
+
+
+    response = post(api_url, :body => requestXml)
+    puts response
+    raise "Bad Response | #{response.inspect}" if response.parsed_response['GeteBayOfficialTimeResponse']['Ack'] != 'Success'
+    response.parsed_response['GeteBayOfficialTimeResponse']['Timestamp']
+  end
+
   private
 
   def self.ebay_headers
     {"X-EBAY-API-COMPATIBILITY-LEVEL" => "433",
                "X-EBAY-API-DEV-NAME" => 'b8e0a265-42d8-467e-a327-677645b61a2f',
                "X-EBAY-API-APP-NAME" => 'DanielSc-9c33-40ed-bcc1-f5d3377decf7',
+               "X-EBAY-SOA-SECURITY-APPNAME" => "DanielSc-9c33-40ed-bcc1-f5d3377decf7",
                "X-EBAY-API-CERT-NAME" => 'd10f73bf-3664-4ce0-a851-033709e423bf',
                "X-EBAY-API-SITEID" => "0",
                "Content-Type" => "text/xml"}
@@ -42,3 +62,4 @@ class Ebay
 end
 
 puts Ebay.getEbayOfficialTime
+puts Ebay.getItemByKeywords
