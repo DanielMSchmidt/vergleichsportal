@@ -31,13 +31,41 @@ class Ebay
       <keywords> Dan Brown </keywords>
       <outputSelector> PictureURLSuperSize </outputSelector>
       <outputSelector> AspectHistogram </outputSelector>
+      <RequesterCredentials>
+        <eBayAuthToken>#{auth_token}</eBayAuthToken>
+      </RequesterCredentials>
+      <UserID>#{user_id}</UserID>
+      <DetailLevel>ReturnAll</DetailLevel>
     </findItemsByKeywordsRequest>"
-
 
     response = post(api_url, :body => requestXml)
     puts response
     raise "Bad Response | #{response.inspect}" if response.parsed_response['GeteBayOfficialTimeResponse']['Ack'] != 'Success'
     response.parsed_response['GeteBayOfficialTimeResponse']['Timestamp']
+  end
+
+  def self.getItem
+    parameter = {
+      "OPERATION-NAME" => "findItemsByKeywords",
+      "SERVICE-VERSION" => "1.0.0",
+      "SECURITY-APPNAME" => "",
+      "RESPONSE-DATA-FORMAT" => "JSON",
+      "keywords" => "harry%20potter%20phoenix",
+      "REST-PAYLOAD" => nil
+    }
+    puts hash_to_url_params(parameter)
+    response = HTTParty.get("http://svcs.ebay.com/services/search/FindingService/v1?#{hash_to_url_params(parameter)}")
+    puts response
+  end
+
+  def self.hash_to_url_params(hash)
+    hash.to_a.collect do |x|
+      if x[1].nil?
+        x[0]
+      else
+        x.join("=")
+      end
+    end.join("&")
   end
 
   private
@@ -48,7 +76,8 @@ class Ebay
                "X-EBAY-API-APP-NAME" => 'DanielSc-9c33-40ed-bcc1-f5d3377decf7',
                "X-EBAY-SOA-SECURITY-APPNAME" => "DanielSc-9c33-40ed-bcc1-f5d3377decf7",
                "X-EBAY-API-CERT-NAME" => 'd10f73bf-3664-4ce0-a851-033709e423bf',
-               "X-EBAY-API-SITEID" => "0",
+               "X-EBAY-API-SITEID" => "77",
+               "X-EBAY-API-DETAIL-LEVEL" => "0",
                "Content-Type" => "text/xml"}
   end
 
@@ -59,7 +88,11 @@ class Ebay
   def self.api_url
     "https://api.sandbox.ebay.com/ws/api.dll"
   end
+
+  def self.user_id
+    "DanielSc-9c33-40ed-bcc1-f5d3377decf7"
+  end
 end
 
 puts Ebay.getEbayOfficialTime
-puts Ebay.getItemByKeywords
+puts Ebay.getItem
