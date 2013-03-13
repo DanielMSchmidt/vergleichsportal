@@ -13,5 +13,19 @@ class Article < ActiveRecord::Base
   has_many :prices
   has_many :search_queries, through: :article_query_assignments
 
+  def self.generate(article_hash)
+    article = Article.new(article_hash.except(:url, :prices, :images))
+    article_hash[:images].each do |image|
+      article.images.new(url: image, imageable_id: article.id, imageable_type: "article")
+    end
+    article_hash[:prices].each do |key, value|
+      article.prices.new(provider_id: key, value: value, article_id: article.id)
+    end
+    article.save
+    article
+  end
 
+  def to_s
+    "ID: #{self.id}, Name: #{self.name}, Author: #{self.author}"
+  end
 end
