@@ -41,6 +41,7 @@ class ProvidersController < ApplicationController
   # POST /providers.json
   def create
     @provider = Provider.new(params[:provider])
+    @provider.active = true
 
     respond_to do |format|
       if @provider.save
@@ -62,7 +63,9 @@ class ProvidersController < ApplicationController
       if @provider.update_attributes(params[:provider])
         format.html { redirect_to @provider, notice: 'Provider was successfully updated.' }
         format.json { head :no_content }
+        format.js
       else
+        logger.debug(@provider)
         format.html { render action: "edit" }
         format.json { render json: @provider.errors, status: :unprocessable_entity }
       end

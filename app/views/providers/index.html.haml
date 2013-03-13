@@ -5,6 +5,7 @@
     %th Name
     %th Url
     %th Image url
+    %th Active
     %th
     %th
     %th
@@ -14,6 +15,7 @@
       %td= provider.name
       %td= provider.url
       %td= provider.image_url
+      %td= provider.active
       %td= link_to 'Show', provider
       %td= link_to 'Edit', edit_provider_path(provider)
       %td= link_to 'Destroy', provider, :method => :delete, :data => { :confirm => 'Are you sure?' }
