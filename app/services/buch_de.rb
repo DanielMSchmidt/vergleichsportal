@@ -1,13 +1,7 @@
 require 'mechanize'
 require 'yaml'
-<<<<<<< HEAD
-class Buch_deSearch 
-=======
-require 'celluloid'
-class ProviderSearch
-  include Celluloid
 
->>>>>>> 818f15a25c84d38c8b9f4a7d55b9b04bcab05833
+class BuchDeSearch
 
 	def initialize(searchTerm, options={})
 		@provider = YAML.load_file "config/buch_de.yml"
@@ -16,9 +10,9 @@ class ProviderSearch
 		@agent = Mechanize.new
 	end
 
-	def perform		
+	def perform
 		links = getBookLinksFor(@searchTerm)
-		links.take(@options[:count] || 5).collect{|link| getBookDataFor(link)}	
+		links.take(@options[:count] || 5).collect{|link| getBookDataFor(link)}
 	end
 
 	def getBookLinksFor(searchTerm)
