@@ -3,7 +3,7 @@
 
 %ul.accordion
   %li.active
-    = render :partial => "home/admin/users"
+    = render :partial => "home/admin/user"
   %li
     = render :partial => "home/admin/provider"
   %li
@@ -24,6 +24,4 @@
   %li
     = render :partial => "home/admin/statistic" 
 - content_for :modal do 
-  = render :partial => "home/admin/add_advertisment"
-  = render :partial => "home/admin/user_delete" 
-  = render :partial => "home/admin/edit_user" 
+  = render :partial => "home/admin/add_advertisment" 

@@ -1,0 +1,45 @@
+.title
+  %h5 Nutzer
+.content
+  .row
+    .five.columns
+      %ul
+        - @users.each do |user|
+          %li
+            - if user.active
+              %span.success.label
+                %a{"data-reveal-id" => "user-delete-modal"+user.id.to_s, :style => "color: white; cursor: pointer;"} 
+                  = user.email
+            - else
+              %span.alert.label
+                %a{"data-reveal-id" => "user-delete-modal"+user.id.to_s, :style => "color: white; cursor: pointer;"} 
+                  = user.email
+            - content_for :modal do 
+              .reveal-modal.medium{:id => "user-delete-modal"+user.id.to_s}
+                %h3
+                  Manage User:
+                  %small
+                    =user.email
+                .row
+                  .three.columns
+                    %a.button.expand{:href => "#"} Delete User
+                    .one.columns
+                  .three.columns
+                    %a.button.expand{:href => "#"} Disable User
+                    .one.columns
+                  .three.columns
+                    %a.button.expand{:href => "#"} Make Admin
+                %a.close-reveal-modal ×
+
+    .three.columns.offset-by-two
+      %p
+        %span.success.label Online
+        %br/
+        %span.secondary.label Offline
+        %br/
+        %span.alert.label
+          Noch nicht bestätigt /
+          %br/
+          gesperrt
+
+
