@@ -2,6 +2,28 @@ require 'spec_helper'
 
 describe HomeController do
 
+  before(:each) do
+    @merged_hash = [
+      {name: "Testname",
+       ean: 1234567891234,
+       author: "Daniel",
+       description: "Beispieldescription",
+       url: {1 => "www.google.de", 2 => "www.google.com"},
+       prices: {1 => 12.9, 2 => 13.5},
+       images: ["www.google.de/img.png", "www.google.com/img.png"]
+       },
+       {name: "Testname",
+        ean: 1234567881234,
+        author: "Daniel",
+        description: "Beispieldescription",
+        url: {1 => "www.google.de", 2 => "www.google.com"},
+        prices: {1 => 12.9, 2 => 13.5},
+        images: ["www.google.de/img.png", "www.google.com/img.png"]
+        }
+      ]
+  end
+  let(:search_query) { FactoryGirl.create(:search_query) }
+
   describe "GET 'index'" do
     it "returns http success" do
       get 'index'
@@ -9,9 +31,11 @@ describe HomeController do
     end
   end
 
-  describe "GET 'search_results'" do
+  describe "POST 'search_results'" do
     it "returns http success" do
-      post 'search_results', seach_term: "Dan Brown"
+      post 'search_results', search:{term: "Dan Brown"}
+      HomeController.stub(:search)
+      HomeController.stub(:merge).and_return([])
       response.should be_success
     end
     describe "search" do
@@ -22,19 +46,42 @@ describe HomeController do
       end
 
       it "should start a search for each provider" do
-        HomeController.should_receive(:search).exactly(3).times
-        post 'search_results', seach_term: "Dan Brown"
+        HomeController.should_receive(:search).exactly(Provider.count).times
+        HomeController.stub(:search)
+        HomeController.stub(:merge).and_return([])
+        HomeController.stub(:generateArticles)
+        post 'search_results', search:{term: "Dan Brown"}
       end
+
+
 
       describe "should create articles" do
-        it "should add an article if it wasnt found in the database" do
-          Article.should_receive(:find).and_return([])
-          post 'search_results', seach_term: "Dan Brown"
+        describe "a search query wasnt found in the database" do
+          before(:each) do
+            SearchQuery.should_receive(:where).and_return([])
+            HomeController.stub(:search)
+            HomeController.should_receive(:merge).and_return(@merged_hash)
+          end
+          it "should add a searchQuery" do
+            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{SearchQuery.count}.by(1)
+          end
+          it "should add articles" do
+            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Article.count}.by(2)
+          end
+          it "should add images" do
+            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Image.count}.by(4)
+          end
+          it "should add prices" do
+            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Price.count}.by(4)
+          end
 
         end
-        it "shouldnt add an article if it was found in the database"
+        it "shouldnt add an article if a search query was found in the database" do
+          SearchQuery.should_receive(:where).and_return([search_query])
+          HomeController.stub(:search)
+          expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Article.count}.by(0)
+        end
       end
-      it "should display found articles"
     end
   end
 
