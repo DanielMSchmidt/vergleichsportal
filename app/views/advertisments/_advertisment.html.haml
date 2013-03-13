@@ -13,4 +13,6 @@
                 = f.input :active
 
             .form-actions
-                = f.button :submit
+                .row   
+                    = f.button :submit, :class => "seven columns" 
+                    = button_to 'löschen', advertisment, :class => "button four columns", :method => :delete, :remote => true, :data => { :confirm => 'Sind sie sich sicher?' }

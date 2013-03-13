@@ -1,0 +1,1 @@
+$(".advertisment#<%= @ad_id %>").hide();

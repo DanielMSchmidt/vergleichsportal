@@ -1,3 +1,3 @@
-alert("Erfolgreich aktualisiert");
-$('add-advertisment-modal').trigger('reveal:close');
-$('#aktive_ad').add('<%= render @advertisment %>')
+$('#add-advertisment-modal').trigger('reveal:close');
+alert("Neue Werbung wurde hinzugefügt!");
+location.reload();

@@ -1,2 +1,1 @@
-$('add-advertisment-modal').trigger('reveal:close');
-$('#aktive_ad').add('<%= render @advertisment %>')
+$('#new_advertisment').replaceWith('<%= escape_javascript(render "form") %>');

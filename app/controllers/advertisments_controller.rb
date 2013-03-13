@@ -47,7 +47,7 @@ class AdvertismentsController < ApplicationController
       if @advertisment.save
         format.html { redirect_to @advertisment, notice: 'Advertisment was successfully created.' }
         format.json { render json: @advertisment, status: :created, location: @advertisment }
-        format.js { render action: "show"}
+        format.js { render action: "show", notice: 'Advertisment was successfully created.'}
       else
         format.html { render action: "new" }
         format.json { render json: @advertisment.errors, status: :unprocessable_entity }
@@ -59,13 +59,13 @@ class AdvertismentsController < ApplicationController
   # PUT /advertisments/1
   # PUT /advertisments/1.json
   def update
-    @advertisment = AdInactivevertisment.find(params[:id])
+    @advertisment = Advertisment.find(params[:id])
 
     respond_to do |format|
       if @advertisment.update_attributes(params[:advertisment])
         format.html { redirect_to @advertisment, notice: 'Advertisment was successfully updated.' }
         format.json { head :no_content }
-        format.js {render action: "show"}
+        format.js
       else
         format.html { render action: "edit" }
         format.json { render json: @advertisment.errors, status: :unprocessable_entity }
@@ -78,11 +78,12 @@ class AdvertismentsController < ApplicationController
   # DELETE /advertisments/1.json
   def destroy
     @advertisment = Advertisment.find(params[:id])
+    @ad_id = @advertisment.id
     @advertisment.destroy
-
     respond_to do |format|
       format.html { redirect_to advertisments_url }
       format.json { head :no_content }
+      format.js
     end
   end
 end
