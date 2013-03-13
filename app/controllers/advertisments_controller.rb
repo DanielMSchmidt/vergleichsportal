@@ -61,6 +61,7 @@ class AdvertismentsController < ApplicationController
   def update
     @advertisment = Advertisment.find(params[:id])
 
+    logger.debug "update #{@advertisment}"
     respond_to do |format|
       if @advertisment.update_attributes(params[:advertisment])
         format.html { redirect_to @advertisment, notice: 'Advertisment was successfully updated.' }
@@ -79,6 +80,7 @@ class AdvertismentsController < ApplicationController
   def destroy
     @advertisment = Advertisment.find(params[:id])
     @ad_id = @advertisment.id
+    logger.debug "delete #{@advertisment}"
     @advertisment.destroy
     respond_to do |format|
       format.html { redirect_to advertisments_url }

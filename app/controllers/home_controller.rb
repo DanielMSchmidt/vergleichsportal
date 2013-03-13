@@ -10,7 +10,9 @@ class HomeController < ApplicationController
   def admin
 
     @users = User.all
-  	@advertisments = Advertisment.all
+    @providers = Provider.all
+  	@active_advertisments = Advertisment.where(:active => true);
+    @inactive_advertisments = Advertisment.where(:active => false);
   	@advertisment = Advertisment.new
 
   end

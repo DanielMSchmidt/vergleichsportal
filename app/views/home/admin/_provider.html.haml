@@ -2,11 +2,8 @@
   %h5 Anbieter
 .content
   %ul{:style => "list-style-type: none;"}
-    %li{:style => "padding-bottom: 20px;"}
-      %a.button{:href => "#"}
-        %img{:src => "/assets/unchecked.png"}/
-        e-Bay
-    %li
-      %a.button{:href => "#"}
-        %img{:src => "/assets/checked.png"}/
-        Buch.de
+    -@providers.each do |provider|
+      %li{:style => "padding-bottom: 20px;"}
+        %a.button{:href => "#"}
+          %img{:src => "/assets/unchecked.png"}/
+          =provider.name
