@@ -17,7 +17,7 @@ class Ebay
     }
     puts hash_to_url_params(parameter)
     response = HTTParty.get("#{api_url}#{hash_to_url_params(parameter)}")
-    puts response
+    puts JSON.parse(response)
   end
 
   def self.hash_to_url_params(hash)
