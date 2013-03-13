@@ -6,18 +6,33 @@ class Ebay
   include HTTParty
 
   #Takes the Keywords as String
-  def self.getItemByKeyword(keywords)
+  def self.getItemByKeyword(keywords, options={})
     parameter = {
       "OPERATION-NAME" => "findItemsByKeywords",
       "SERVICE-VERSION" => "1.0.0",
       "SECURITY-APPNAME" => app_id,
       "RESPONSE-DATA-FORMAT" => "JSON",
       "keywords" => URI.escape(keywords).tr(' ', '&'),
-      "REST-PAYLOAD" => nil
+      "REST-PAYLOAD" => nil,
+      "itemFilter(0).name" => "ListingType",
+      "itemFilter(0).value" => "FixedPrice"
+
     }
-    puts hash_to_url_params(parameter)
-    response = HTTParty.get("#{api_url}#{hash_to_url_params(parameter)}")
-    puts JSON.parse(response)
+
+    response = JSON.parse(HTTParty.get("#{api_url}#{hash_to_url_params(parameter)}"))
+    items = []
+
+    response["findItemsByKeywordsResponse"].first["searchResult"].first["item"].each do |item|
+
+      result = {
+        name: item["title"],
+        ean: "",
+        author: "",
+        description: "",
+        price: ""
+      }
+      items << result
+    end
   end
 
   def self.hash_to_url_params(hash)
@@ -41,4 +56,4 @@ class Ebay
   end
 end
 
-puts Ebay.getItemByKeyword "öl"
+Ebay.getItemByKeyword "Dan Brown"
