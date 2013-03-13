@@ -1,1 +1,0 @@
-$("div#register-form").replaceWith("<%= escape_javascript(render :partial => 'users/form') %>");
