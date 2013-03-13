@@ -44,8 +44,12 @@ class EbaySearch
     book[:ean] = details["EAN: "] ||= details["ISBN-13: "] ||= details["ISBN: "]
     book[:author] = details["Autor: "]
     book[:name] = details["Titel: "]
-    book[:price] = normal_price + shipping_price
-
+    book[:price] = (shipping_price || 0) + (normal_price || 0)
+    page.search('#i_vv4-36').each do |image|
+      puts image.to_html
+    end
     puts book
   end
 end
+a = EbaySearch.new
+a.search_by_keywords("Dan Brown")
