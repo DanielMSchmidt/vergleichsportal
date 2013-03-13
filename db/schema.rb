@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130311103015) do
+ActiveRecord::Schema.define(:version => 20130313173722) do
 
   create_table "advertisments", :force => true do |t|
     t.string   "img_url"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20130311103015) do
     t.text     "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "author"
   end
 
   create_table "authentications", :force => true do |t|
