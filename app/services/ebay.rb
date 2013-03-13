@@ -25,7 +25,7 @@ class Ebay
     response["findItemsByKeywordsResponse"].first["searchResult"].first["item"].each do |item|
 
       result = {
-        name: item["title"],
+          name: item["title"],
         ean: "",
         author: "",
         description: "",

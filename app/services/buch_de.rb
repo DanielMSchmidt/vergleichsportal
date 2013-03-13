@@ -3,19 +3,17 @@ require 'yaml'
 
 class BuchDeSearch
 
-	def initialize(searchTerm, options={})
+	def initialize()
 		@provider = YAML.load_file "config/buch_de.yml"
-		@searchTerm = searchTerm
-		@options = options
 		@agent = Mechanize.new
 	end
 
-	def perform
-		links = getBookLinksFor(@searchTerm)
-		links.take(@options[:count] || 5).collect{|link| getBookDataFor(link)}
+	def search_by_keywords(searchTerm, options={})
+		links = getBookLinksFor(searchTerm, options)
+		links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
 	end
 
-	def getBookLinksFor(searchTerm)
+	def getBookLinksFor(searchTerm, options)
 		page = @agent.get(@provider[:url])
 
 		buch_form = page.form(@provider[:search_form])
