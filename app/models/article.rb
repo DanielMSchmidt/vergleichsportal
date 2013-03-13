@@ -1,5 +1,5 @@
 class Article < ActiveRecord::Base
-  attr_accessible :description, :ean, :name
+  attr_accessible :description, :ean, :name, :author
   validates_format_of :ean, with: /^((\d{7}-?\d{5}-?\d)|(\d{8}-?\d{4}-?\d)|(\d{9}-?\d{3}-?\d))$/
   validates_presence_of :description, :name
   validate :it_has_at_least_one_price_per_provider
