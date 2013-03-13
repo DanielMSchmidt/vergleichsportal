@@ -12,22 +12,20 @@ class EbaySearch
     links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
   end
 
-  page = @agent.get('http://www.ebay.de/sch/ebayadvsearch/?rt=nc/')
-  book = {}
-  books = []
-  ebay_form = page.form('adv_search_from')
-  ebay_form._nkw = 'dan brown'
 
-  ebay_form.checkbox_with(name: 'LH_BIN').check
-  page = @agent.submit(ebay_form, ebay_form.buttons.first)
-  link = page.uri.to_s  + "&LH_ItemCondition=3"
+  def getBookLinksFor(searchTerm, options)
 
-  page = @agent.get(link)
+    #                 Suchbegriff                                      Neuwertig              Sofortkauf
+    #                 |                                                |                      |             Deutsche Anbieter
+    #                 |                                                |                      |             |
+    search_options = "&_nkw=" + URI.escape(searchTerm).tr(' ', '+') + "&LH_ItemCondition=3" + "&LH_BIN=1" + "&LH_PrefLoc=1"
+    page = @agent.get("http://www.ebay.de/sch/i.html?#{search_options}")
 
-  book_links = page.links_with(:class => "vip").collect{|link| link.href}
-
+    return page.links_with(:class => "vip").collect{|link| link.href}
+  end
 
   def self.get_book_data_for(url)
+    book = {}
     page = @agent.get(url)
 
     details_array = []
