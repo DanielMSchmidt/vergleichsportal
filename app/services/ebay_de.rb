@@ -12,9 +12,7 @@ class EbaySearch
     links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
   end
 
-
   def getBookLinksFor(searchTerm, options)
-
     #                 Suchbegriff                                      Neuwertig              Sofortkauf
     #                 |                                                |                      |             Deutsche Anbieter
     #                 |                                                |                      |             |
@@ -24,7 +22,7 @@ class EbaySearch
     return page.links_with(:class => "vip").collect{|link| link.href}
   end
 
-  def self.get_book_data_for(url)
+  def getBookDataFor(url)
     book = {}
     page = @agent.get(url)
 
@@ -35,12 +33,13 @@ class EbaySearch
     details = Hash[*details_array]
 
     normal_price = page.search(".vi-is1-prcp").text[/\d*(,|\.)\d{2}$/].tr(',', '.').to_f unless page.search(".vi-is1-prcp").text[/\d*(,|\.)\d{2}$/].nil?
-    unless page.search(".vi-is1-sh-srvcCost").text[/\d*(,|\.)\d{2}$/].nil?
-      shipping_price = page.search(".vi-is1-sh-srvcCost").text[/\d*(,|\.)\d{2}$/].tr(',', '.').to_f
+    shipping = page.search(".vi-is1-sh-srvcCost").text[/\d*(,|\.)\d{2}$/]
+
+    unless shipping.nil?
+      shipping_price = shipping.tr(',', '.').to_f
     else
       shipping_price = 0
     end
-
 
     book[:ean] = details["EAN: "] ||= details["ISBN-13: "] ||= details["ISBN: "]
     book[:author] = details["Autor: "]
