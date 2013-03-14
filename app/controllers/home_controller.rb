@@ -32,7 +32,15 @@ class HomeController < ApplicationController
     instance.searchByKeywords(search_term, options)
   end
 
-  def self.merge(hash)
+  def self.merge(search_result)
+    # filter empty search_results
+    return [] if search_result.nil? || search_result.empty? || search_result.collect{|x| x.empty?}.include?(true)
+
+    search_result.each_with_index do |articles, index|
+      articles.each{ |article| article[:provider] = index + 1;}
+    end
+
+    mergeArticles(transformArticle(search_result.flatten))
   end
 
   def add_query
