@@ -53,7 +53,38 @@ describe HomeController do
         post 'search_results', search:{term: "Dan Brown"}
       end
 
+      describe "merge of provider hashes" do
+        it "should return nothing if an empty array is given in" do
+          HomeController.merge([]).should be_empty
+        end
+        it "should return an array of right formatted hashes" do
+          search_results = [] #To be filled
+          HomeController.merge(search_results).each do |item|
+            item.should have_key(:name)
+            item.should have_key(:ean)
+            item.should have_key(:author)
+            item.should have_key(:description)
+            item.should have_key(:url)
+            item.should have_key(:prices)
+            item.should have_key(:images)
+          end
+        end
 
+        describe "the returned array" do
+          it "should be an equal sized array if all hashes have the same items" do
+            same_items_result = [] #To be filled
+            HomeController.merge(same_items_result).count.should equal(same_items_result.count)
+          end
+
+          it "should be an double sized array if the hashes diverge completely" do
+            no_same_items_result = [] #To be filled
+            HomeController.merge(no_same_items_result).count.should equal(2 * no_same_items_result.count)
+          end
+
+          it "should contain the merged prices of all provider"
+          it "should contain the merged images of all provider"
+        end
+      end
 
       describe "should create articles" do
         describe "a search query wasnt found in the database" do
