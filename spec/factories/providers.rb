@@ -5,5 +5,6 @@ FactoryGirl.define do
     name "MyString"
     url "www.google.com"
     image_url "www.google.de/test.png"
+    active true
   end
 end
