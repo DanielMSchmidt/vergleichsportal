@@ -3,5 +3,5 @@ class Price < ActiveRecord::Base
   belongs_to :article
   belongs_to :provider
 
-  validates :value, :article_id, :provider_id, presence: true
+  validates :value, :provider_id, presence: true
 end
