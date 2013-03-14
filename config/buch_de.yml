@@ -1,0 +1,10 @@
+:url: http://www.buch.de
+:search_form: quicksearch
+:search_field: sq
+:link_class: pm_titelDetailsAction
+:book:
+  :name: .detailsTitle .pm_titel
+  :ean: .primaerfeatures .ean .value
+  :author: .b9_author
+  :description: ! '#pm_kurzbeschreibung .redaktion'
+  :price: .b9sellbox .b9Price .pm_preis
