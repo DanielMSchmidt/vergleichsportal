@@ -1,0 +1,38 @@
+#cart-modal.reveal-modal.xlarge
+  %h3 Items in Cart
+  %ul.accordion
+    %li
+      .title{:style => "position: relative;"}
+        %h5 Per Anhalter durch die Galaxis
+        %h3
+          %small ISBN-13: 978-3453146976
+        %a.button{:href => "#", :style => "position: absolute; top: 15px; right: 90px;"}
+          %img{:src => "/assets/cart_out.png"}/
+      .content
+        .row
+          .four.columns
+            %img{:src => "http://placehold.it/350x350"}/
+            %img{:src => "http://placehold.it/350x350"}/
+          .seven.columns.offset-by-one
+            %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            .row
+              .six.columns
+                %a.button.expand{"data-reveal-id" => "cart-modal", :href => "#"}
+                  %img{:src => "/assets/pencil.png"}/
+              .five.columns.offset-by-one
+                %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "133"}
+                  %tr
+                    %td{:style => "padding: 4px 10px"}
+                      %iframe{:bgcolor => "", :border => "0", :frameborder => "0", :height => "37", :hspace => "0", :marginheight => "0", :marginwidth => "0", :scrolling => "no", :src => "http://www.ratingcode.com/show.php?id=136199479948&st=3&bg=", :vspace => "0", :width => "115"}
+                    %td{:align => "center", :style => "padding-top:5px", :valign => "top", :width => "18"}
+                      %a{:href => "http://www.ratingcode.com", :target => "_blank"}
+                        %img{:alt => "Free Rating Code", :border => "0", :src => "http://www.ratingcode.com/images/info.png", :title => "Free Rating Code"}/
+  .row
+    .three.columns
+      %a#yes-no.button.expand{:href => "#"} Neuer Warenkorb
+    .three.columns.offset-by-one
+      %a.button.expand{"data-reveal-id" => "switch-cart-modal", :href => "#"} Ändere / Lösche Warenkorb
+    .three.columns.offset-by-one
+      %a.button.expand{"data-reveal-id" => "compare-cart-modal", :href => "#"} Vergleiche Anbieter
+    .one.columns
+  %a.close-reveal-modal ×
