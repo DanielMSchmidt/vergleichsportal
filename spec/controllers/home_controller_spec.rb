@@ -34,11 +34,11 @@ describe HomeController do
   describe "POST 'search_results'" do
     it "returns http success" do
       post 'search_results', search:{term: "Dan Brown"}
-      HomeController.stub(:search)
+      HomeController.stub(:searchAtProvider)
       HomeController.stub(:merge).and_return([])
       response.should be_success
     end
-    describe "search" do
+    describe "searchAtProvider" do
       before(:each) do
         3.times do |n|
           #TODO: Refactor with factory girl
@@ -47,8 +47,8 @@ describe HomeController do
       end
 
       it "should start a search for each provider" do
-        HomeController.should_receive(:search).exactly(Provider.count).times
-        HomeController.stub(:search)
+        HomeController.should_receive(:searchAtProvider).exactly(Provider.count).times
+        HomeController.stub(:searchAtProvider)
         HomeController.stub(:merge).and_return([])
         HomeController.stub(:generateArticles)
         post 'search_results', search:{term: "Dan Brown"}
@@ -166,7 +166,7 @@ describe HomeController do
         describe "a search query wasnt found in the database" do
           before(:each) do
             SearchQuery.should_receive(:where).and_return([])
-            HomeController.stub(:search)
+            HomeController.stub(:searchAtProvider)
             HomeController.should_receive(:merge).and_return(@merged_hash)
           end
           it "should add a searchQuery" do
