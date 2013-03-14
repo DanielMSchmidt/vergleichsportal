@@ -8,7 +8,7 @@ describe HomeController do
        ean: 1234567891234,
        author: "Daniel",
        description: "Beispieldescription",
-       url: {1 => "www.google.de", 2 => "www.google.com"},
+       urls: {1 => "www.google.de", 2 => "www.google.com"},
        prices: {1 => 12.9, 2 => 13.5},
        images: ["www.google.de/img.png", "www.google.com/img.png"]
        },
@@ -16,7 +16,7 @@ describe HomeController do
         ean: 1234567881234,
         author: "Daniel",
         description: "Beispieldescription",
-        url: {1 => "www.google.de", 2 => "www.google.com"},
+        urls: {1 => "www.google.de", 2 => "www.google.com"},
         prices: {1 => 12.9, 2 => 13.5},
         images: ["www.google.de/img.png", "www.google.com/img.png"]
         }
@@ -112,7 +112,7 @@ describe HomeController do
             item.should have_key(:ean)
             item.should have_key(:author)
             item.should have_key(:description)
-            item.should have_key(:url)
+            item.should have_key(:urls)
             item.should have_key(:prices)
             item.should have_key(:images)
           end
@@ -180,7 +180,9 @@ describe HomeController do
           it "should add prices" do
             expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Price.count}.by(4)
           end
-          it "should add URLS"
+          it "should add URLS" do
+            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Url.count}.by(4)
+          end
 
         end
         describe "if a search query was found in the database" do
