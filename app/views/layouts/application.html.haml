@@ -26,6 +26,11 @@
       .three.columns
         %p
           %a.button.expand{"data-reveal-id" => "cart-modal", :href => "#", :style => "background-image: url(/assets/cart.png); background-repeat: no-repeat; height: 38px; background-position: 84px 7px;"}
+        - if notice
+          %p
+            .alert-box.success
+              =notice
+              %a.close{href: "#"} &times;
         %p
           %img{:src => "http://placehold.it/205x720&text=Werbung"}/    
     
@@ -38,11 +43,8 @@
       = render :partial => "shared/modal/edit_user"
 
     -else
-      
+      = render :partial => "shared/modal/register"
       = render :partial => "shared/modal/login"
       = render :partial => "shared/modal/forgot_password"
-
-    %h1 
-      =notice
 
     = javascript_include_tag "application"
