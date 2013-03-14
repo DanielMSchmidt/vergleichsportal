@@ -15,12 +15,15 @@ class Article < ActiveRecord::Base
   has_many :urls
 
   def self.generate(article_hash)
-    article = Article.new(article_hash.except(:url, :prices, :images))
+    article = Article.new(article_hash.except(:urls, :prices, :images))
     article_hash[:images].each do |image|
-      article.images.new(url: image, imageable_id: article.id, imageable_type: "article")
+      article.images.new(url: image)
     end
     article_hash[:prices].each do |key, value|
-      article.prices.new(provider_id: key, value: value, article_id: article.id)
+      article.prices.new(provider_id: key, value: value)
+    end
+    article_hash[:urls].each do |key, value|
+      article.urls.new(provider_id: key, value: value)
     end
     article.save
     article
