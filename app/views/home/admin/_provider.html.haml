@@ -1,0 +1,25 @@
+.title
+  %h5 Anbieter
+.content
+  %ul{:style => "list-style-type: none;"}
+    -@providers.each do |provider|
+      %li{:style => "padding-bottom: 20px;"}
+        -if provider.active
+          = simple_form_for(provider, remote: true) do |f|
+            = f.error_notification
+
+            .form-inputs
+              = f.hidden_field :active, value: false
+            .form-actions
+              = f.button :submit, provider.name
+              %img{:src => "/assets/unchecked.png"}
+              
+        - else
+          = simple_form_for(provider, remote: true) do |f|
+            = f.error_notification
+
+            .form-inputs
+              = f.hidden_field :active, value: true
+            .form-actions
+              = f.button :submit, provider.name
+              %img{:src => "/assets/unchecked.png"}

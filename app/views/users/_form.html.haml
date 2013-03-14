@@ -1,13 +1,13 @@
-= simple_form_for(@user) do |f|
-  = f.error_notification
+.div{:id => "register-form"}
+  = simple_form_for(@user, remote: true) do |f|
+    = f.error_notification
 
-  .form-inputs
-    = f.input :email
-    = f.input :password
-    = f.input :password_confirmation
+    .form-inputs
+      = f.input :email
+      = f.input :password
+      = f.input :password_confirmation
 
-  .form-actions
-    = f.button :submit
+    .form-actions
+      = f.button :submit
 
-  .a{href: new_password_reset_path}Reset Password
-
+    %a{href: new_password_reset_path}Reset Password
