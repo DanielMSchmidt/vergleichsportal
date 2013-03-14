@@ -1,5 +1,8 @@
 .div{:id => "update-form"}
-  = simple_form_for(current_user, remote: true) do |f|
+  -unless @user
+    -@user = current_user
+
+  = simple_form_for(@user, remote: true) do |f|
     = f.error_notification
 
     .form-inputs

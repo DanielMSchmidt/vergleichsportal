@@ -13,7 +13,7 @@
       .six.column
         %a.button.expand{"data-reveal-id" => "edit-user-modal", :href => "#"} Profil
       .six.column
-        %a.button.expand{:href => "#", :style => "padding-left: 9px;"} Abmelden
+        %a.button.expand{:href => logout_path, :style => "padding-left: 9px;"} Abmelden
   .nine.columns
     = yield :head
 / End Header and Nav
