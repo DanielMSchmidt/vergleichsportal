@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe HomeController do
 
-  before(:each) do
+  before(:all) do
     @merged_hash = [
       {name: "Testname",
        ean: 1234567891234,
@@ -54,11 +54,52 @@ describe HomeController do
       end
 
       describe "merge of provider hashes" do
+        before(:all) do
+          @same_items_result = [
+            [
+              {
+                :ean=>"9780307474278",
+                :author=>"Dan Brown",
+                :name=>"The Da Vinci Code",
+                :price=>9.65, :image => "www.google.de/image.png"
+              }
+            ],[
+              {
+                :ean=>"9780307474278",
+                :author=>"Dan Brown",
+                :name=>"The Da Vinci Code",
+                :price=>19.65,
+                :image => "www.google.de/image.png"
+              }
+            ]]
+          @same_items_merge = HomeController.merge(@same_items_result)
+
+          @no_same_items_result = [
+            [
+              {
+                :ean=>"9780323474278",
+                :author=>"Dan Brown",
+                :name=>"The Da Vinci Code",
+                :price=>9.65, :image => "www.google.de/image.png"
+              }
+            ],[
+              {
+                :ean=>"9780234474278",
+                :author=>"Dan Brown",
+                :name=>"The Da Vinci Code",
+                :price=>19.65,
+                :image => "www.google.de/image.png"
+              }
+            ]]
+          @no_same_items_merge = HomeController.merge(@no_same_items_result)
+
+        end
         it "should return nothing if an empty array is given in" do
           HomeController.merge([]).should be_empty
+          HomeController.merge([],[]).should be_empty
         end
         it "should return an array of right formatted hashes" do
-          search_results = [] #To be filled
+          search_results = [{:ean=>"9780307474278", :author=>"Dan Brown", :name=>"The Da Vinci Code", :price=>9.65, :image => "www.google.de/image.png"}] #To be filled
           HomeController.merge(search_results).each do |item|
             item.should have_key(:name)
             item.should have_key(:ean)
@@ -72,17 +113,37 @@ describe HomeController do
 
         describe "the returned array" do
           it "should be an equal sized array if all hashes have the same items" do
-            same_items_result = [] #To be filled
-            HomeController.merge(same_items_result).count.should equal(same_items_result.count)
+            @same_items_merge.count.should equal(same_items_result.first.count)
           end
 
           it "should be an double sized array if the hashes diverge completely" do
-            no_same_items_result = [] #To be filled
-            HomeController.merge(no_same_items_result).count.should equal(2 * no_same_items_result.count)
+            @no_same_items_merge.count.should equal(2 * no_same_items_result.first.count)
           end
 
-          it "should contain the merged prices of all provider"
-          it "should contain the merged images of all provider"
+          describe "it should contain the merged prices of all provider" do
+            describe "only one price available" do
+              it "should be hashed with 1 => if it was in the first array" do
+                @no_same_items_merge.first[:prices].should have_key(1)
+              end
+              it "should be hashed with 2 => if it was in the second array" do
+                @no_same_items_merge.second[:prices].should have_key(2)
+              end
+            end
+            describe "more than one price available" do
+              it "should contain both in the right order" do
+                @same_items_merge.first[:prices].should equal({1 => 9.65, 2 => 19.65})
+              end
+            end
+          end
+          describe "it should contain the merged images of all provider" do
+            describe "only one images available" do
+              it "should be hashed with 1 => if it was in the first array"
+              it "should be hashed with 2 => if it was in the second array"
+            end
+            describe "more than one images available" do
+              it "should contain both in the right order"
+            end
+          end
         end
       end
 
