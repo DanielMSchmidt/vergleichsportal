@@ -7,4 +7,5 @@ class Provider < ActiveRecord::Base
 
   has_many :prices
   has_many :ratings, dependent: :destroy
+  has_many :urls
 end

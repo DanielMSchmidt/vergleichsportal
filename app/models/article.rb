@@ -12,6 +12,7 @@ class Article < ActiveRecord::Base
   has_many :images, as: :imageable, dependent: :destroy
   has_many :prices
   has_many :search_queries, through: :article_query_assignments
+  has_many :urls
 
   def self.generate(article_hash)
     article = Article.new(article_hash.except(:url, :prices, :images))
