@@ -3,7 +3,7 @@
 %p
   %b User:
   = @cart.user_id
-
+=render @cart.articles, search: false
 = link_to 'Edit', edit_cart_path(@cart)
 \|
 = link_to 'Back', carts_path
