@@ -41,7 +41,8 @@ describe HomeController do
     describe "search" do
       before(:each) do
         3.times do |n|
-          Provider.create!(image_url: "www.google.com/image#{n}.png", name: "ebay#{n}", url: "www.ebay#{n}.de")
+          #TODO: Refactor with factory girl
+          Provider.create!(image_url: "www.google.com/image#{n}.png", name: "ebay#{n}", url: "www.ebay#{n}.de", active: true)
         end
       end
 
