@@ -4,4 +4,8 @@ class Cart < ActiveRecord::Base
   has_many :articles, through: :article_cart_assignments
   has_many :compares
   belongs_to :user
+
+  def add_article(article)
+    ArticleCartAssignment.create(article_id: article.id, cart_id: self.id)
+  end
 end

@@ -8,7 +8,7 @@ Vergleichsportal::Application.routes.draw do
 
   resources :password_resets
 
-
+  
 
   get "home/index" => "home#index" 
 
@@ -17,6 +17,8 @@ Vergleichsportal::Application.routes.draw do
   get "home/admin" => "home#admin"
 
   resources :carts
+
+  get "carts/:cart_id/add/:article_id" => "carts#add_article", as: 'add_article'
 
   resources :users do
     member do

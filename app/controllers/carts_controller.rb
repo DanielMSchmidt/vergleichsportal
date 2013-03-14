@@ -69,6 +69,24 @@ class CartsController < ApplicationController
     end
   end
 
+  # GET /carts/1/add/1
+  # GET /carts/1/add/1.json
+  def add_article
+    @cart = Cart.find(params[:cart_id])
+    article = Article.find(params[:article_id])
+
+    respond_to do |format|
+      if @cart.add_article(article)
+	format.html { redirect_to @cart, notice: 'Article was successfully updated.' }
+	format.json { head :no_contest }
+      else
+	format.html { redirect_to @cart, notice: 'An error occured while adding the Article.' }
+	format.json { render json: @cart.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
   # DELETE /carts/1
   # DELETE /carts/1.json
   def destroy

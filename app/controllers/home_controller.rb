@@ -5,6 +5,8 @@ class HomeController < ApplicationController
   end
 
   def search_results
+    @cart = Cart.first
+    @articles = Article.all
   end
 
   def admin
