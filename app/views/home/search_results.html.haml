@@ -6,7 +6,7 @@
   %small "The Hitchhiker’s Guide to the Galaxy"
 %ul.accordion
 
-  =render @articles, search: true
+  =render @result, search: true
 
 - content_for :modal do 
   = render :partial => "shared/modal/add_comment" 

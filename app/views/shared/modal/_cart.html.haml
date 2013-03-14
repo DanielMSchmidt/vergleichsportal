@@ -1,7 +1,7 @@
 #cart-modal.reveal-modal.xlarge
   %h3 Items in Cart
   %ul.accordion
-    =render @articles_in_cart, search: false
+    =render @cart.articles, search: false
   .row
     .three.columns
       %a#yes-no.button.expand{:href => "#"} Neuer Warenkorb
