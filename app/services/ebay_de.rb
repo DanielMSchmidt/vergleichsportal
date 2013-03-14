@@ -51,5 +51,3 @@ class EbaySearch
     puts book
   end
 end
-a = EbaySearch.new
-a.search_by_keywords("Dan Brown")
