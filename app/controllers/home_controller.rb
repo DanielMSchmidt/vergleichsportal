@@ -67,25 +67,19 @@ class HomeController < ApplicationController
   end
 
   def self.mergeArticle(same_articles)
-    #TODO: Refactor!!!
     merged_article = same_articles.first
 
-    prices = same_articles.collect{|x| x[:prices]}
-    images = same_articles.collect{|x| x[:images]}
-
-
-    price = {}
-    image = {}
-
-    prices.each{|x| price.merge!(x)}
-    images.each{|x| image.merge!(x)}
-
-    merged_article[:prices] = price
-    merged_article[:images] = image
+    merged_article[:prices] = getMergedAttributes(same_articles, :prices)
+    merged_article[:images] = getMergedAttributes(same_articles, :images)
 
     merged_article
   end
 
+  def self.getMergedAttributes(articles, attribute)
+    attrib = {}
+    articles.collect{|x| x[attribute]}.each{|x| attrib.merge!(x)}
+    attrib
+  end
 
   def add_query
     query = SearchQuery.create(value: @term)
