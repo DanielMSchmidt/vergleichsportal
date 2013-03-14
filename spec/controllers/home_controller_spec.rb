@@ -76,10 +76,17 @@ describe HomeController do
           end
 
         end
-        it "shouldnt add an article if a search query was found in the database" do
-          SearchQuery.should_receive(:where).and_return([search_query])
-          HomeController.stub(:search)
-          expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Article.count}.by(0)
+        describe "if a search query was found in the database" do
+          it "shouldnt add an article" do
+            SearchQuery.should_receive(:where).and_return([search_query])
+            HomeController.stub(:search)
+            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Article.count}.by(0)
+          end
+          it "should add a searchquery" do
+            SearchQuery.should_receive(:where).and_return([search_query])
+            HomeController.stub(:search)
+            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{SearchQuery.count}.by(1)
+          end
         end
       end
     end
