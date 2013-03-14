@@ -44,10 +44,12 @@ class HomeController < ApplicationController
   end
 
   def self.transformArticle(all_articles)
+    #TODO: Refactor
     all_articles.each do |article|
       provider = article.delete(:provider)
       article[:images] ||= {provider => article.delete(:image)}
       article[:prices] ||= {provider => article.delete(:price)}
+      article[:urls] ||= {provider => article.delete(:url)}
     end
     return all_articles
   end
@@ -71,6 +73,7 @@ class HomeController < ApplicationController
 
     merged_article[:prices] = getMergedAttributes(same_articles, :prices)
     merged_article[:images] = getMergedAttributes(same_articles, :images)
+    merged_article[:urls] = getMergedAttributes(same_articles, :urls)
 
     merged_article
   end
