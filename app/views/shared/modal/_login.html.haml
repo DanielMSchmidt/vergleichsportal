@@ -1,0 +1,35 @@
+#login-modal.reveal-modal.small
+  %h3 Externe Dienste
+  .row
+    .ten.columns.centered
+      %a.button.expand{:href => "#"} Anmelden mit Facebook
+  %hr/
+  %h3 Anmelden
+  = form_tag user_sessions_path, :method => :post, :remote => true do
+    .row
+      .ten.columns.centered
+        .field
+          = label_tag :username
+          = text_field_tag :username
+
+    .row
+      .ten.columns.centered
+        .field
+          = label_tag :passsword
+          = password_field_tag :password
+    .row
+      .five.columns.centered
+        .actions
+          = submit_tag "Login"
+  %hr/
+  .row
+    .ten.columns.centered
+      %p{:style => "text-align: centered;"}
+        Du hast noch kein Konto?
+        %a{"data-reveal-id" => "register-modal", :href => "#"} Registrieren!
+        %br/
+        Wenn du dein Passwort vergessen hast
+        %a{"data-reveal-id" => "forgot-password-modal", :href => "#"} klicke hier!
+  %a.close-reveal-modal ×
+
+
