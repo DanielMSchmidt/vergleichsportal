@@ -61,7 +61,7 @@ describe HomeController do
                 :ean=>"9780307474278",
                 :author=>"Dan Brown",
                 :name=>"The Da Vinci Code",
-                :price=>9.65, :image => "www.google.de/image.png"
+                :price=>9.65, :image => "www.google.de/image1.png"
               }
             ],[
               {
@@ -69,7 +69,7 @@ describe HomeController do
                 :author=>"Dan Brown",
                 :name=>"The Da Vinci Code",
                 :price=>19.65,
-                :image => "www.google.de/image.png"
+                :image => "www.google.de/image2.png"
               }
             ]]
           @same_items_merge = HomeController.merge(@same_items_result)
@@ -135,13 +135,20 @@ describe HomeController do
               end
             end
           end
+
           describe "it should contain the merged images of all provider" do
-            describe "only one images available" do
-              it "should be hashed with 1 => if it was in the first array"
-              it "should be hashed with 2 => if it was in the second array"
+            describe "only one image available" do
+              it "should be hashed with 1 => if it was in the first array" do
+                @no_same_items_merge.first[:images].should have_key(1)
+              end
+              it "should be hashed with 2 => if it was in the second array" do
+                @no_same_items_merge.second[:images].should have_key(2)
+              end
             end
-            describe "more than one images available" do
-              it "should contain both in the right order"
+            describe "more than one image available" do
+              it "should contain both in the right order" do
+                @same_items_merge.first[:images].should equal({1 => "www.google.de/image1.png", 2 => "www.google.de/image2.png"})
+              end
             end
           end
         end
