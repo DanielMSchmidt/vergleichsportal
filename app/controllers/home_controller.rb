@@ -43,6 +43,63 @@ class HomeController < ApplicationController
     mergeArticles(transformArticle(search_result.flatten))
   end
 
+  def self.transformArticle(all_articles)
+    all_articles.each do |article|
+      puts "to be deleted:(before) #{article}"
+      provider = article.delete(:provider)
+      article[:images] ||= {provider => article.delete(:image)}
+      article[:prices] ||= {provider => article.delete(:price)}
+      puts "to be deleted:(after) #{article}"
+    end
+    puts "all articles after transformation: #{all_articles}"
+    return all_articles
+  end
+
+  def self.mergeArticles(articles)
+    #TODO: Refactor
+    merged_articles = []
+
+    while articles.count > 0 do
+      article = articles.first
+      puts "same ean: #{articles.map{|x| x[:ean] == article[:ean]}}"
+      same_articles = articles.select{|x| x[:ean] == article[:ean] }
+      merged_articles << mergeArticle(same_articles)
+      same_articles.each{|article| articles.delete(article)}
+    end
+
+    merged_articles
+  end
+
+  def self.mergeArticle(same_articles)
+    #TODO: Refactor!!!
+    merged_article = same_articles.first
+    puts "Same Articles: #{same_articles}"
+    puts "Same Articles count: #{same_articles.count}"
+    puts "initial mergedarticle: #{merged_article}"
+
+    prices = same_articles.collect{|x| x[:prices]}
+    images = same_articles.collect{|x| x[:images]}
+
+    puts "Prices: #{prices}"
+    puts "Images: #{images}"
+
+    price = {}
+    image = {}
+
+    prices.each{|x| price.merge!(x)}
+    images.each{|x| image.merge!(x)}
+
+    puts "Price #{price}"
+    puts "Image #{image}"
+
+    merged_article[:prices] = price
+    merged_article[:images] = image
+
+    puts "end mergedarticle: #{merged_article}"
+    merged_article
+  end
+
+
   def add_query
     query = SearchQuery.create(value: @term)
     query.articles = @result unless @result.nil?
