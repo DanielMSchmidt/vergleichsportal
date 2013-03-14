@@ -8,4 +8,11 @@ class Cart < ActiveRecord::Base
   def add_article(article)
     ArticleCartAssignment.create(article_id: article.id, cart_id: self.id)
   end
+
+  def remove_article(article)
+    ArticleCartAssignment.find(:first,
+			       :conditions => {
+				  :article_id => article.id, 
+				  :cart_id => self.id}).destroy
+  end
 end

@@ -75,7 +75,25 @@ class CartsController < ApplicationController
 
     respond_to do |format|
       if @cart.add_article(article)
-	format.html { redirect_to @cart, notice: 'Article was successfully updated.' }
+	format.html { redirect_to @cart, notice: 'Article was successfully added.' }
+	format.json { head :no_contest }
+      else
+	format.html { redirect_to @cart, notice: 'An error occured while adding the Article.' }
+	format.json { render json: @cart.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
+  # GET /carts/1/remove/1
+  # GET /carts/1/remove/1.json
+  def remove_article
+    @cart = Cart.find(params[:cart_id])
+    article = Article.find(params[:article_id])
+
+    respond_to do |format|
+      if @cart.remove_article(article)
+	format.html { redirect_to @cart, notice: 'Article was successfully removed.' }
 	format.json { head :no_contest }
       else
 	format.html { redirect_to @cart, notice: 'An error occured while adding the Article.' }

@@ -19,6 +19,7 @@ Vergleichsportal::Application.routes.draw do
   resources :carts
 
   get "carts/:cart_id/add/:article_id" => "carts#add_article", as: 'add_article'
+  get "carts/:cart_id/remove/:article_id" => "carts#remove_article", as: 'remove_article'
 
   resources :users do
     member do
