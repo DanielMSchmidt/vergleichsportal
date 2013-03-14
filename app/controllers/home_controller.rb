@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
-  	@user = User.new
-  	@user.role_id = 1
+  	@user_new = User.new
+  	@user_new.role_id = 1
   end
 
   def search_results

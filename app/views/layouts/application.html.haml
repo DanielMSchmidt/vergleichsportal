@@ -17,7 +17,10 @@
     = javascript_include_tag "vendor/custom.modernizr"
     = csrf_meta_tags
   %body{:style => "zoom:1;"}
-    = render "layouts/navigation_logout"
+    - if logged_in?
+      = render "layouts/navigation_logout"
+    - else 
+      = render "layouts/navigation_login"
 
     .row
       .three.columns
@@ -30,5 +33,13 @@
         = yield
 
     = yield :modal
-    = yield :login_modal
+
+    -if logged_in?
+      = render :partial => "shared/modal/edit_user"
+
+    -else
+      = render :partial => "shared/modal/register"
+      = render :partial => "shared/modal/login"
+      = render :partial => "shared/modal/forgot_password"
+
     = javascript_include_tag "application"
