@@ -10,6 +10,7 @@
   - @carts.each do |cart|
     %tr
       %td= cart.user_id
+      =render cart.articles, search: false
       %td= link_to 'Show', cart
       %td= link_to 'Edit', edit_cart_path(cart)
       %td= link_to 'Destroy', cart, :method => :delete, :data => { :confirm => 'Are you sure?' }
