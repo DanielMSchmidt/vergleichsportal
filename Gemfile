@@ -45,6 +45,7 @@ group :development, :test do
   gem 'guard-spork', '~> 1.5.0'
   gem 'guard-cucumber', '~> 1.3.2'
   gem 'sqlite3', '~> 1.3.7'
+  gem 'simplecov', :require => false
 end
 
 group :assets do
