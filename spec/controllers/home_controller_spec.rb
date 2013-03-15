@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe HomeController do
 
+  let(:search_query) { FactoryGirl.create(:search_query) }
+  let!(:provider) { FactoryGirl.create(:provider) }
+
   before(:each) do
     @merged_hash = [
       {name: "Testname",
@@ -33,9 +36,9 @@ describe HomeController do
 
   describe "POST 'search_results'" do
     it "returns http success" do
-      post 'search_results', search:{term: "Dan Brown"}
       HomeController.stub(:searchAtProvider)
       HomeController.stub(:merge).and_return([])
+      post 'search_results', search:{term: "Dan Brown"}
       response.should be_success
     end
     describe "searchAtProvider" do
