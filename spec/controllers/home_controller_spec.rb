@@ -205,6 +205,72 @@ describe HomeController do
     end
   end
 
+  describe "#getAllNewestesPricesFor" do
+    it "should do nothing if no articles are associated with the query" do
+      HomeController.should_not_receive(:getTheNewestPriceFor)
+      HomeController.getAllNewestesPricesFor(search_query)
+    end
+
+    describe "multiple items associated with article" do
+      before(:each) do
+        hash = {}
+        Provider.all.collect{|x| x.id}.each do |provider_id|
+          hash[provider_id] = provider_id
+        end
+        HomeController.stub(:getTheNewestPriceFor).and_return(hash)
+        articles = []
+        5.times do |n|
+          articles << FactoryGirl.create(:article, id: n)
+          FactoryGirl.create(:article_query_assignment, article_id: n)
+        end
+      end
+
+      it "the searchquery should have the right amount of articles" do
+        search_query.articles.count.should eq(5)
+        HomeController.getAllNewestesPricesFor(search_query)
+      end
+
+      it "should add a new price for each article and provider" do
+        expect{HomeController.getAllNewestesPricesFor(search_query)}.to change{Price.count}.by(Provider.count * search_query.articles.count)
+      end
+
+      it "should call #getTheNewestPriceFor for each article" do
+        search_query.articles.each do |article|
+          HomeController.should_receive(:getTheNewestPriceFor).with(article).once
+        end
+        HomeController.getAllNewestesPricesFor(search_query)
+      end
+    end
+  end
+
+  describe "#getTheNewestPriceFor" do
+    before(:each) do
+      @search = BuchDeSearch.new
+      HomeController.should_receive(:getProviderInstance).exactly(Provider.count).times.and_return(@search)
+      @search.stub(:getNewestPriceFor).and_return(3.14)
+    end
+
+    it "should call the getNewestPriceFor method on each Provider" do
+      @search.should_receive(:getNewestPriceFor).exactly(Provider.count).times
+      HomeController.getTheNewestPriceFor(search_query)
+    end
+
+    it "should call the getNewestPriceFor method with the url of the article" do
+      search_query.articles.each do |article|
+        article.urls.each{|url| search.should_receive(:getNewestPriceFor).with(url)}
+      end
+      HomeController.getTheNewestPriceFor(search_query)
+    end
+
+    it "should return a hash, which has each provider id as key and a decimal as value" do
+      result = HomeController.getTheNewestPriceFor(search_query)
+      Provider.all.collect{|x| x.id}.each do |provider_id|
+        result.should have_key(provider_id)
+        result[provider_id].should be_kind_of(Float)
+      end
+    end
+  end
+
   describe "GET 'admin'" do
     it "returns http success" do
       get 'admin'
