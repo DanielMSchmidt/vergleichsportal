@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   def fetch_cart
     @cart ||= Cart.first
+    @cart = Cart.create if @cart.nil?
   end
 
   protect_from_forgery

@@ -21,6 +21,7 @@ class HomeController < ApplicationController
     else
       @result = searches.collect{|search| search.articles}.flatten
     end
+    @result.empty? ? @result = Article.find(:all) : @result
   end
 
   def admin

@@ -2,7 +2,7 @@ class CartsController < ApplicationController
   # GET /carts
   # GET /carts.json
   def index
-
+    @carts = Cart.find(:all)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @carts }
@@ -70,7 +70,7 @@ class CartsController < ApplicationController
   # GET /carts/1/add/1
   # GET /carts/1/add/1.json
   def add_article
-    @cart = Cart.find(params[:cart_id])
+    #@cart = Cart.find(params[:cart_id])
     article = Article.find(params[:article_id])
 
     respond_to do |format|
@@ -88,7 +88,7 @@ class CartsController < ApplicationController
   # GET /carts/1/remove/1
   # GET /carts/1/remove/1.json
   def remove_article
-    @cart = Cart.find(params[:cart_id])
+    #@cart = Cart.find(params[:cart_id])
     article = Article.find(params[:article_id])
 
     respond_to do |format|
@@ -102,6 +102,12 @@ class CartsController < ApplicationController
     end
   end
 
+
+  #GET /carts/1/use
+  def use
+    new_cart = Cart.find(params[:id])
+    @cart = cart unless cart.nil?
+  end
 
   # DELETE /carts/1
   # DELETE /carts/1.json
