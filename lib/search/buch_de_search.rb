@@ -13,6 +13,11 @@ class BuchDeSearch
     links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
   end
 
+  def getNewestPriceFor(link)
+    getBookDataFor(link)[:price]
+  end
+
+
   def getBookLinksFor(searchTerm, options)
     page = @agent.get(@provider[:url])
 
@@ -31,6 +36,9 @@ class BuchDeSearch
       book[key] = getItem(page,value)
     end
     book[:url] = link
+    book[:image] = page.images.first
+    book[:price] = book[:price].tr(',','.').to_f
+
     book
   end
 

@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe HomeController do
 
+  let(:search_query) { FactoryGirl.create(:search_query) }
+  let!(:provider) { FactoryGirl.create(:provider) }
+
   before(:each) do
     @merged_hash = [
       {name: "Testname",
@@ -33,12 +36,12 @@ describe HomeController do
 
   describe "POST 'search_results'" do
     it "returns http success" do
-      post 'search_results', search:{term: "Dan Brown"}
-      HomeController.stub(:search)
+      HomeController.stub(:searchAtProvider)
       HomeController.stub(:merge).and_return([])
+      post 'search_results', search:{term: "Dan Brown"}
       response.should be_success
     end
-    describe "search" do
+    describe "searchAtProvider" do
       before(:each) do
         3.times do |n|
           #TODO: Refactor with factory girl
@@ -47,8 +50,8 @@ describe HomeController do
       end
 
       it "should start a search for each provider" do
-        HomeController.should_receive(:search).exactly(Provider.count).times
-        HomeController.stub(:search)
+        HomeController.should_receive(:searchAtProvider).exactly(Provider.count).times
+        HomeController.stub(:searchAtProvider)
         HomeController.stub(:merge).and_return([])
         HomeController.stub(:generateArticles)
         post 'search_results', search:{term: "Dan Brown"}
@@ -166,7 +169,7 @@ describe HomeController do
         describe "a search query wasnt found in the database" do
           before(:each) do
             SearchQuery.should_receive(:where).and_return([])
-            HomeController.stub(:search)
+            HomeController.stub(:searchAtProvider)
             HomeController.should_receive(:merge).and_return(@merged_hash)
           end
           it "should add a searchQuery" do
@@ -202,11 +205,142 @@ describe HomeController do
     end
   end
 
+  describe "#getAllNewestesPricesFor" do
+    it "should do nothing if no articles are associated with the query" do
+      HomeController.should_not_receive(:getTheNewestPriceFor)
+      HomeController.getAllNewestesPricesFor(search_query)
+    end
+
+    describe "multiple items associated with article" do
+      before(:each) do
+        hash = {}
+        Provider.all.collect{|x| x.id}.each do |provider_id|
+          hash[provider_id] = provider_id
+        end
+        HomeController.stub(:getTheNewestPriceFor).and_return(hash)
+        articles = []
+        5.times do |n|
+          articles << FactoryGirl.create(:article, id: n)
+          FactoryGirl.create(:article_query_assignment, article_id: n)
+        end
+      end
+
+      it "the searchquery should have the right amount of articles" do
+        search_query.articles.count.should eq(5)
+        HomeController.getAllNewestesPricesFor(search_query)
+      end
+
+      it "should add a new price for each article and provider" do
+        expect{HomeController.getAllNewestesPricesFor(search_query)}.to change{Price.count}.by(Provider.count * search_query.articles.count)
+      end
+
+      it "should call #getTheNewestPriceFor for each article" do
+        search_query.articles.each do |article|
+          HomeController.should_receive(:getTheNewestPriceFor).with(article).once
+        end
+        HomeController.getAllNewestesPricesFor(search_query)
+      end
+    end
+  end
+
+  describe "#getTheNewestPriceFor" do
+    before(:each) do
+      @search = BuchDeSearch.new
+      HomeController.should_receive(:getProviderInstance).exactly(Provider.count).times.and_return(@search)
+      @search.stub(:getNewestPriceFor).and_return(3.14)
+    end
+
+    it "should call the getNewestPriceFor method on each Provider" do
+      @search.should_receive(:getNewestPriceFor).exactly(Provider.count).times
+      HomeController.getTheNewestPriceFor(search_query)
+    end
+
+    it "should call the getNewestPriceFor method with the url of the article" do
+      search_query.articles.each do |article|
+        article.urls.each{|url| search.should_receive(:getNewestPriceFor).with(url)}
+      end
+      HomeController.getTheNewestPriceFor(search_query)
+    end
+
+    it "should return a hash, which has each provider id as key and a decimal as value" do
+      result = HomeController.getTheNewestPriceFor(search_query)
+      Provider.all.collect{|x| x.id}.each do |provider_id|
+        result.should have_key(provider_id)
+        result[provider_id].should be_kind_of(Float)
+      end
+    end
+  end
+
+  describe "provider" do
+    describe "ebay.de" do
+      before(:each) do
+        @search = EbaySearch.new
+      end
+      describe "search_by_keywords" do
+        it "should respond to it", slow: true do
+          @search.should respond_to(:search_by_keywords)
+        end
+        it "should return a right formatted value", slow: true do
+          values = @search.search_by_keywords("Dan Brown")
+          values.each do |value|
+            value.should have_key(:name)
+            value.should have_key(:ean)
+            value.should have_key(:author)
+            value.should have_key(:description)
+            value.should have_key(:url)
+            value.should have_key(:price)
+            value.should have_key(:image)
+          end
+        end
+      end
+      describe "getNewestPriceFor" do
+        it "should respond to it", slow: true do
+          @search.should respond_to(:getNewestPriceFor)
+        end
+        it "should return a float", slow: true do
+          #TODO: Sometimes passes sometimes not (fix it with a loop e.g.)
+          @search.getNewestPriceFor("http://www.ebay.de/itm/DAN-BROWN-Meteor-NEU-KEIN-PORTO-/290263996355?pt=Belletristik&hash=item43951517c3").should eq(9.99)
+        end
+      end
+    end
+
+    describe "buch.de" do
+      before(:each) do
+          @search = BuchDeSearch.new
+      end
+      describe "search_by_keywords" do
+        it "should respond to it", slow: true do
+          @search.should respond_to(:search_by_keywords)
+        end
+        it "should return a right formatted value", slow: true do
+          values = @search.search_by_keywords("Dan Brown")
+          values.each do |value|
+            value.should have_key(:name)
+            value.should have_key(:ean)
+            value.should have_key(:author)
+            value.should have_key(:description)
+            value.should have_key(:url)
+            value.should have_key(:price)
+            value.should have_key(:image)
+          end
+        end
+      end
+      describe "getNewestPriceFor" do
+        it "should respond to it", slow: true do
+          @search.should respond_to(:getNewestPriceFor)
+        end
+        it "should return a float", slow: true do
+          @search.getNewestPriceFor("http://www.buch.de/de.buch.shop/shop/1/home/rubrikartikel/inferno/dan_brown/ISBN3-7857-2480-2/ID34201026.html;jsessionid=.tc1p?tfs=yia%2FnwD%2F%2F%2F%2F%2FAAAAAA%3D%3D&inredirect=1").should eq(26)
+        end
+      end
+    end
+
+  end
+
   describe "GET 'admin'" do
     it "returns http success" do
       get 'admin'
       response.should be_success
     end
   end
-
 end

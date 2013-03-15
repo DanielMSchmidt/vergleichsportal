@@ -16,3 +16,4 @@
 config/database.yml.envconfig/database.yml
 config/database.yml
 *.DS_Store
+coverage/

@@ -4,6 +4,10 @@ require 'spork'
 #require 'spork/ext/ruby-debug'
 
 Spork.prefork do
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
@@ -11,7 +15,10 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
-
+  if ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
 end
 
 # --- Instructions ---

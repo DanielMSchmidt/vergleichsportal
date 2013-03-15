@@ -1,44 +1,72 @@
 class HomeController < ApplicationController
   after_filter :add_query, only: [:search_results]
+
   def index
-  	@user = User.new
-  	@user.role_id = 1
+    @user = User.new
+    @user.role_id = 1
   end
 
   def search_results
     @term = params[:search][:term]
+    @options = {}
     searches = SearchQuery.where(value: @term)
 
     if searches.empty?
-      provider = Provider.all
-      results = {}
-      provider.each do |single_provider|
-        results[single_provider] = HomeController.search(single_provider, @term, params[:search][:options])
-      end
-      merged_results = HomeController.merge(results)
-      @result = merged_results.collect{|article| Article.generate(article)} unless merged_results.nil?
+      @result = HomeController.search(@term, @options)
     else
       @result = searches.collect{|search| search.articles}.flatten
     end
   end
 
   def admin
-
     @users = User.all
     @providers = Provider.all
-  	@active_advertisments = Advertisment.where(:active => true);
+    @active_advertisments = Advertisment.where(:active => true);
     @inactive_advertisments = Advertisment.where(:active => false);
-  	@advertisment = Advertisment.new
-
+    @advertisment = Advertisment.new
   end
 
+  def self.search(search_term, options)
+    HomeController.searchAtMultipleProviders(Provider.all, search_term, options)
+  end
 
-  protected
+  def self.getAllNewestesPricesFor(query)
+    query.articles.each do |article|
+      prices = HomeController.getTheNewestPriceFor(article)
+      prices.each do |key, value|
+        article.prices.create(value: value, provider_id: key)
+      end
+    end
+  end
 
-  def self.search(provider, search_term, options={})
-    instance = eval(provider.name).new
+  def self.getTheNewestPriceFor(article)
+    price = {}
+    Provider.all.each do |provider|
+      price[(provider.id)] = HomeController.getProviderInstance(provider).getNewestPriceFor(article)
+    end
+    return price
+  end
+
+  def self.searchAtMultipleProviders(providers,search_term, options={})
+    results = {}
+    providers.each do |single_provider|
+      results[single_provider] = HomeController.searchAtProvider(single_provider, search_term, options)
+    end
+
+    merged_results = HomeController.merge(results)
+    merged_results.collect{|article| Article.generate(article)} unless merged_results.nil?
+  end
+
+  def self.getProviderInstance(provider)
+    (provider.name + "Search").constantize.new
+  end
+
+  def self.searchAtProvider(provider, search_term, options={})
+    instance = HomeController.getProviderInstance(provider)
     instance.searchByKeywords(search_term, options)
   end
+
+  protected
 
   def self.merge(search_result)
     # filter empty search_results
@@ -48,7 +76,7 @@ class HomeController < ApplicationController
       articles.each{ |article| article[:provider] = index + 1;}
     end
 
-    mergeArticles(transformArticle(search_result.flatten))
+    HomeController.mergeArticles(HomeController.transformArticle(search_result.flatten))
   end
 
   def self.transformArticle(all_articles)
@@ -79,9 +107,9 @@ class HomeController < ApplicationController
   def self.mergeArticle(same_articles)
     merged_article = same_articles.first
 
-    merged_article[:prices] = getMergedAttributes(same_articles, :prices)
-    merged_article[:images] = getMergedAttributes(same_articles, :images)
-    merged_article[:urls] = getMergedAttributes(same_articles, :urls)
+    merged_article[:prices] = HomeController.getMergedAttributes(same_articles, :prices)
+    merged_article[:images] = HomeController.getMergedAttributes(same_articles, :images)
+    merged_article[:urls] = HomeController.getMergedAttributes(same_articles, :urls)
 
     merged_article
   end
