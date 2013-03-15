@@ -36,6 +36,9 @@ class BuchDeSearch
       book[key] = getItem(page,value)
     end
     book[:url] = link
+    book[:image] = page.images.first
+    book[:price] = book[:price].tr(',','.').to_f
+
     book
   end
 

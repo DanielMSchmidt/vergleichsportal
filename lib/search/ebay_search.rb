@@ -51,6 +51,10 @@ class EbaySearch
     book[:author] = details["Autor: "]
     book[:name] = details["Titel: "]
     book[:price] = (shipping_price || 0) + (normal_price || 0)
+    book[:image] = nil
+    book[:description] = nil
+    book[:url] = url
+
     return book
   end
 end
