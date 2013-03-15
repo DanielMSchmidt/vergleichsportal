@@ -30,7 +30,13 @@ class HomeController < ApplicationController
     HomeController.searchAtMultipleProviders(Provider.all, search_term, options)
   end
 
-  def getTheNewestPriceFor(article)
+  def self.getAllNewestesPricesFor(query)
+    query.articles.each do |article|
+      prices = HomeController.getTheNewestPriceFor(article)
+      prices.each do |key, value|
+        article.prices.create(value: value, provider_id: key)
+      end
+    end
   end
 
   def getAllNewestesPricesFor(query)
