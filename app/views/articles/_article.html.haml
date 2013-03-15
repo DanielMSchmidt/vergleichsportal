@@ -21,6 +21,9 @@
         .seven.columns.offset-by-one
           %p
             =article.description
+            %br
+            %h1
+              = @cart.get_count(article)
           .row
             .six.columns
               =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id), class: 'button'
