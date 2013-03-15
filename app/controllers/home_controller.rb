@@ -6,8 +6,7 @@ class HomeController < ApplicationController
   end
 
   def search_results
-    #@term = params[:search][:term]
-    @term = 'Daniel'
+    @term = params[:search][:term]
     searches = SearchQuery.where(value: @term)
 
     if searches.empty?
