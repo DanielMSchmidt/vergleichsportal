@@ -13,6 +13,11 @@ class BuchDeSearch
     links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
   end
 
+  def getNewestPriceFor(link)
+    getBookDataFor(link)[:price]
+  end
+
+
   def getBookLinksFor(searchTerm, options)
     page = @agent.get(@provider[:url])
 

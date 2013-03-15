@@ -9,7 +9,13 @@ class EbaySearch
 
   def search_by_keywords(searchTerm, options={})
     links = self.getBookLinksFor(searchTerm, options)
-    links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
+    items = []
+    links.take(options[:count] || 5).each{|link| items << getBookDataFor(link)}
+    return items
+  end
+
+  def getNewestPriceFor(link)
+    getBookDataFor(link)[:price]
   end
 
   def getBookLinksFor(searchTerm, options)
@@ -45,9 +51,6 @@ class EbaySearch
     book[:author] = details["Autor: "]
     book[:name] = details["Titel: "]
     book[:price] = (shipping_price || 0) + (normal_price || 0)
-    page.search('#i_vv4-36').each do |image|
-      puts image.to_html
-    end
-    puts book
+    return book
   end
 end
