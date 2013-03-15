@@ -5,7 +5,9 @@
     .five.columns
       %ul
         - @users.each do |user|
-          %li
+
+          -# generate Table entry
+          %li.user{:id => user.id}
             - if user.active
               %span.success.label
                 %a{"data-reveal-id" => "user-delete-modal"+user.id.to_s, :style => "color: white; cursor: pointer;"} 
@@ -14,6 +16,10 @@
               %span.alert.label
                 %a{"data-reveal-id" => "user-delete-modal"+user.id.to_s, :style => "color: white; cursor: pointer;"} 
                   = user.email
+
+
+
+            -# generate Modals
             - content_for :modal do 
               .reveal-modal.medium{:id => "user-delete-modal"+user.id.to_s}
                 %h3
@@ -21,16 +27,36 @@
                   %small
                     =user.email
                 .row
+
+                  -# Delete button
                   .three.columns
-                    %a.button.expand{:href => "#"} Delete User
+                    =link_to 'Delete User', user, :method => :delete, :remote => true, :data => { :confirm => 'Are you sure?' }, :class => "button"
                     .one.columns
+
+                  -# Lock button
                   .three.columns
-                    %a.button.expand{:href => "#"} Disable User
+                    = simple_form_for(user, remote: false) do |f|
+                      = f.error_notification
+                      -if user.active
+                        .form-inputs
+                          = f.hidden_field :active, value: false
+                        .form-actions
+                          = f.button :submit, "Sperren", :class => "button"
+                      -else
+                        .form-inputs
+                          = f.hidden_field :active, value: true
+                        .form-actions
+                          = f.button :submit, "Freigeben", :class => "button"
+
                     .one.columns
+
+                  -# Make Admin button
                   .three.columns
-                    %a.button.expand{:href => "#"} Make Admin
+                    %a.button.expand{:href => "#"} 
+
                 %a.close-reveal-modal ×
 
+    -# Status index
     .three.columns.offset-by-two
       %p
         %span.success.label Online
