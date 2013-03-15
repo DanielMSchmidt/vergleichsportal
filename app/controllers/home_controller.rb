@@ -57,8 +57,12 @@ class HomeController < ApplicationController
     merged_results.collect{|article| Article.generate(article)} unless merged_results.nil?
   end
 
+  def self.getProviderInstance(provider)
+    (provider.name + "Search").constantize.new
+  end
+
   def self.searchAtProvider(provider, search_term, options={})
-    instance = (provider.name + "Search").constantize.new
+    instance = HomeController.getProviderInstance(provider)
     instance.searchByKeywords(search_term, options)
   end
 
