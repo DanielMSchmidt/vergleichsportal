@@ -304,6 +304,37 @@ describe HomeController do
       end
     end
 
+    describe "buch.de" do
+      before(:each) do
+          @search = BuchDeSearch.new
+      end
+      describe "search_by_keywords" do
+        it "should respond to it" do
+          @search.should respond_to(:search_by_keywords)
+        end
+        it "should return a right formatted value" do
+          values = @search.search_by_keywords("Dan Brown")
+          values.each do |value|
+            value.should have_key(:name)
+            value.should have_key(:ean)
+            value.should have_key(:author)
+            value.should have_key(:description)
+            value.should have_key(:url)
+            value.should have_key(:price)
+            value.should have_key(:image)
+          end
+        end
+      end
+      describe "getNewestPriceFor" do
+        it "should respond to it" do
+          @search.should respond_to(:getNewestPriceFor)
+        end
+        it "should return a float" do
+          @search.getNewestPriceFor("http://www.buch.de/de.buch.shop/shop/1/home/rubrikartikel/inferno/dan_brown/ISBN3-7857-2480-2/ID34201026.html;jsessionid=.tc1p?tfs=yia%2FnwD%2F%2F%2F%2F%2FAAAAAA%3D%3D&inredirect=1").should eq(26)
+        end
+      end
+    end
+
   end
 
   describe "GET 'admin'" do
