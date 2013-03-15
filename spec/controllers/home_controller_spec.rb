@@ -277,10 +277,10 @@ describe HomeController do
         @search = EbaySearch.new
       end
       describe "search_by_keywords" do
-        it "should respond to it" do
+        it "should respond to it", slow: true do
           @search.should respond_to(:search_by_keywords)
         end
-        it "should return a right formatted value" do
+        it "should return a right formatted value", slow: true do
           values = @search.search_by_keywords("Dan Brown")
           values.each do |value|
             value.should have_key(:name)
@@ -294,10 +294,10 @@ describe HomeController do
         end
       end
       describe "getNewestPriceFor" do
-        it "should respond to it" do
+        it "should respond to it", slow: true do
           @search.should respond_to(:getNewestPriceFor)
         end
-        it "should return a float" do
+        it "should return a float", slow: true do
           #TODO: Sometimes passes sometimes not (fix it with a loop e.g.)
           @search.getNewestPriceFor("http://www.ebay.de/itm/DAN-BROWN-Meteor-NEU-KEIN-PORTO-/290263996355?pt=Belletristik&hash=item43951517c3").should eq(9.99)
         end
@@ -309,10 +309,10 @@ describe HomeController do
           @search = BuchDeSearch.new
       end
       describe "search_by_keywords" do
-        it "should respond to it" do
+        it "should respond to it", slow: true do
           @search.should respond_to(:search_by_keywords)
         end
-        it "should return a right formatted value" do
+        it "should return a right formatted value", slow: true do
           values = @search.search_by_keywords("Dan Brown")
           values.each do |value|
             value.should have_key(:name)
@@ -326,10 +326,10 @@ describe HomeController do
         end
       end
       describe "getNewestPriceFor" do
-        it "should respond to it" do
+        it "should respond to it", slow: true do
           @search.should respond_to(:getNewestPriceFor)
         end
-        it "should return a float" do
+        it "should return a float", slow: true do
           @search.getNewestPriceFor("http://www.buch.de/de.buch.shop/shop/1/home/rubrikartikel/inferno/dan_brown/ISBN3-7857-2480-2/ID34201026.html;jsessionid=.tc1p?tfs=yia%2FnwD%2F%2F%2F%2F%2FAAAAAA%3D%3D&inredirect=1").should eq(26)
         end
       end
