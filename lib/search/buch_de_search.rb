@@ -8,7 +8,7 @@ class BuchDeSearch
     @agent = Mechanize.new
   end
 
-  def search_by_keywords(searchTerm, options={})
+  def searchByKeywords(searchTerm, options={})
     links = getBookLinksFor(searchTerm, options)
     links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
   end

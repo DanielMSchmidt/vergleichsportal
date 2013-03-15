@@ -278,10 +278,10 @@ describe HomeController do
       end
       describe "search_by_keywords" do
         it "should respond to it", slow: true do
-          @search.should respond_to(:search_by_keywords)
+          @search.should respond_to(:searchByKeywords)
         end
         it "should return a right formatted value", slow: true do
-          values = @search.search_by_keywords("Dan Brown")
+          values = @search.searchByKeywords("Dan Brown")
           values.each do |value|
             value.should have_key(:name)
             value.should have_key(:ean)
@@ -310,10 +310,10 @@ describe HomeController do
       end
       describe "search_by_keywords" do
         it "should respond to it", slow: true do
-          @search.should respond_to(:search_by_keywords)
+          @search.should respond_to(:searchByKeywords)
         end
         it "should return a right formatted value", slow: true do
-          values = @search.search_by_keywords("Dan Brown")
+          values = @search.searchByKeywords("Dan Brown")
           values.each do |value|
             value.should have_key(:name)
             value.should have_key(:ean)

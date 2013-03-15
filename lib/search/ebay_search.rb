@@ -7,7 +7,7 @@ class EbaySearch
     @agent = Mechanize.new
   end
 
-  def search_by_keywords(searchTerm, options={})
+  def searchByKeywords(searchTerm, options={})
     links = self.getBookLinksFor(searchTerm, options)
     items = []
     links.take(options[:count] || 5).each{|link| items << getBookDataFor(link)}

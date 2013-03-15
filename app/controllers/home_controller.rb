@@ -72,8 +72,9 @@ class HomeController < ApplicationController
     # filter empty search_results
     return [] if search_result.nil? || search_result.empty? || search_result.collect{|x| x.empty?}.include?(true)
 
-    search_result.each_with_index do |articles, index|
-      articles.each{ |article| article[:provider] = index + 1;}
+    #TODO: Write test for this part, doesn't work jet
+    search_result.each_with_index do |articles, provider_index|
+      articles.each{ |article| article[:provider] = provider_index + 1;}
     end
 
     HomeController.mergeArticles(HomeController.transformArticle(search_result.flatten))
