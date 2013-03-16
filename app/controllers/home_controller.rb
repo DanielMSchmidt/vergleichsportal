@@ -6,6 +6,7 @@ class HomeController < ApplicationController
     @user.role_id = 1
   end
 
+  #TODO: Add filter that only results by active providers are displayed
   def search_results
     @term = params[:search][:term]
     @options = {}
@@ -48,9 +49,10 @@ class HomeController < ApplicationController
   end
 
   def self.searchAtMultipleProviders(providers,search_term, options={})
-    results = {}
+    results = []
+    #TODO: Maybe change to collect instead
     providers.each do |single_provider|
-      results[single_provider] = HomeController.searchAtProvider(single_provider, search_term, options)
+      results << HomeController.searchAtProvider(single_provider, search_term, options)
     end
 
     merged_results = HomeController.merge(results)
@@ -77,7 +79,13 @@ class HomeController < ApplicationController
       articles.each{ |article| article[:provider] = provider_index + 1;}
     end
 
-    HomeController.mergeArticles(HomeController.transformArticle(search_result.flatten))
+    results = HomeController.filterEmptyArticles(search_result.flatten)
+
+    HomeController.mergeArticles(HomeController.transformArticle(results))
+  end
+
+  def self.filterEmptyArticles(articles)
+    articles.reject{|article| article[:ean].nil?}
   end
 
   def self.transformArticle(all_articles)

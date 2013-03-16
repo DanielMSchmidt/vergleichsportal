@@ -57,6 +57,13 @@ describe HomeController do
         post 'search_results', search:{term: "Dan Brown"}
       end
 
+      describe "#filter" do
+        it "should delete all results which have a ean with nil" do
+          articles = [{:ean=>nil, :author=>nil, :name=>nil, :price=>0, :image=>nil, :description=>nil, :url=>"http://www.ebay.de/itm/a796"}, {:ean=>1234567912345, :author=>nil, :name=>nil, :price=>0, :image=>nil, :description=>nil, :url=>"http://www.ebay.de/itm/Illuminatiik&hash=item53f62d4780"}]
+          expect(HomeController.filterEmptyArticles(articles)).to eq([{:ean=>1234567912345, :author=>nil, :name=>nil, :price=>0, :image=>nil, :description=>nil, :url=>"http://www.ebay.de/itm/Illuminatiik&hash=item53f62d4780"}])
+        end
+      end
+
       describe "merge of provider hashes" do
         before(:each) do
           @same_items_result = [
