@@ -2,6 +2,7 @@ require 'mechanize'
 require 'yaml'
 
 class BuchDeSearch
+  #TODO add option support
 
   def initialize()
     @provider = YAML.load_file "config/buch_de.yml"

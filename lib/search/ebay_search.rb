@@ -2,6 +2,7 @@ require 'rubygems'
 require 'mechanize'
 
 class EbaySearch
+  #TODO: Add option support
 
   def initialize
     @agent = Mechanize.new
