@@ -24,6 +24,9 @@ describe HomeController do
         images: ["www.google.de/img.png", "www.google.com/img.png"]
         }
       ]
+
+      @search = Search.new(search_query.value)
+      Search.stub(:new).and_return(@search)
   end
   let(:search_query) { FactoryGirl.create(:search_query) }
 
@@ -36,8 +39,8 @@ describe HomeController do
 
   describe "POST 'search_results'" do
     it "returns http success" do
-      HomeController.stub(:searchAtProvider)
-      HomeController.stub(:merge).and_return([])
+      @search.stub(:searchAtProvider)
+      @search.stub(:merge).and_return([])
       post 'search_results', search:{term: "Dan Brown"}
       response.should be_success
     end
@@ -50,17 +53,17 @@ describe HomeController do
       end
 
       it "should start a search for each provider" do
-        HomeController.should_receive(:searchAtProvider).exactly(Provider.count).times
-        HomeController.stub(:searchAtProvider)
-        HomeController.stub(:merge).and_return([])
-        HomeController.stub(:generateArticles)
+        @search.should_receive(:searchAtProvider).exactly(Provider.count).times
+        @search.stub(:searchAtProvider)
+        @search.stub(:merge).and_return([])
+        @search.stub(:generateArticles)
         post 'search_results', search:{term: "Dan Brown"}
       end
 
       describe "#filter" do
         it "should delete all results which have a ean with nil" do
           articles = [{:ean=>nil, :author=>nil, :name=>nil, :price=>0, :image=>nil, :description=>nil, :url=>"http://www.ebay.de/itm/a796"}, {:ean=>1234567912345, :author=>nil, :name=>nil, :price=>0, :image=>nil, :description=>nil, :url=>"http://www.ebay.de/itm/Illuminatiik&hash=item53f62d4780"}]
-          expect(HomeController.filterEmptyArticles(articles)).to eq([{:ean=>1234567912345, :author=>nil, :name=>nil, :price=>0, :image=>nil, :description=>nil, :url=>"http://www.ebay.de/itm/Illuminatiik&hash=item53f62d4780"}])
+          expect(@search.filterEmptyArticles(articles)).to eq([{:ean=>1234567912345, :author=>nil, :name=>nil, :price=>0, :image=>nil, :description=>nil, :url=>"http://www.ebay.de/itm/Illuminatiik&hash=item53f62d4780"}])
         end
       end
 
@@ -114,11 +117,11 @@ describe HomeController do
         end
 
         it "should return nothing if an empty array is given in" do
-          HomeController.merge([]).should be_empty
-          HomeController.merge([[],[]]).should be_empty
+          @search.merge([]).should be_empty
+          @search.merge([[],[]]).should be_empty
         end
         it "should return an array of right formatted hashes" do
-          HomeController.merge(@no_same_items_result).each do |item|
+          @search.merge(@no_same_items_result).each do |item|
             item.should have_key(:name)
             item.should have_key(:ean)
             item.should have_key(:author)
@@ -131,25 +134,25 @@ describe HomeController do
 
         describe "the returned array" do
           it "should be an equal sized array if all hashes have the same items" do
-            expect(HomeController.merge(@same_items_result).count).to eq(@same_items_result.first.count)
+            expect(@search.merge(@same_items_result).count).to eq(@same_items_result.first.count)
           end
 
           it "should be an double sized array if the hashes diverge completely" do
-            expect(HomeController.merge(@no_same_items_result).count).to eq(2 * @no_same_items_result.first.count)
+            expect(@search.merge(@no_same_items_result).count).to eq(2 * @no_same_items_result.first.count)
           end
 
           describe "it should contain the merged prices of all provider" do
             describe "only one price available" do
               it "should be hashed with 1 => if it was in the first array" do
-                HomeController.merge(@no_same_items_result).first[:prices].should have_key(1)
+                @search.merge(@no_same_items_result).first[:prices].should have_key(1)
               end
               it "should be hashed with 2 => if it was in the second array" do
-                HomeController.merge(@no_same_items_result).second[:prices].should have_key(2)
+                @search.merge(@no_same_items_result).second[:prices].should have_key(2)
               end
             end
             describe "more than one price available" do
               it "should contain both in the right order" do
-                expect(HomeController.merge(@same_items_result).first[:prices]).to eq({1 => 9.65, 2 => 19.65})
+                expect(@search.merge(@same_items_result).first[:prices]).to eq({1 => 9.65, 2 => 19.65})
               end
             end
           end
@@ -157,15 +160,15 @@ describe HomeController do
           describe "it should contain the merged images of all provider" do
             describe "only one image available" do
               it "should be hashed with 1 => if it was in the first array" do
-                HomeController.merge(@no_same_items_result).first[:images].should have_key(1)
+                @search.merge(@no_same_items_result).first[:images].should have_key(1)
               end
               it "should be hashed with 2 => if it was in the second array" do
-                HomeController.merge(@no_same_items_result).second[:images].should have_key(2)
+                @search.merge(@no_same_items_result).second[:images].should have_key(2)
               end
             end
             describe "more than one image available" do
               it "should contain both in the right order" do
-                expect(HomeController.merge(@same_items_result).first[:images]).to eq({1 => "www.google.de/image1.png", 2 => "www.google.de/image2.png"})
+                expect(@search.merge(@same_items_result).first[:images]).to eq({1 => "www.google.de/image1.png", 2 => "www.google.de/image2.png"})
               end
             end
           end
@@ -176,8 +179,8 @@ describe HomeController do
         describe "a search query wasnt found in the database" do
           before(:each) do
             SearchQuery.should_receive(:where).and_return([])
-            HomeController.stub(:searchAtProvider)
-            HomeController.should_receive(:merge).and_return(@merged_hash)
+            @search.stub(:searchAtProvider)
+            @search.should_receive(:merge).and_return(@merged_hash)
           end
           it "should add a searchQuery" do
             expect{post 'search_results', search:{term: "Dan Brown"}}.to change{SearchQuery.count}.by(1)
@@ -199,12 +202,12 @@ describe HomeController do
         describe "if a search query was found in the database" do
           it "shouldnt add an article" do
             SearchQuery.should_receive(:where).and_return([search_query])
-            HomeController.stub(:search)
+            @search.stub(:search)
             expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Article.count}.by(0)
           end
           it "should add a searchquery" do
             SearchQuery.should_receive(:where).and_return([search_query])
-            HomeController.stub(:search)
+            @search.stub(:search)
             expect{post 'search_results', search:{term: "Dan Brown"}}.to change{SearchQuery.count}.by(1)
           end
         end
@@ -212,10 +215,10 @@ describe HomeController do
     end
   end
 
-  describe "#getAllNewestesPricesFor" do
+  describe "#find" do
     it "should do nothing if no articles are associated with the query" do
-      HomeController.should_not_receive(:getTheNewestPriceFor)
-      HomeController.getAllNewestesPricesFor(search_query)
+      @search.should_not_receive(:getNewestPriceFor)
+      @search.find
     end
 
     describe "multiple items associated with article" do
@@ -224,7 +227,7 @@ describe HomeController do
         Provider.all.collect{|x| x.id}.each do |provider_id|
           hash[provider_id] = provider_id
         end
-        HomeController.stub(:getTheNewestPriceFor).and_return(hash)
+        @search.stub(:getNewestPriceFor).and_return(hash)
         articles = []
         5.times do |n|
           articles << FactoryGirl.create(:article, id: n)
@@ -234,43 +237,43 @@ describe HomeController do
 
       it "the searchquery should have the right amount of articles" do
         search_query.articles.count.should eq(5)
-        HomeController.getAllNewestesPricesFor(search_query)
+        @search.find
       end
 
       it "should add a new price for each article and provider" do
-        expect{HomeController.getAllNewestesPricesFor(search_query)}.to change{Price.count}.by(Provider.count * search_query.articles.count)
+        expect{@search.find}.to change{Price.count}.by(Provider.count * search_query.articles.count)
       end
 
-      it "should call #getTheNewestPriceFor for each article" do
+      it "should call #getNewestPriceFor for each article" do
         search_query.articles.each do |article|
-          HomeController.should_receive(:getTheNewestPriceFor).with(article).once
+          @search.should_receive(:getNewestPriceFor).with(article).once
         end
-        HomeController.getAllNewestesPricesFor(search_query)
+        @search.find
       end
     end
   end
 
-  describe "#getTheNewestPriceFor" do
+  describe "#getNewestPriceFor" do
     before(:each) do
       @search = BuchDeSearch.new
-      HomeController.should_receive(:getProviderInstance).exactly(Provider.count).times.and_return(@search)
+      @search.should_receive(:getProviderInstance).exactly(Provider.count).times.and_return(@search)
       @search.stub(:getNewestPriceFor).and_return(3.14)
     end
 
     it "should call the getNewestPriceFor method on each Provider" do
       @search.should_receive(:getNewestPriceFor).exactly(Provider.count).times
-      HomeController.getTheNewestPriceFor(search_query)
+      @search.getNewestPriceFor(search_query)
     end
 
     it "should call the getNewestPriceFor method with the url of the article" do
       search_query.articles.each do |article|
         article.urls.each{|url| search.should_receive(:getNewestPriceFor).with(url)}
       end
-      HomeController.getTheNewestPriceFor(search_query)
+      @search.getNewestPriceFor(search_query)
     end
 
     it "should return a hash, which has each provider id as key and a decimal as value" do
-      result = HomeController.getTheNewestPriceFor(search_query)
+      result = @search.getNewestPriceFor(search_query)
       Provider.all.collect{|x| x.id}.each do |provider_id|
         result.should have_key(provider_id)
         result[provider_id].should be_kind_of(Float)
