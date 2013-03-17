@@ -10,7 +10,7 @@ class BuchDeSearch
   end
 
   def searchByKeywords(searchTerm, options={})
-    Rails.logger.info "BuchDeSearch#searchByKeywords called for #{search_term} with #{options}"
+    Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
     links = getBookLinksFor(searchTerm, options)
     links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
   end
