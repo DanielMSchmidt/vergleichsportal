@@ -6,6 +6,8 @@ class Search
     @provider = Provider.all
   end
 
+  #TODO: Check path without caching for Recursion and test getAllNewestPrices from the console
+
   def find
     Rails.logger.info "Search#Find called for #{@search_term} with #{@options}"
     searches = SearchQuery.where(value: @search_term)
@@ -130,5 +132,4 @@ class Search
     articles.collect{|x| x[attribute]}.each{|x| attrib.merge!(x)}
     attrib
   end
-
 end

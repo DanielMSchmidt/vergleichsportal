@@ -61,6 +61,7 @@ class EbaySearch
     book[:description] = nil
     book[:url] = url
 
+    Rails.logger.info "EbaySearch#getBookDataFor called for #{url} returns #{book}"
     return book
   end
 end

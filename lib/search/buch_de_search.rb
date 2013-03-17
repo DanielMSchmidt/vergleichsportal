@@ -41,9 +41,10 @@ class BuchDeSearch
       book[key] = getItem(page,value)
     end
     book[:url] = link
-    book[:image] = page.images.first
+    book[:image] = page.images.first #TODO: Returns a Mechanize object which can't be handled (url instead plz)
     book[:price] = book[:price].tr(',','.').to_f
 
+    Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link} returns #{book}"
     book
   end
 
