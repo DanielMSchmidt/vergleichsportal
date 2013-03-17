@@ -34,7 +34,7 @@ class BuchDeSearch
   end
 
   def getBookDataFor(link)
-    Rails.logger.info "BuchDeSearch#getBookDataFor called for #{url}"
+    Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
     page = @agent.get(link)
     book = {}
     @provider[:book].each do |key, value|
