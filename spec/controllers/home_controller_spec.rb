@@ -46,6 +46,7 @@ describe HomeController do
     end
     describe "searchAtProvider" do
       before(:each) do
+        Provider.all.each{|x| x.delete}
         3.times do |n|
           #TODO: Refactor with factory girl
           Provider.create!(image_url: "www.google.com/image#{n}.png", name: "ebay#{n}", url: "www.ebay#{n}.de", active: true)
@@ -57,6 +58,7 @@ describe HomeController do
         @search.stub(:searchAtProvider)
         @search.stub(:merge).and_return([])
         @search.stub(:generateArticles)
+        SearchQuery.where(value: "Dan Brown").each{|x| x.delete}
         post 'search_results', search:{term: "Dan Brown"}
       end
 
