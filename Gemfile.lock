@@ -200,6 +200,8 @@ GEM
     net-http-persistent (2.8)
     nokogiri (1.5.6)
     ntlm-http (0.1.1)
+    nyan-cat-formatter (0.5.0)
+      rspec (>= 2.13)
     oauth (0.4.7)
     oauth2 (0.8.1)
       faraday (~> 0.8)
@@ -394,6 +396,7 @@ DEPENDENCIES
   mechanize (~> 2.5.1)
   meta_request (~> 0.2.2)
   nokogiri (~> 1.5.6)
+  nyan-cat-formatter
   pg (~> 0.14.1)
   puma (~> 1.6.3)
   rails (= 3.2.12)
