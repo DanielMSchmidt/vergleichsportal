@@ -10,16 +10,19 @@ class BuchDeSearch
   end
 
   def searchByKeywords(searchTerm, options={})
+    Rails.logger.info "BuchDeSearch#searchByKeywords called for #{search_term} with #{options}"
     links = getBookLinksFor(searchTerm, options)
     links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
   end
 
   def getNewestPriceFor(link)
+    Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
     getBookDataFor(link)[:price]
   end
 
 
   def getBookLinksFor(searchTerm, options)
+    Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm} with #{options}"
     page = @agent.get(@provider[:url])
 
     buch_form = page.form(@provider[:search_form])
@@ -31,6 +34,7 @@ class BuchDeSearch
   end
 
   def getBookDataFor(link)
+    Rails.logger.info "BuchDeSearch#getBookDataFor called for #{url}"
     page = @agent.get(link)
     book = {}
     @provider[:book].each do |key, value|
