@@ -20,6 +20,11 @@ class Search
 
   def getAllNewestesPrices
     Rails.logger.info "Search#getAllNewestPrices called for #{@search_term}"
+    query = SearchQuery.where(value: @search_term).first
+    if query.nil? || query.articles.empty?
+      Rails.logger.info "Search#getAllNewestPrices no query found or no articles in query"
+      return false
+    end
     query.articles.each do |article|
       prices = getTheNewestPriceFor(article)
       prices.each do |key, value|
