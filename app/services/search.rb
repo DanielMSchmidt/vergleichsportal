@@ -3,32 +3,43 @@ class Search
   def initialize(search_term, options={})
     @search_term = search_term
     @options = options
+    @provider = Provider.all
   end
 
   def find
+    Rails.logger.info "Search#Find called for #{@search_term} with #{@options}"
     searches = SearchQuery.where(value: @search_term)
-    return searches.collect{|search| search.articles}.flatten unless searches.empty?
-    searchAtMultipleProviders(Provider.all, @search_term, @options)
+    unless searches.empty?
+      Rails.logger.info "SearchQueries were found: #{searches}"
+      return searches.collect{|search| search.articles}.flatten
+    else
+      Rails.logger.info "No SearchQueries were found, starting search"
+      searchAtMultipleProviders(@provider, @search_term, @options)
+    end
   end
 
   def getAllNewestesPrices
+    Rails.logger.info "Search#getAllNewestPrices called for #{@search_term}"
     query.articles.each do |article|
       prices = getTheNewestPriceFor(article)
       prices.each do |key, value|
+        Rails.logger.info "Search#getAllNewestPrices Price created: provider: #{key}, value: #{value}"
         article.prices.create(value: value, provider_id: key)
       end
     end
   end
 
   def getTheNewestPriceFor(article)
+    Rails.logger.info "Search#getTheNewestPriceFor article:#{article}"
     price = {}
-    Provider.all.each do |provider|
+    @provider.each do |provider|
       price[(provider.id)] = getProviderInstance(provider).getNewestPriceFor(article)
     end
     return price
   end
 
   def searchAtMultipleProviders(providers,search_term, options={})
+    Rails.logger.info "Search#searchAtMultipleProviders called for provider: #{providers}, searchTerm: #{search_term}"
     results = []
     #TODO: Maybe change to collect instead
     providers.each do |single_provider|
@@ -40,15 +51,18 @@ class Search
   end
 
   def getProviderInstance(provider)
+    Rails.logger.info "Search#getProviderInstance called for #{provider.name}"
     (provider.name + "Search").constantize.new
   end
 
   def searchAtProvider(provider, search_term, options={})
+    Rails.logger.info "Search#searchAtProvider called"
     instance = getProviderInstance(provider)
     instance.searchByKeywords(search_term, options)
   end
 
   def merge(search_result)
+    Rails.logger.info "Search#merge called for #{search_result}"
     # filter empty search_results
     return [] if search_result.nil? || search_result.empty? || search_result.collect{|x| x.empty?}.include?(true)
 
@@ -63,10 +77,12 @@ class Search
   end
 
   def filterEmptyArticles(articles)
+    Rails.logger.info "Search#filterEmptyArticles called for #{articles}"
     articles.reject{|article| article[:ean].nil?}
   end
 
   def transformArticle(all_articles)
+    Rails.logger.info "Search#transformArticle called for #{all_articles}"
     #TODO: Refactor
     all_articles.each do |article|
       provider = article.delete(:provider)
@@ -78,6 +94,7 @@ class Search
   end
 
   def mergeArticles(articles)
+    Rails.logger.info "Search#mergeArticles called for #{articles}"
     #TODO: Refactor
     merged_articles = []
 
@@ -92,6 +109,7 @@ class Search
   end
 
   def mergeArticle(same_articles)
+    Rails.logger.info "Search#mergeArticle called for #{same_articles}"
     merged_article = same_articles.first
 
     merged_article[:prices] = getMergedAttributes(same_articles, :prices)
@@ -102,6 +120,7 @@ class Search
   end
 
   def getMergedAttributes(articles, attribute)
+    Rails.logger.info "Search#getMergedAttributes called for #{articles} with attributes #{attribute}"
     attrib = {}
     articles.collect{|x| x[attribute]}.each{|x| attrib.merge!(x)}
     attrib
