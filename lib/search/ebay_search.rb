@@ -9,7 +9,7 @@ class EbaySearch
   end
 
   def searchByKeywords(searchTerm, options={})
-    Rails.logger.info "EbaySearch#searchByKeywords called for #{search_term} with #{options}"
+    Rails.logger.info "EbaySearch#searchByKeywords called for #{searchTerm} with #{options}"
     links = self.getBookLinksFor(searchTerm, options)
     items = []
     links.take(options[:count] || 5).each{|link| items << getBookDataFor(link)}
