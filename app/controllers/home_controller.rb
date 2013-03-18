@@ -11,7 +11,7 @@ class HomeController < ApplicationController
   #TODO: Add filter that only results by active providers are displayed
   def search_results
     @user_new = User.new
-  	@user_new.role_id = 1
+    @user_new.role_id = 1
     @term = params[:search][:term]
     @options = {}
     search = Search.new(@term, @options)
