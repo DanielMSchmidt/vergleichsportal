@@ -3,8 +3,8 @@ class HomeController < ApplicationController
   after_filter :filter_results, only: [:search_results]
 
   def index
-    @user = User.new
-    @user.role_id = 1
+  	@user_new = User.new
+  	@user_new.role_id = 1
   end
 
   #TODO: Add filter that only results by active providers are displayed

@@ -40,17 +40,17 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
-    @user.role_id = 1
+    @user_new = User.new(params[:user])
+    @user_new.role_id = 1
 
     respond_to do |format|
-      if @user.save
+      if @user_new.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render json: @user, status: :created, location: @user }
+        format.json { render json: @user_new, status: :created, location: @user }
         format.js { render action: "show" }
       else
         format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: @user_new.errors, status: :unprocessable_entity }
         format.js {render action: "new"}
       end
     end
@@ -65,9 +65,11 @@ class UsersController < ApplicationController
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
+        format.js
       else
         format.html { render action: "edit" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.js { render action: "edit" }
       end
     end
   end
@@ -87,6 +89,7 @@ class UsersController < ApplicationController
   end
 
   def activate
+    @user_new = User.new
     if (@user = User.load_from_activation_token(params[:id]))
       @user.activate!
       redirect_to(login_path, :notice => 'User was successfully activated.')

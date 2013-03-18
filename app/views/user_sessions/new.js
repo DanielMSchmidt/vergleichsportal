@@ -1,0 +1,1 @@
+alert("Anmeldung ist gescheitert überprüfen Sie die Angaben!");

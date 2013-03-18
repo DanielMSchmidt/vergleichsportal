@@ -1,12 +1,9 @@
 / Header and Nav
 
--content_for :login_modal do 
-  = render :partial => "shared/modal/edit_user"
-
 .row
   .three.columns
     %h1
-      %img{:src => "http://placehold.it/400x100&text=Logo"}/
+      %img{:src => "/assets/logo.png"}/
   .two.columns.offset-by-seven
     %img{:src => "/assets/ger.gif"}/
     %img{:src => "/assets/gb.gif"}/
@@ -16,7 +13,7 @@
       .six.column
         %a.button.expand{"data-reveal-id" => "edit-user-modal", :href => "#"} Profil
       .six.column
-        %a.button.expand{:href => "#", :style => "padding-left: 9px;"} Abmelden
+        %a.button.expand{:href => logout_path, :style => "padding-left: 9px;"} Abmelden
   .nine.columns
     = yield :head
 / End Header and Nav

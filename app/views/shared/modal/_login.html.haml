@@ -5,15 +5,22 @@
       %a.button.expand{:href => "#"} Anmelden mit Facebook
   %hr/
   %h3 Anmelden
-  .row
-    .ten.columns.centered
-      %input{:placeholder => "E-Mail", :type => "text"}/
-  .row
-    .ten.columns.centered
-      %input{:placeholder => "Passwort", :type => "password"}/
-  .row
-    .five.columns.centered
-      %a.button.expand{:href => "#"} Anmelden
+  = form_tag user_sessions_path, :method => :post, :remote => true do
+    .row
+      .ten.columns.centered
+        .field
+          = label_tag :username
+          = text_field_tag :username
+
+    .row
+      .ten.columns.centered
+        .field
+          = label_tag :passsword
+          = password_field_tag :password
+    .row
+      .five.columns.centered
+        .actions
+          = submit_tag "Login", :class => "button"
   %hr/
   .row
     .ten.columns.centered

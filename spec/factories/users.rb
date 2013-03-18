@@ -7,4 +7,9 @@ FactoryGirl.define do
     salt "MyString"
     active false
   end
+
+  factory :registered_user, :class => :user do
+  	email "register@example.de"
+  	password "regpassword"
+  end
 end

@@ -14,7 +14,6 @@ gem 'sorcery', '~> 0.8.1'
 gem 'resque', '~> 1.23.0'
 gem 'resque-scheduler', '~> 2.0.0'
 gem 'draper', '~> 1.1.0'
-gem 'httparty', '~> 0.10.2'
 
 group :production do
   gem 'pg', '~> 0.14.1'
@@ -47,6 +46,7 @@ group :development, :test do
   gem 'sqlite3', '~> 1.3.7'
   gem 'simplecov', :require => false
   gem "nyan-cat-formatter"
+  gem 'launchy'
 end
 
 group :assets do
