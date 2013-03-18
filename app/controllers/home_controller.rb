@@ -10,10 +10,12 @@ class HomeController < ApplicationController
 
   #TODO: Add filter that only results by active providers are displayed
   def search_results
+    @user_new = User.new
+  	@user_new.role_id = 1
     @term = params[:search][:term]
     @options = {}
     search = Search.new(@term, @options)
-    @result = search.find
+    @result = search.find.reject{|result| result == false} # TODO: Check where nils come from
   end
 
   def admin
