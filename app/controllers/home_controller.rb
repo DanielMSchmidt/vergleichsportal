@@ -8,7 +8,6 @@ class HomeController < ApplicationController
     @providers = Provider.all
   end
 
-  #TODO: Add filter that only results by active providers are displayed
   def search_results
     @user_new = User.new
     @user_new.role_id = 1
