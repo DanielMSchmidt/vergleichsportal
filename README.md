@@ -21,6 +21,7 @@ and get a coffee, this one will take a while.
      $ cp config/database.yml.example config/database.yml
      $ vim config/database.yml
      $ gem install mailcatcher
+     $ mkdir app/assets/javascript/templates
 
 To start the development you have to do each time
 
