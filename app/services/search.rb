@@ -85,7 +85,9 @@ class Search
 
   def filterEmptyArticles(articles)
     Rails.logger.info "Search#filterEmptyArticles called for #{articles}"
-    articles.reject{|article| article[:ean].nil?}
+    no_empty_articles = articles.reject{|article| article[:ean].nil?}
+    Rails.logger.info "Search#filterEmptyArticles called and returns #{no_empty_articles}"
+    return no_empty_articles
   end
 
   def transformArticle(all_articles)
@@ -109,7 +111,7 @@ class Search
       article = articles.first
       same_articles = articles.select{|x| x[:ean] == article[:ean] }
       merged_articles << mergeArticle(same_articles)
-      same_articles.each{|article| articles.delete(article)}
+      same_articles.each{|single_article| articles.delete(single_article)}
     end
 
     merged_articles
