@@ -79,7 +79,10 @@ class AdvertismentsController < ApplicationController
   #PUT /advertisment/1/activate.json
   def activate
     advertisment = Advertisment.find(params[:id])
-    advertisment.activate unless advertisment.nil?
+    unless advertisment.nil?
+      advertisment.activate
+      @active_advertisment = advertisment
+    end
     respond_to do |format|
       format.html { redirect_to admin_home_path }
       format.json { head :no_content }
