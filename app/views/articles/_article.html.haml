@@ -2,21 +2,19 @@
   .title
     %h5 
       =article.name
-    %h3
-      %small 
-        ISBN-13: 
-        =article.ean
+    %small 
+      ISBN-13: 
+      =article.ean
   .content
     .row
       .four.columns
-        %img{:src => "http://placehold.it/350x350"}/
-        %img{:src => "http://placehold.it/350x350"}/
+        %img{:src => article.images.first.url}/
       -if search #view in search!
         .four.columns.offset-by-one
           %p
             =article.description
         .two.columns.offset-by-one
-          =link_to 'add', add_article_path(cart_id: @cart.id, article_id: article.id), class: 'button'
+          =link_to 'add', add_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
       -else #view in cart
         .seven.columns.offset-by-one
           %p
@@ -26,7 +24,7 @@
               = @cart.get_count(article)
           .row
             .six.columns
-              =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id), class: 'button'
+              =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
             .five.columns.offset-by-one
               %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "133"}
                 %tr

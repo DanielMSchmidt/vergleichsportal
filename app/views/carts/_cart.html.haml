@@ -1,5 +1,15 @@
-#cart-modal.reveal-modal.xlarge
-  %h3 Items in Cart
-  %ul.accordion
-    =render cart.articles.first, search: false unless cart.articles.empty?
-  %a.close-reveal-modal ×
+%li.active
+  .title
+    %h5
+      = cart.id
+  .content
+    .row
+      .six.columns
+        %ul
+          -cart.articles.each do |article|
+            %li
+              =article.name
+      .four.columns
+        %a.button.expand{:href => "#", :style => "margin-left: 50px; margin-bottom: 15px;"} Auswählen
+        %a.button.expand{:href => "#", :style => "margin-left: 50px;"} Löschen
+      .two.colums
