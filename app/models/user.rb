@@ -35,4 +35,15 @@ class User < ActiveRecord::Base
     return true if self.roles.empty?
     self.roles.collect{|role| role.name}.includes("Guest")
   end
+
+  def activeCart
+    self.cart.last_used.first
+  end
+
+  def addCart(cart_id)
+    Cart.where(id: cart_id).each do |cart|
+      cart.user_id = self.id
+      cart.save!
+    end
+  end
 end
