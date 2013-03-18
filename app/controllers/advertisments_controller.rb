@@ -75,6 +75,19 @@ class AdvertismentsController < ApplicationController
     end
   end
 
+  #PUT /advertisment/1/activate
+  #PUT /advertisment/1/activate.json
+  def activate
+    advertisment = Advertisment.find(params[:id])
+    unless advertisment.nil?
+      advertisment.activate
+      @active_advertisment = advertisment
+    end
+    respond_to do |format|
+      format.html { redirect_to admin_home_path }
+      format.json { head :no_content }
+    end
+  end
   # DELETE /advertisments/1
   # DELETE /advertisments/1.json
   def destroy
