@@ -4,5 +4,4 @@ class SearchQuery < ActiveRecord::Base
   has_many :articles, through: :article_query_assignments
 
   validates :value, presence: true
-
 end

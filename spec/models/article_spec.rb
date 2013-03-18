@@ -40,7 +40,7 @@ describe Article do
       should have_many(:images)
     end
     it "should have images which are dependent destroy" do
-      expect{ article.destroy }.to change{Image.count}.by(-1)
+      expect{ article.destroy }.to change{Image.count}.from(1).to(0)
     end
     it "should have many prices" do
       should have_many(:prices)
@@ -58,6 +58,15 @@ describe Article do
         article.prices.create(value: 10.3, provider_id: provider.id)
         article.should be_valid
       end
+    end
+  end
+
+  describe "methods" do
+    it "should have a generate method" do
+      Article.should respond_to(:generate)
+    end
+    it "should have a available for method" do
+      should respond_to(:available_for)
     end
   end
 end
