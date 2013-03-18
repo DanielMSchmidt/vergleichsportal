@@ -16,7 +16,7 @@
           %p
             =article.description
         .two.columns.offset-by-one
-          =link_to 'add', add_article_path(cart_id: @cart.id, article_id: article.id), class: 'button'
+          =link_to 'add', add_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
       -else #view in cart
         .seven.columns.offset-by-one
           %p
