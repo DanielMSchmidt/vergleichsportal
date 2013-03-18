@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   end
 
   def fetch_add
-    @active_advertisment ||= Advertisment.where(:active => true)
+    @active_advertisment ||= Advertisment.where(:active => true).first
     @active_advertisment ||= Advertisment.create(:link_url => "http://tibor-weiss.de", :img_url => "http://tibor-weiss.de/Fotos/2012Schandmaul/Schandmaul/content/images/large/IMG_3408.jpg", :active => true)
   end
 
