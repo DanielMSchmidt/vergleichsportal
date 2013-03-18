@@ -5,10 +5,13 @@ class Cart < ActiveRecord::Base
   has_many :compares
   belongs_to :user
 
+  scope :last_used, order('updated_at DESC').first
+
+  #TODO: REFACTOR!!!
   def get_count(article)
     article_cart_assignment = ArticleCartAssignment.find(:first,
 							 :conditions => {
-							  :article_id => article.id, 
+							  :article_id => article.id,
 							  :cart_id => self.id})
     article_cart_assignment.quantity
   end
@@ -16,7 +19,7 @@ class Cart < ActiveRecord::Base
   def add_article(article)
     article_cart_assignment = ArticleCartAssignment.find(:first,
 							 :conditions => {
-							  :article_id => article.id, 
+							  :article_id => article.id,
 							  :cart_id => self.id})
     if article_cart_assignment.nil?
       ArticleCartAssignment.create(article_id: article.id, cart_id: self.id)
@@ -29,7 +32,7 @@ class Cart < ActiveRecord::Base
   def remove_article(article)
     article_cart_assignment = ArticleCartAssignment.find(:first,
 							 :conditions => {
-							  :article_id => article.id, 
+							  :article_id => article.id,
 							  :cart_id => self.id})
     article_cart_assignment.destroy unless article_cart_assignment.nil?
   end
