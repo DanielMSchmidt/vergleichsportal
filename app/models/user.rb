@@ -9,10 +9,30 @@ class User < ActiveRecord::Base
   has_many :roles, through: :user_role_assignments
   has_many :carts
 
-  validates :email, :role_id, presence: true
-  validates :email, uniqueness: true
+  validates :email, :role_id, presence: true, :unless => :guest?
+  validates :email, uniqueness: true, :unless => :guest?
 
-  validates_length_of :password, :minimum => 3, :message => "password must be at least 3 characters long", :if => :password
-  validates_confirmation_of :password, :message => "should match confirmation", :if => :password
+  validates_length_of :password, :minimum => 3, :message => "password must be at least 3 characters long", :if => :password, :unless => :guest?
+  validates_confirmation_of :password, :message => "should match confirmation", :if => :password, :unless => :guest?
 
+
+  # Write Tests for code below
+  def self.generateGuest
+    user = User.new
+    Role.where(name: "Guest").each do |role|
+      UserRoleAssignment.create(role_id: role.id, user_id: user.id)
+    end
+    user
+  end
+
+  def addRole(rolename)
+    Role.where(name: rolename).each do |role|
+      UserRoleAssignment.create(role_id: role.id, user_id: self.id)
+    end
+  end
+
+  def guest?
+    return true if self.roles.empty?
+    self.roles.collect{|role| role.name}.includes("Guest")
+  end
 end
