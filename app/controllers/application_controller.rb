@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
 
   def set_active_user
+    #TODO: Save ID of guest sothat it doesnt get lost
     @active_user ||= current_user ||= User.generateGuest
   end
 
