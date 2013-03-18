@@ -97,4 +97,8 @@ class UsersController < ApplicationController
       not_authenticated
     end
   end
+
+  def addCart
+    @active_user.addCart(params[:cart_id])
+  end
 end
