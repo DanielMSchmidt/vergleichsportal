@@ -2,11 +2,9 @@
   .five.columns
     %p
       -if advertisment.active
-        %a{:href => advertisment.link_url}
-          %img{:src => advertisment.img_url}/
+        %img{:src => advertisment.img_url}/
       -else
-        %a{:href => activate_advertisment_path(advertisment)}
-          %img{:src => advertisment.img_url}/
+        = link_to image_tag(advertisment.img_url), activate_advertisment_path(advertisment), :remote => true
 
   .seven.columns
     = simple_form_for(advertisment, remote: true) do |f|
@@ -20,5 +18,3 @@
         .row
           = f.button :submit, :class => "seven columns" 
           = link_to 'löschen', advertisment, :class => "button four columns", :method => :delete, :remote => true, :data => { :confirm => 'Sind sie sich sicher?' }
-          -unless advertisment.active
-            = link_to 'aktivieren', activate_advertisment_path(advertisment), :class => :button

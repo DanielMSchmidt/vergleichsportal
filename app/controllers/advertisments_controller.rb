@@ -42,7 +42,8 @@ class AdvertismentsController < ApplicationController
   # POST /advertisments.json
   def create
     @advertisment = Advertisment.new(params[:advertisment])
-
+    @active_advertisments = Advertisment.active
+    @inactive_advertisments = Advertisment.inactive
     respond_to do |format|
       if @advertisment.save
         format.html { redirect_to @advertisment, notice: 'Advertisment was successfully created.' }
@@ -60,7 +61,8 @@ class AdvertismentsController < ApplicationController
   # PUT /advertisments/1.json
   def update
     @advertisment = Advertisment.find(params[:id])
-
+    @active_advertisments = Advertisment.active
+    @inactive_advertisments = Advertisment.inactive
     logger.debug "update #{@advertisment}"
     respond_to do |format|
       if @advertisment.update_attributes(params[:advertisment])
@@ -79,6 +81,8 @@ class AdvertismentsController < ApplicationController
   #PUT /advertisment/1/activate.json
   def activate
     advertisment = Advertisment.find(params[:id])
+    @active_advertisments = Advertisment.active
+    @inactive_advertisments = Advertisment.inactive
     unless advertisment.nil?
       advertisment.activate
       @active_advertisment = advertisment
@@ -86,6 +90,7 @@ class AdvertismentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to admin_home_path }
       format.json { head :no_content }
+      format.js
     end
   end
   # DELETE /advertisments/1

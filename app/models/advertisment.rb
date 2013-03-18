@@ -6,6 +6,9 @@ class Advertisment < ActiveRecord::Base
   validates :link_url, url: true
   validates :active, :inclusion => {:in =>[true,false]}
 
+  scope :active, where(:active => true)
+  scope :inactive, where(:active => false)
+
   def activate
     ads = Advertisment.where(:active => true)
     ads.each{|x| x.deactivate}

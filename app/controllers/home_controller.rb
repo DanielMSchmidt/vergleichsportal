@@ -16,13 +16,14 @@ class HomeController < ApplicationController
     @options = {}
     search = Search.new(@term, @options)
     @result = search.find.uniq
+    @result.delete(false)
   end
 
   def admin
     @users = User.all
     @providers = Provider.all
-    @active_advertisments = Advertisment.where(:active => true);
-    @inactive_advertisments = Advertisment.where(:active => false);
+    @active_advertisments = Advertisment.active
+    @inactive_advertisments = Advertisment.inactive
     @advertisment = Advertisment.new
   end
 
