@@ -7,7 +7,9 @@
     %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "133"}
       %tr
         %td
-          %iframe{:bgcolor => "", :border => "0", :frameborder => "0", :height => "37", :hspace => "0", :marginheight => "0", :marginwidth => "0", :scrolling => "no", :src => "http://www.ratingcode.com/show.php?id=136199479948&st=3&bg=", :vspace => "0", :width => "115"}
-        %td{:align => "center", :style => "padding-top:5px", :valign => "top", :width => "18"}
-          %a{:href => "http://www.ratingcode.com", :target => "_blank"}
-            %img{:alt => "Free Rating Code", :border => "0", :src => "http://www.ratingcode.com/images/info.png", :title => "Free Rating Code"}/
+          %form
+            %input.star{name:"star3", type: "radio", disabled: "disabled"}
+            %input.star{name:"star3", type:"radio", disabled:"disabled"}
+            %input.star{name:"star3", type:"radio", disabled:"disabled", checked:"checked"}
+            %input.star{name:"star3", type:"radio", disabled:"disabled"}
+            %input.star{name:"star3", type:"radio", disabled:"disabled"}
