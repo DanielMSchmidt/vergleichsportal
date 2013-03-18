@@ -2,12 +2,14 @@ require 'rubygems'
 require 'mechanize'
 
 class EbaySearch
+  #TODO: Add option support
 
   def initialize
     @agent = Mechanize.new
   end
 
-  def search_by_keywords(searchTerm, options={})
+  def searchByKeywords(searchTerm, options={})
+    Rails.logger.info "EbaySearch#searchByKeywords called for #{searchTerm} with #{options}"
     links = self.getBookLinksFor(searchTerm, options)
     items = []
     links.take(options[:count] || 5).each{|link| items << getBookDataFor(link)}
@@ -15,10 +17,13 @@ class EbaySearch
   end
 
   def getNewestPriceFor(link)
+    Rails.logger.info "EbaySearch#getNewestPriceFor called for #{link}"
     getBookDataFor(link)[:price]
   end
 
   def getBookLinksFor(searchTerm, options)
+    Rails.logger.info "EbaySearch#getBookLinksFor called for #{searchTerm} with #{options}"
+
     #                 Suchbegriff                                      Neuwertig              Sofortkauf
     #                 |                                                |                      |             Deutsche Anbieter
     #                 |                                                |                      |             |
@@ -29,6 +34,7 @@ class EbaySearch
   end
 
   def getBookDataFor(url)
+    Rails.logger.info "EbaySearch#getBookDataFor called for #{url}"
     book = {}
     page = @agent.get(url)
 
@@ -55,6 +61,7 @@ class EbaySearch
     book[:description] = nil
     book[:url] = url
 
+    Rails.logger.info "EbaySearch#getBookDataFor called for #{url} returns #{book}"
     return book
   end
 end

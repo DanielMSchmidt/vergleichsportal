@@ -14,8 +14,14 @@ class Article < ActiveRecord::Base
   has_many :urls
 
   def self.generate(article_hash)
+    return false if article_hash[:ean].nil? || article_hash[:name].nil? || article_hash[:description].nil?
+
     article = Article.new(article_hash.except(:urls, :prices, :images))
-    article_hash[:images].each do |image|
+    article_hash[:images].each do |key, image|
+      Rails.logger.info "Article#generate called and image was type #{image.class}"
+
+      image = image.url if (image.class == Mechanize::Page::Image)
+
       article.images.new(url: image)
     end
     article_hash[:prices].each do |key, value|

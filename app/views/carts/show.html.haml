@@ -3,7 +3,8 @@
 %p
   %b User:
   = @cart.user_id
-
+%ul.accordion
+  =render @cart.articles, search: false
 = link_to 'Edit', edit_cart_path(@cart)
 \|
 = link_to 'Back', carts_path

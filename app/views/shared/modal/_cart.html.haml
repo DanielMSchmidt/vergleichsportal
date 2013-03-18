@@ -1,0 +1,13 @@
+#cart-modal.reveal-modal.xlarge
+  %h3 Items in Cart
+  %ul.accordion
+    =render @cart.articles, search: false
+  .row
+    .three.columns
+      %a#yes-no.button.expand{:href => "#"} Neuer Warenkorb
+    .three.columns.offset-by-one
+      %a.button.expand{"data-reveal-id" => "switch-cart-modal", :href => "#"} Ändere / Lösche Warenkorb
+    .three.columns.offset-by-one
+      %a.button.expand{"data-reveal-id" => "compare-cart-modal", :href => "#"} Vergleiche Anbieter
+    .one.columns
+  %a.close-reveal-modal ×

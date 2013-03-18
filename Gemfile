@@ -46,6 +46,7 @@ group :development, :test do
   gem 'guard-cucumber', '~> 1.3.2'
   gem 'sqlite3', '~> 1.3.7'
   gem 'simplecov', :require => false
+  gem "nyan-cat-formatter"
 end
 
 group :assets do

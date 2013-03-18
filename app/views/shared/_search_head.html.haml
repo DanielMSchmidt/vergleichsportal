@@ -1,0 +1,7 @@
+.row.collapse
+
+  = form_for(:search, :url => home_search_path,:method => "get") do |f|
+    .ten.mobile-three.columns
+      =f.text_field :term
+    .two.mobile-one.columns
+      =f.submit "Finden!", :class => "button"
