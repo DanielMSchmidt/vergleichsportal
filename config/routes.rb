@@ -14,7 +14,7 @@ Vergleichsportal::Application.routes.draw do
 
   get "home/search" => "home#search_results"
 
-  get "home/admin" => "home#admin"
+  get "home/admin" => "home#admin", :as => 'admin_home'
 
   resources :carts
 
@@ -32,6 +32,8 @@ Vergleichsportal::Application.routes.draw do
 
 
   resources :user_sessions
+
+  get "advertisment/:id/activate" => "advertisments#activate", :as => 'activate_advertisment'
 
   resources :advertisments
 
