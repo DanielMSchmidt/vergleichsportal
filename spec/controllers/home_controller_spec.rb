@@ -344,6 +344,35 @@ describe HomeController do
     end
   end
 
+  describe "active user" do
+    describe "not logged in" do
+      it "should have a user which is a guest" do
+        get 'index'
+        assigns(:active_user).should be_a(User)
+        assigns(:active_user).guest?.should be_true
+      end
+
+      it "should have an active cart associated with the user" do
+        get 'index'
+        assigns(:active_cart).should be_a(Cart)
+        assigns(:active_cart).user.should eq(assigns(:active_user))
+      end
+    end
+
+    describe "logging in" do
+      it "should change the active user"
+      it "should add the cart if former cart was empty"
+      it "should ask the user if his current cart should be added and set as active"
+      it "shouldnt ask the user anything if the current cart is empty"
+    end
+
+    describe "registering" do
+      it "should send an activation mail"
+      it "should have the current cart as active cart"
+      it "shouldnt have the guest role"
+    end
+  end
+
   describe "GET 'admin'" do
     it "returns http success" do
       get 'admin'
