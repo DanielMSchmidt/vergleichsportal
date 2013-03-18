@@ -1,14 +1,8 @@
 class ApplicationController < ActionController::Base
-  before_filter :fetch_cart
   before_filter :set_providers
   before_filter :set_active_user
   before_filter :set_active_cart
 
-  def fetch_cart
-    #TODO: Fill with something sensefull!
-    @cart ||= Cart.first
-    @cart ||= Cart.create
-  end
 
   def set_active_user
     @active_user ||= current_user ||= User.generateGuest
