@@ -7,5 +7,9 @@ class ApplicationController < ActionController::Base
     @cart ||= Cart.create
   end
 
+  def active_user
+    @active_user ||= current_user ||= User.generateGuest
+  end
+
   protect_from_forgery
 end
