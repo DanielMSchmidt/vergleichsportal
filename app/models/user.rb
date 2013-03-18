@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   # Write Tests for code below
   def self.generateGuest
-    user = User.new
+    user = User.create
     Role.where(name: "Guest").each do |role|
       UserRoleAssignment.create(role_id: role.id, user_id: user.id)
     end
