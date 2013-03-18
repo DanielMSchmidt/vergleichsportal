@@ -26,7 +26,7 @@
               = @cart.get_count(article)
           .row
             .six.columns
-              =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id), class: 'button'
+              =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id),remote: true, class: 'button'
             .five.columns.offset-by-one
               %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "133"}
                 %tr
