@@ -30,7 +30,8 @@
               =notice
               %a.close{href: "#"} &times;
         %p
-          %img{:src => "http://placehold.it/205x720&text=Werbung"}/    
+          %a{:href => @active_advertisment.link_url}
+            %img{:src => @active_advertisment.img_url}/
     
       .nine.columns
         = yield
