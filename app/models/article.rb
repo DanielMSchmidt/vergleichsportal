@@ -34,6 +34,24 @@ class Article < ActiveRecord::Base
     article
   end
 
+  def available_for_each(provider_array)
+    provider_array.each do |provider|
+      return false unless self.available_for(provider)
+    end
+    true
+  end
+
+  def available_for_any(provider_array)
+    provider_array.each do |provider|
+      return true if self.available_for(provider)
+    end
+    false
+  end
+
+  def available_for(provider)
+    self.prices.where(provider_id: provider).any?
+  end
+
   def to_s
     "ID: #{self.id}, Name: #{self.name}, Author: #{self.author}"
   end

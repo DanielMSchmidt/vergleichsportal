@@ -323,7 +323,25 @@ describe HomeController do
         end
       end
     end
+  end
 
+  describe "filter search results" do
+    before(:each) do
+      @article = Article.first
+      @result = [@article]
+      @search = Search.new(search_query.value)
+      Search.stub(:new).and_return(@search)
+      @search.stub(:find).and_return(@result)
+    end
+    it "should display the results which are from active providers" do
+
+      @article.should_receive(:available_for).at_most(Provider.count).times.and_return(true)
+      expect{post 'search_results', search:{term: "Dan Brown"}}.to change{@result.count}.by(0)
+    end
+    it "shouldnt display the results which are from inactive providers" do
+      @article.should_receive(:available_for).at_most(Provider.count).times.and_return(false)
+      expect{post 'search_results', search:{term: "Dan Brown"}}.to change{@result.count}.by(-1)
+    end
   end
 
   describe "GET 'admin'" do

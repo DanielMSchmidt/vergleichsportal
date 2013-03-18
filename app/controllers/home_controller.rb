@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   after_filter :add_query, only: [:search_results]
+  after_filter :filter_results, only: [:search_results]
 
   def index
     @user = User.new
@@ -27,5 +28,10 @@ protected
   def add_query
     query = SearchQuery.create(value: @term)
     query.articles = @result unless @result.nil?
+  end
+
+  def filter_results
+    Rails.logger.info "HomeController#filter_results called"
+    @result.select!{|article| article.available_for_any(Provider.where(active: true))} unless @result.nil?
   end
 end
