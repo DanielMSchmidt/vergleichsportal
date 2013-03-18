@@ -50,4 +50,8 @@ class Cart < ActiveRecord::Base
       false
     end
   end
+
+  def empty?
+    self.articles.empty?
+  end
 end
