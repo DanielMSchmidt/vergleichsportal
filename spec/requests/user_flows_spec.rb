@@ -1,13 +1,31 @@
 # encoding: utf-8
 require 'spec_helper'
 
+def registerAndActivateUser(user_attributes)
+  visit root_path
+  click_link "Anmelden / Registrieren"
+  sleep 2
+  click_on "Registrieren!"
+  sleep 2
+  fill_in 'user[email]', :with => user_attributes[:email]
+  fill_in 'user[password]', :with => user_attributes[:password]
+  fill_in 'user[password_confirmation]', :with => user_attributes[:password]
+  sleep 1
+  puts User.all
+  user = User.last
+  puts user.class
+  puts user
+end
+  
 
 describe "UserFlows" do
-  let(:registed_user) { FactoryGirl.create(:registed_user) }
+  @user_attr = FactoryGirl.attributes_for(:registered_user)
 
-  before(:all) do
-    #...registeruser...
-    #User.first.activation_state
+  before(:each) do
+    @user_attr = FactoryGirl.attributes_for(:registered_user)
+    #puts @user_attr
+    #puts @user_attr.class
+    registerAndActivateUser(@user_attr)
   end
 
   describe "Login without E-Mail Adress and PW", :js => true do
@@ -37,8 +55,9 @@ describe "UserFlows" do
       visit root_path
       click_link "Anmelden / Registrieren"
       sleep 1
-      fill_in 'username', :with => registed_user.email
-      fill_in 'password', :with => registed_user.password
+      puts "hello"
+      fill_in 'username', :with => registered_user.email
+      fill_in 'password', :with => registered_user.password
       click_on "Login"
       sleep 5
     end

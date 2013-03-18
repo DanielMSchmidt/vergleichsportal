@@ -10,6 +10,6 @@ FactoryGirl.define do
 
   factory :registered_user, :class => :user do
   	email "register@example.de"
-  	password "MyString"
+  	password "regpassword"
   end
 end
