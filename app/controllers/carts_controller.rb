@@ -75,11 +75,13 @@ class CartsController < ApplicationController
 
     respond_to do |format|
       if @cart.add_article(article)
-	format.html { redirect_to @cart, notice: 'Article was successfully added.' }
-	format.json { head :no_contest }
+	      format.html { redirect_to @cart, notice: 'Article was successfully added.' }
+	      format.json { head :no_contest }
+        format.js 
+
       else
-	format.html { redirect_to @cart, notice: 'An error occured while adding the Article.' }
-	format.json { render json: @cart.errors, status: :unprocessable_entity }
+	      format.html { redirect_to @cart, notice: 'An error occured while adding the Article.' }
+        format.json { render json: @cart.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -93,11 +95,12 @@ class CartsController < ApplicationController
 
     respond_to do |format|
       if @cart.remove_article(article)
-	format.html { redirect_to @cart, notice: 'Article was successfully removed.' }
-	format.json { head :no_contest }
+      	format.html { redirect_to @cart, notice: 'Article was successfully removed.' }
+	      format.json { head :no_contest }
+        format.js
       else
-	format.html { redirect_to @cart, notice: 'An error occured while adding the Article.' }
-	format.json { render json: @cart.errors, status: :unprocessable_entity }
+	      format.html { redirect_to @cart, notice: 'An error occured while adding the Article.' }
+	      format.json { render json: @cart.errors, status: :unprocessable_entity }
       end
     end
   end
