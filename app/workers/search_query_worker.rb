@@ -4,6 +4,7 @@ class SearchQueryWorker
 
   def perform(query)
     Rails.logger.info "Starting SearchQueryWorker with query: #{query}"
-
+    search = Search.new(query.value) #TODO: Add options
+    search.getAllNewestesPrices
   end
 end
