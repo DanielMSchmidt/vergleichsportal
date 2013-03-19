@@ -1,0 +1,15 @@
+#compare-cart-modal.reveal-modal.large
+  %h3 Anbietervergleich
+  -@providers.each do |provider|
+    .row
+      .ten.columns.centered
+        %ul.pricing-table
+          %li.title 
+            =provider.name
+          %li
+            %img{:src => "http://placehold.it/450x350", :style => "margin-left: 80px;"}/
+          %li.price
+            =@cart.calculate_overall_price(provider)
+          %li.cta-button
+            %a.button{:href => "#"} Direkt zu Buch.de &raquo;
+  %a.close-reveal-modal ×
