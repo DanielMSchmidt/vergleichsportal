@@ -5,7 +5,7 @@ class Cart < ActiveRecord::Base
   has_many :compares
   belongs_to :user
 
-  scope :last_used, order('updated_at DESC').first
+  scope :last_used, order('updated_at DESC')
 
   def get_count(article)
     article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
