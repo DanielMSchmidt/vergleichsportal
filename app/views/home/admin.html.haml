@@ -9,14 +9,16 @@
   %li
     .title
       %h5 Werbung
-    .content#active-ad
+    .content
       %h6 Aktiv
       %hr
+      #active-ad
         
         = render @active_advertisments
 
       %h6 Inactive
       %hr
+      #ad-list
 
         = render @inactive_advertisments
       .row

@@ -2,21 +2,19 @@
   .title
     %h5 
       =article.name
-    %h3
-      %small 
-        ISBN-13: 
-        =article.ean
+    %small 
+      ISBN-13: 
+      =article.ean
   .content
     .row
       .four.columns
-        %img{:src => "http://placehold.it/350x350"}/
-        %img{:src => "http://placehold.it/350x350"}/
+        %img{:src => article.images.first.url}/
       -if search #view in search!
         .four.columns.offset-by-one
           %p
             =article.description
         .two.columns.offset-by-one
-          =link_to 'add', add_article_path(cart_id: @cart.id, article_id: article.id), class: 'button'
+          =link_to 'add', add_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
       -else #view in cart
         .seven.columns.offset-by-one
           %p
@@ -26,13 +24,12 @@
               = @cart.get_count(article)
           .row
             .six.columns
-              =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id), class: 'button'
+              =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
             .five.columns.offset-by-one
-              %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "133"}
-                %tr
-                  %td{:style => "padding: 4px 10px"}
-                    %iframe{:bgcolor => "", :border => "0", :frameborder => "0", :height => "37", :hspace => "0", :marginheight => "0", :marginwidth => "0", :scrolling => "no", :src => "http://www.ratingcode.com/show.php?id=136199479948&st=3&bg=", :vspace => "0", :width => "115"}
-                  %td{:align => "center", :style => "padding-top:5px", :valign => "top", :width => "18"}
-                    %a{:href => "http://www.ratingcode.com", :target => "_blank"}
-                      %img{:alt => "Free Rating Code", :border => "0", :src => "http://www.ratingcode.com/images/info.png", :title => "Free Rating Code"}/
+              =form_tag do
+                = radio_button_tag :value, 1, false, :class => "star required"
+                = radio_button_tag :value, 2, false, :class => "star"
+                = radio_button_tag :value, 3, false, :class => "star"
+                = radio_button_tag :value, 4, false, :class => "star"
+                = radio_button_tag :value, 5, false, :class => "star"
 

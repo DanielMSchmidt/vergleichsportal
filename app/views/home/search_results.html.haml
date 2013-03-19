@@ -3,7 +3,8 @@
 
 %h3{:style => "margin-bottom: 19px;"}
   Suchergebnisse:
-  %small "The Hitchhiker’s Guide to the Galaxy"
+  %small
+    = @term
 %ul.accordion
 
   =render @result, search: true
@@ -13,4 +14,4 @@
   = render :partial => "shared/modal/cart"
   = render :partial => "shared/modal/switch_cart" 
   = render :partial => "shared/modal/compare_cart" 
-  = render :partial => "shared/modal/rate_providers" 
+  -#= render :partial => "shared/modal/rate_providers" 
