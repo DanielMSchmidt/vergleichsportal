@@ -1,3 +1,3 @@
-$("#cart").html("<%= escape_javascript(render @cart.articles, search: false) %>");
-$("#change-cart").html("<%= escape_javascript(render @cart) %>");
+$("#cart").html("<%= escape_javascript(render @active_cart.articles, search: false) %>");
+$("#change-cart").html("<%= escape_javascript(render @active_cart) %>");
 errornote("Artikel wurde entfernt!", "success");

@@ -1,9 +1,9 @@
 %li
   .title
-    %h5 
+    %h5
       =article.name
-    %small 
-      ISBN-13: 
+    %small
+      ISBN-13:
       =article.ean
   .content
     .row
@@ -14,17 +14,17 @@
           %p
             =article.description
         .two.columns.offset-by-one
-          =link_to 'add', add_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
+          =link_to 'add', add_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
       -else #view in cart
         .seven.columns.offset-by-one
           %p
             =article.description
             %br
             %h1
-              = @cart.get_count(article)
+              = @active_cart.get_count(article)
           .row
             .six.columns
-              =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
+              =link_to 'remove', remove_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
             .five.columns.offset-by-one
               =form_tag do
                 = radio_button_tag :value, 1, false, :class => "star required"
