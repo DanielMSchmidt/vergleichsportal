@@ -59,10 +59,15 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
-
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @active_user.update_attributes(params[:user])
+        if @active_user.guest?
+          @active_user.removeRole("Guest")
+          @active_user.addRole("Registered User")
+          @active_user.send_activation_needed_email!
+          cookies[:registered] = true
+        end
+
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
         format.js
