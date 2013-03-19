@@ -1,4 +1,6 @@
 Vergleichsportal::Application.routes.draw do
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
 
   get "password_resets/create"
 
@@ -8,9 +10,9 @@ Vergleichsportal::Application.routes.draw do
 
   resources :password_resets
 
-  
 
-  get "home/index" => "home#index" 
+
+  get "home/index" => "home#index"
 
   get "home/search" => "home#search_results"
 
