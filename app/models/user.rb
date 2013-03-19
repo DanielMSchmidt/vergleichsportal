@@ -16,12 +16,13 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, :message => "should match confirmation", :if => :password, :unless => :guest?
 
 
-  # Write Tests for code below
+  #TODO Write Tests for code below
   def self.generateGuest
     user = User.create
     Role.where(name: "Guest").each do |role|
       UserRoleAssignment.create(role_id: role.id, user_id: user.id)
     end
+    @guest_user_id = user.id #To set it in the session later
     user
   end
 
