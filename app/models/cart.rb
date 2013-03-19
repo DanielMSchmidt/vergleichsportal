@@ -47,4 +47,11 @@ class Cart < ActiveRecord::Base
       false
     end
   end
+
+  def is_book_in_cart?
+    self.articles.each do |article|
+      return true if article.is_book?
+    end
+    false
+  end
 end
