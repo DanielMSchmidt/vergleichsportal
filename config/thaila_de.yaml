@@ -1,0 +1,13 @@
+:url: http://thalia.de/
+:search_form: formsearch
+:search_field: sq
+:link_href: /^http:\/\/www.thalia.de\/shop\/tha_homestartseite\/suchartikel\/.*$/
+:price: .price
+:detail_headline: .articleDetails th
+:detail_value: .articleDetails td
+:book:
+  :name: .site
+  :author: .itemAuthor a
+  :description: .articleDescription p
+  
+

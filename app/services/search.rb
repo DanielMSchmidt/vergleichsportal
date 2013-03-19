@@ -93,6 +93,7 @@ class Search
   def transformArticle(all_articles)
     Rails.logger.info "Search#transformArticle called for #{all_articles}"
     #TODO: Refactor
+    #FIX ME
     all_articles.each do |article|
       provider = article.delete(:provider)
       article[:images] ||= {provider => article.delete(:image)}
