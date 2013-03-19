@@ -10,7 +10,7 @@ class Provider < ActiveRecord::Base
   has_many :urls
 
   def average_rating
-  	average = 0
+    average = 0
     if self.ratings
       self.ratings.each do |r|
         average += r.value
