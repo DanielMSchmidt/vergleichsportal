@@ -7,8 +7,13 @@ class ApplicationController < ActionController::Base
 
 
   def set_active_user
-    #TODO: Save ID of guest sothat it doesnt get lost
-    @active_user ||= current_user ||= User.generateGuest
+
+    # The active User is allready set
+    # |              There is a logged in user
+    # |              |                There was allready a guest user created
+    # |              |                |                        Last chance: create a new guest user
+    # |              |                |                        |
+    @active_user ||= current_user ||= fetchUserFromSessiom ||= User.generateGuest
   end
 
   def set_active_cart
