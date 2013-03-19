@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, :message => "should match confirmation", :if => :password, :unless => :guest?
 
 
+  def send_activation_needed_email!
+    super unless self.guest?
+  end
+
   #TODO Write Tests for code below
   def self.generateGuest
     user = User.create
