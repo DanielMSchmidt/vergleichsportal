@@ -11,7 +11,7 @@ class Provider < ActiveRecord::Base
 
   def average_rating
     average = 0
-    if self.ratings
+    if self.ratings.any?
       self.ratings.each do |r|
         average += r.value
       end

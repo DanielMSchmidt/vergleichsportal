@@ -71,7 +71,7 @@ class Article < ActiveRecord::Base
 
   def average_rating
     average = 0
-    unless self.ratings.empty?
+    if self.ratings.any?
       self.ratings.each do |r|
         average += r.value
       end
