@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Cart < ActiveRecord::Base
   attr_accessible :user_id
   has_many :article_cart_assignments
@@ -56,7 +57,7 @@ class Cart < ActiveRecord::Base
   end
 
   def calc_shipping(provider)
-    return 0 if provider.name == "ebay.de" or provider.name == "bücher.de"
+    return 0 if provider.name == "ebay" or provider.name == "bücherDe"
     return 0 if self.is_book_in_cart?
     article_price = self.price_of_all_articles(provider)
     return 3 if article_price < 20
