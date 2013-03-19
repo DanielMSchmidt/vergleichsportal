@@ -11,8 +11,7 @@
             .form-inputs
               = f.hidden_field :active, value: false
             .form-actions
-              = f.button :submit, provider.name
-              %img{:src => "/assets/unchecked.png"}
+              = f.button :submit, "aktive:"+ provider.name
               
         - else
           = simple_form_for(provider, remote: true) do |f|
@@ -21,5 +20,4 @@
             .form-inputs
               = f.hidden_field :active, value: true
             .form-actions
-              = f.button :submit, provider.name
-              %img{:src => "/assets/unchecked.png"}
+              = f.button :submit, "deaktiviert:"+ provider.name

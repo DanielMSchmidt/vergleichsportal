@@ -1,2 +1,2 @@
-location.reload();
-alert("Anbieter <%= @provider.name %> wurde aktualisiert");
+$("#provider").html('<%= escape_javascript(render :partial => "home/admin/provider") %>');
+errornote("Anbieter <%= @provider.name %> wurde aktualisiert!", "success");

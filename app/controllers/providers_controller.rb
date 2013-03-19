@@ -58,9 +58,9 @@ class ProvidersController < ApplicationController
   # PUT /providers/1.json
   def update
     @provider = Provider.find(params[:id])
-
     respond_to do |format|
       if @provider.update_attributes(params[:provider])
+        @providers = Provider.all
         format.html { redirect_to @provider, notice: 'Provider was successfully updated.' }
         format.json { head :no_content }
         format.js
