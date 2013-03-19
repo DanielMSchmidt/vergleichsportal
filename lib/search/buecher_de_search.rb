@@ -1,14 +1,15 @@
+#encoding: utf-8
 require 'mechanize'
 require 'yaml'
 
-class BuchDeSearch
+class BuecherDeSearch
 
 	def initialize()
 		@provider = YAML.load_file "config/buecher_de.yml"
 		@agent = Mechanize.new
 	end
 
-	def search_by_keywords(searchTerm, options={})
+	def searchByKeywords(searchTerm, options={})
 		if options.empty?
       		links = getBookLinksFor(searchTerm)
     	else
@@ -17,18 +18,20 @@ class BuchDeSearch
     	
     	#is there a number of results?
     	if options[:count].nil?
-      		links.collect{|link| getBookDataFor(link)}
+      		articles = links.collect{|link| getBookDataFor(link)}
     	else
-      		links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      		articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
     	end
+
+    	filterByType(articles, options)
 	end
 
 	def getNewestPriceFor(link)
-    	Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
+    	#Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
     	getBookDataFor(link)[:price]
  	end
 
-	def getBookLinksFor(searchTerm, options)
+	def getBookLinksFor(searchTerm)
 		page = @agent.get(@provider[:url])
 
 		buch_form = page.form(@provider[:search_form])
@@ -52,6 +55,7 @@ class BuchDeSearch
 		books[:price] = page.search(@provider[:price]).to_s[/\d+,\d+/].tr(',','.').to_f
 		books[:image_url] = page.images.at(5)
 		book[:url] = link
+		book[:type] = getType(page)
 		book
 	end
 
@@ -64,7 +68,38 @@ class BuchDeSearch
 		books=  page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
+  	def filterByType(articles, options)
+    	if options[:type].nil?
+    		filteredArticles = articles
+    	else
+    		articles.each do |element|
+        		if element.type == options[:type]
+          			filteredArticles = element
+        		end
+    		end
+    	end
+    filteredArticles
+ 	end
+
 	def getItem(page, query)
 		page.search(query).first.text
 	end
+
+	def getType(page)
+    type = page.search('.pm_artikeltyp').first.text
+    if type == 'Audio CD'
+      type = 'cd'
+    elsif type == 'eBook, ePUB'
+      type = 'ebook'
+    elsif type == 'Gebundenes Buch' || type == 'Broschiertes Buch'
+      type = 'book'
+    elsif type == 'Blu-ray Disc'
+      type = 'bluray'
+  	elsif type == 'DVD'
+  	  type = 'dvd'	
+    end
+    type
+  end
+
+
 end

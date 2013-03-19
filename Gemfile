@@ -3,17 +3,17 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.12'
 gem 'simple_form', '~> 2.1.0'
 gem 'foreman', '~> 0.61.0'
-gem 'puma', '~> 1.6.3'
-gem "celluloid", "~> 0.12.4"
+gem 'thin'
 gem 'haml', '~> 4.0.0'
 gem 'jbuilder', '~> 1.0.2'
 gem 'jquery-rails', '~> 2.2.1'
 gem 'mechanize', '~> 2.5.1'
 gem 'nokogiri', '~> 1.5.6'
 gem 'sorcery', '~> 0.8.1'
-gem 'resque', '~> 1.23.0'
-gem 'resque-scheduler', '~> 2.0.0'
 gem 'draper', '~> 1.1.0'
+gem "sidekiq", "~> 2.8.0"
+gem 'slim'
+gem 'sinatra', '>= 1.3.0', :require => nil
 
 group :production do
   gem 'pg', '~> 0.14.1'

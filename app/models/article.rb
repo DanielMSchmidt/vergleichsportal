@@ -68,4 +68,15 @@ class Article < ActiveRecord::Base
   def to_s
     "ID: #{self.id}, Name: #{self.name}, Author: #{self.author}"
   end
+
+  def average_rating
+    average = 0
+    if self.ratings.any?
+      self.ratings.each do |r|
+        average += r.value
+      end
+      average /= self.ratings.size
+    end
+    average
+  end
 end

@@ -8,4 +8,15 @@ class Provider < ActiveRecord::Base
   has_many :prices
   has_many :ratings, dependent: :destroy
   has_many :urls
+
+  def average_rating
+    average = 0
+    if self.ratings.any?
+      self.ratings.each do |r|
+        average += r.value
+      end
+      average /= self.ratings.size
+    end
+    average
+  end
 end

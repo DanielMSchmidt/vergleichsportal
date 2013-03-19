@@ -13,7 +13,7 @@ class Search
     searches = SearchQuery.where(value: @search_term)
     unless searches.empty?
       Rails.logger.info "SearchQueries were found: #{searches}"
-      return searches.collect{|search| search.articles}.flatten
+      return searches.includes(:articles).collect{|search| search.articles}.flatten
     else
       Rails.logger.info "No SearchQueries were found, starting search"
       searchAtMultipleProviders(@provider, @search_term, @options)
@@ -23,6 +23,9 @@ class Search
   def getAllNewestesPrices
     Rails.logger.info "Search#getAllNewestPrices called for #{@search_term}"
     query = SearchQuery.where(value: @search_term).first
+
+    SearchQueryWorker.perform_at(2.hours.from_now, query)
+
     if query.nil? || query.articles.empty?
       Rails.logger.info "Search#getAllNewestPrices no query found or no articles in query"
       return false
