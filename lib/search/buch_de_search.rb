@@ -1,5 +1,7 @@
+#encoding: utf-8
 require 'mechanize'
 require 'yaml'
+
 
 class BuchDeSearch
   #TODO add option support
@@ -11,7 +13,7 @@ class BuchDeSearch
   end
 
   def searchByKeywords(searchTerm, options={})
-    Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
+    #Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
     
     if options.empty?
       links = getBookLinksFor(searchTerm)
@@ -31,13 +33,13 @@ class BuchDeSearch
   end
 
   def getNewestPriceFor(link)
-    Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
+    #Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
     getBookDataFor(link)[:price]
   end
 
 
   def getBookLinksFor(searchTerm)
-    Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm} with #{options}"
+    #Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm}"
     page = @agent.get(@provider[:url])
 
     buch_form = page.form(@provider[:search_form])
@@ -59,7 +61,7 @@ class BuchDeSearch
 
   def filterByType(articles, options)
     if options[:type].nil?
-      filteredArticles = books
+      filteredArticles = articles
     else
       articles.each do |element|
         if element.type == options[:type]
@@ -71,7 +73,7 @@ class BuchDeSearch
   end
 
   def getBookDataFor(link)
-    Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
+    #Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
     page = @agent.get(link)
     book = {}
     @provider[:book].each do |key, value|
@@ -87,14 +89,15 @@ class BuchDeSearch
   end
 
   def getType(page)
-    type = page.search('.pm_artikeltyp').first.text
-    if type == 'Hörbuch' || type == 'CD'
+    providers_type = page.search('.pm_artikeltyp').first.text
+
+    if providers_type == 'Hörbuch' || providers_type == 'CD'
       type = 'cd'
-    elsif type == 'ebooks'
+    elsif providers_type == 'ebooks'
       type = 'ebook'
-    elsif type == 'buch'
+    elsif providers_type == 'buch'
       type = 'book'
-    elsif type == 'blu-ray'
+    elsif providers_type == 'blu-ray'
       type = 'bluray'
     end
     type

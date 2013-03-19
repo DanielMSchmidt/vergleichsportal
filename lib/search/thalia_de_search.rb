@@ -1,14 +1,15 @@
+#encoding: utf-8
 require 'mechanize'
 require 'yaml'
 
-class ThailaDeSearch
+class ThaliaDeSearch
 
 	def initialize()
-		@provider = YAML.load_file "config/thaila_de.yml"
+		@provider = YAML.load_file "config/thalia_de.yml"
 		@agent = Mechanize.new
 	end
 
-	def search_by_keywords(searchTerm, options={})
+	def searchByKeywords(searchTerm, options={})
 
 		if options.empty?
       		links = getBookLinksFor(searchTerm)
@@ -18,9 +19,9 @@ class ThailaDeSearch
 
     	#is there a number of results?
     	if options[:count].nil?
-      		links.collect{|link| getBookDataFor(link)}
+      		articles = links.collect{|link| getBookDataFor(link)}
     	else
-      		links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      		articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
     	end
 
     	filterByType(articles, options)
@@ -38,7 +39,7 @@ class ThailaDeSearch
 	end
 
 	def getNewestPriceFor(link)
-    	Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
+    	Rails.logger.info "ThaliaDeSearch#getNewestPriceFor called for #{link}"
     	getBookDataFor(link)[:price]
  	end
 
@@ -68,7 +69,7 @@ class ThailaDeSearch
 
   	def filterByType(articles, options)
     	if options[:type].nil?
-    		filteredArticles = books
+    		filteredArticles = articles
     	else
     		articles.each do |element|
         		if element.type == options[:type]
@@ -77,7 +78,7 @@ class ThailaDeSearch
     		end
     	end
     filteredArticles
-  end
+ 	end
 
 	def getItem(page, query)
 		page.search(query).last.text
