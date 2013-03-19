@@ -26,7 +26,6 @@ class User < ActiveRecord::Base
     Role.where(name: "Guest").each do |role|
       UserRoleAssignment.create(role_id: role.id, user_id: user.id)
     end
-    @guest_user_id = user.id #To set it in the session later
     user
   end
 
