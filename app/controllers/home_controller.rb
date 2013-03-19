@@ -6,7 +6,9 @@ class HomeController < ApplicationController
   	@user_new = User.new
   	@user_new.role_id = 1
     @providers = Provider.all
-    @current_rating = current_user.ratings
+    if current_user
+      @current_rating = current_user.ratings
+    end
   end
 
   def search_results

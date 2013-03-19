@@ -1,5 +1,7 @@
+#encoding: utf-8
 require 'mechanize'
 require 'yaml'
+
 
 class BuchDeSearch
   #TODO add option support
@@ -11,7 +13,7 @@ class BuchDeSearch
   end
 
   def searchByKeywords(searchTerm, options={})
-    Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
+    #Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
     
     if options.empty?
       links = getBookLinksFor(searchTerm)
@@ -21,22 +23,23 @@ class BuchDeSearch
 
     #is there a number of results?
     if options[:count].nil?
-      books = links.collect{|link| getBookDataFor(link)}
+      articles = links.collect{|link| getBookDataFor(link)}
     else
-      books =links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
     end
 
+    filterByType(articles, options)
 
   end
 
   def getNewestPriceFor(link)
-    Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
+    #Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
     getBookDataFor(link)[:price]
   end
 
 
-  def getBookLinksFor(searchTerm, options)
-    Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm} with #{options}"
+  def getBookLinksFor(searchTerm)
+    #Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm}"
     page = @agent.get(@provider[:url])
 
     buch_form = page.form(@provider[:search_form])
@@ -56,8 +59,21 @@ class BuchDeSearch
     page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
   end
 
+  def filterByType(articles, options)
+    if options[:type].nil?
+      filteredArticles = articles
+    else
+      articles.each do |element|
+        if element.type == options[:type]
+          filteredArticles = element
+        end
+      end
+    end
+    filteredArticles
+  end
+
   def getBookDataFor(link)
-    Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
+    #Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
     page = @agent.get(link)
     book = {}
     @provider[:book].each do |key, value|
@@ -66,9 +82,25 @@ class BuchDeSearch
     book[:url] = link
     book[:image] = page.images.first #TODO: Returns a Mechanize object which can't be handled (url instead plz)
     book[:price] = book[:price].tr(',','.').to_f
+    book[:type] = getType(page)
 
     Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link} returns #{book}"
     book
+  end
+
+  def getType(page)
+    providers_type = page.search('.pm_artikeltyp').first.text
+
+    if providers_type == 'Hörbuch' || providers_type == 'CD'
+      type = 'cd'
+    elsif providers_type == 'ebooks'
+      type = 'ebook'
+    elsif providers_type == 'buch'
+      type = 'book'
+    elsif providers_type == 'blu-ray'
+      type = 'bluray'
+    end
+    type
   end
 
   def getItem(page, query)
