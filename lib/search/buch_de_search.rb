@@ -34,7 +34,7 @@ class BuchDeSearch
     getBookDataFor(link)[:price]
   end
 
-  def getBookLinksFor(searchTerm, )
+  def getBookLinksFor(searchTerm)
     Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm} "
     page = @agent.get(@provider[:url])
 

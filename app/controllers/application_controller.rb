@@ -13,7 +13,13 @@ class ApplicationController < ActionController::Base
   end
 
   def fetch_providers
-    @providers = Provider.all
+    @providers = []
+    all_providers = Provider.all
+    all_providers.each do |provider|
+      if @cart.available_for(provider)
+	@providers << provider
+      end
+    end
   end
 
   protect_from_forgery
