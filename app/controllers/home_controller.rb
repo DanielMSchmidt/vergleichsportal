@@ -4,23 +4,26 @@ class HomeController < ApplicationController
 
   def index
   	@user_new = User.new
+    @rating_new = Rating.new
   	@user_new.role_id = 1
     @providers = Provider.all
   end
 
   #TODO: Add filter that only results by active providers are displayed
   def search_results
+    @user_new = User.new
     @term = params[:search][:term]
     @options = {}
     search = Search.new(@term, @options)
-    @result = search.find
+    @result = search.find.uniq
+    @result.delete(false)
   end
 
   def admin
     @users = User.all
     @providers = Provider.all
-    @active_advertisments = Advertisment.where(:active => true);
-    @inactive_advertisments = Advertisment.where(:active => false);
+    @active_advertisments = Advertisment.active
+    @inactive_advertisments = Advertisment.inactive
     @advertisment = Advertisment.new
   end
 

@@ -3,7 +3,7 @@
 /[if IE 7 ] <html class="ie7" lang="en">
 /[if IE 8 ] <html class="ie8" lang="en">
 / [if (gte IE 9)|!(IE)]><!
-%html{:lang => "de", :class => "js no-touch svg inlinessvg svgclippaths no-ie8compat"}
+%html{:lang => "de"}
   / <![endif]
   %head
     %meta{:charset => "utf-8"}/
@@ -24,16 +24,18 @@
       .three.columns
         %p
           %a.button.expand{"data-reveal-id" => "cart-modal", :href => "#", :style => "background-image: url(/assets/cart.png); background-repeat: no-repeat; height: 38px; background-position: 84px 7px;"}
-        - if notice
-          %p
+        %p{:id => "errornote"}
+          - if notice
             .alert-box.success
               =notice
               %a.close{href: "#"} &times;
         %p
-          %img{:src => "http://placehold.it/205x720&text=Werbung"}/    
+          %a{:href => @active_advertisment.link_url}
+            %img{:src => @active_advertisment.img_url}/
     
       .nine.columns
         = yield
+      = render :partial => "layouts/footer"
 
     = yield :modal
 

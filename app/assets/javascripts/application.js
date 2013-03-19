@@ -54,3 +54,9 @@
   }
 
 })(jQuery, this);
+
+function errornote(note,status){
+
+  $("#errornote").append('<div class="alert-box '+ status +'">'+ note + '<a href="" class="close">&times;</a></div>');
+
+}
