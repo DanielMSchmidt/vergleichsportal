@@ -4,24 +4,26 @@ class HomeController < ApplicationController
 
   def index
   	@user_new = User.new
+    @rating_new = Rating.new
   	@user_new.role_id = 1
     @providers = Provider.all
   end
 
   def search_results
     @user_new = User.new
-    @user_new.role_id = 1
     @term = params[:search][:term]
     @options = {}
     search = Search.new(@term, @options)
+    @result = search.find.uniq
+    @result.delete(false)
     @result = search.find.reject{|result| result == false} # TODO: Check where nils come from
   end
 
   def admin
     @users = User.all
     @providers = Provider.all
-    @active_advertisments = Advertisment.where(:active => true);
-    @inactive_advertisments = Advertisment.where(:active => false);
+    @active_advertisments = Advertisment.active
+    @inactive_advertisments = Advertisment.inactive
     @advertisment = Advertisment.new
   end
 

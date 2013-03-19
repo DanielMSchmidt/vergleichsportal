@@ -1,6 +1,6 @@
 #cart-modal.reveal-modal.xlarge
   %h3 Items in Cart
-  %ul.accordion
+  %ul.accordion{:id => "cart"}
     =render @active_cart.articles, search: false
   .row
     .three.columns

@@ -7,9 +7,9 @@
     %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "133"}
       %tr
         %td
-          %form
-            %input.star{name:"star3", type: "radio", disabled: "disabled"}
-            %input.star{name:"star3", type:"radio", disabled:"disabled"}
-            %input.star{name:"star3", type:"radio", disabled:"disabled", checked:"checked"}
-            %input.star{name:"star3", type:"radio", disabled:"disabled"}
-            %input.star{name:"star3", type:"radio", disabled:"disabled"}
+          =form_tag do
+            = radio_button_tag :value, 1, false, :class => "star required"
+            = radio_button_tag :value, 2, false, :class => "star"
+            = radio_button_tag :value, 3, false, :class => "star"
+            = radio_button_tag :value, 4, false, :class => "star"
+            = radio_button_tag :value, 5, false, :class => "star"
