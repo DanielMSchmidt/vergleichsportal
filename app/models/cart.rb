@@ -54,4 +54,12 @@ class Cart < ActiveRecord::Base
     end
     false
   end
+
+  def calc_shipping(provider)
+    return 0 if provider.name == "ebay.de" of provider.name == "bücher.de"
+    return 0 if self.is_book_in_cart?
+    article_price = self.price_of_all_articles(provider)
+    return 3 if article_price < 20
+    0
+  end
 end
