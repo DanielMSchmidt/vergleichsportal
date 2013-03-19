@@ -6,7 +6,13 @@ class HomeController < ApplicationController
   	@user_new = User.new
   	@user_new.role_id = 1
     @providers = Provider.all
-    @current_rating = current_user.ratings
+
+    #TODO: remove current user
+    if current_user
+      @current_rating = current_user.ratings
+    else
+      @current_rating = nil
+    end
   end
 
   #TODO: Add filter that only results by active providers are displayed
