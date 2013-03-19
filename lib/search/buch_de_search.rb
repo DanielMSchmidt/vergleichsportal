@@ -7,12 +7,26 @@ class BuchDeSearch
   def initialize()
     @provider = YAML.load_file "config/buch_de.yml"
     @agent = Mechanize.new
+    
   end
 
   def searchByKeywords(searchTerm, options={})
     Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
-    links = getBookLinksFor(searchTerm, options)
-    links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
+    
+    if options.empty?
+      links = getBookLinksFor(searchTerm)
+    else
+      links = getAdvancedBookLinksFor(searchTerm, options)
+    end
+
+    #is there a number of results?
+    if options[:count].nil?
+      books = links.collect{|link| getBookDataFor(link)}
+    else
+      books =links.take(options[:count]).collect{|link| getBookDataFor(link)}
+    end
+
+
   end
 
   def getNewestPriceFor(link)
@@ -20,9 +34,8 @@ class BuchDeSearch
     getBookDataFor(link)[:price]
   end
 
-
-  def getBookLinksFor(searchTerm, options)
-    Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm} with #{options}"
+  def getBookLinksFor(searchTerm, )
+    Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm} "
     page = @agent.get(@provider[:url])
 
     buch_form = page.form(@provider[:search_form])
@@ -30,7 +43,16 @@ class BuchDeSearch
     buch_form[@provider[:search_field]] = searchTerm
 
     page = @agent.submit(buch_form, buch_form.buttons.first)
-    books = page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
+    
+    page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
+  end
+
+  def getAdvancedBookLinksFor(searchTerm, options)
+    title =  ((options[:title].nil?) ? '' : options[:title]) 
+    author = ((options[:author].nil?) ? '' : options[:author])
+    page = @agent.get('http://www.buch.de/shop/home/suche/?fi=&st='+title+'&sa='+author)
+    #st: titel   sa:  autor 
+    page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
   end
 
   def getBookDataFor(link)

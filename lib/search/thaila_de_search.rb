@@ -9,11 +9,22 @@ class ThailaDeSearch
 	end
 
 	def search_by_keywords(searchTerm, options={})
-		links = getBookLinksFor(searchTerm, options)
-		links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
+
+		if options.empty?
+      		links = getBookLinksFor(searchTerm)
+    	else
+      		links = getAdvancedBookLinksFor(searchTerm, options)
+    	end
+    	
+    	#is there a number of results?
+    	if options[:count].nil?
+      		links.collect{|link| getBookDataFor(link)}
+    	else
+      		links.take(options[:count]).collect{|link| getBookDataFor(link)}
+    	end
 	end
 
-	def getBookLinksFor(searchTerm, options)
+	def getBookLinksFor(searchTerm)
 		page = @agent.get(@provider[:url])
 
 		buch_form = page.form(@provider[:search_form])
@@ -23,6 +34,11 @@ class ThailaDeSearch
 		page = @agent.submit(buch_form, buch_form.buttons.first)
 		books = page.links_with(:href => @provider[:link_href]).collect{|link| link.href}.uniq
 	end
+
+	def getNewestPriceFor(link)
+    	Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
+    	getBookDataFor(link)[:price]
+ 	end
 
 	def getBookDataFor(link)
 		page = @agent.get(link)
@@ -38,6 +54,14 @@ class ThailaDeSearch
 		book[:ean] = details_values[position] if position
 		book
 	end
+
+	def getAdvancedBookLinksFor(searchTerm, options)
+    	title =  ((options[:title].nil?) ? '' : options[:title]) 
+    	author = ((options[:author].nil?) ? '' : options[:author])
+    	page = @agent.get('http://www.thalia.de/shop/tha_homestartseite/suche/?fi=&st='+title+'&sa='+author)
+    	#st: titel   sa:  autor 
+   		page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
+  	end
 
 	def getItem(page, query)
 		page.search(query).last.text

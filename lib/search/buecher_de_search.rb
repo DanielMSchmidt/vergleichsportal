@@ -9,9 +9,24 @@ class BuchDeSearch
 	end
 
 	def search_by_keywords(searchTerm, options={})
-		links = getBookLinksFor(searchTerm, options)
-		links.take(options[:count] || 5).collect{|link| getBookDataFor(link)}
+		if options.empty?
+      		links = getBookLinksFor(searchTerm)
+    	else
+      		links = getAdvancedBookLinksFor(searchTerm, options)
+    	end
+    	
+    	#is there a number of results?
+    	if options[:count].nil?
+      		links.collect{|link| getBookDataFor(link)}
+    	else
+      		links.take(options[:count]).collect{|link| getBookDataFor(link)}
+    	end
 	end
+
+	def getNewestPriceFor(link)
+    	Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
+    	getBookDataFor(link)[:price]
+ 	end
 
 	def getBookLinksFor(searchTerm, options)
 		page = @agent.get(@provider[:url])
@@ -38,6 +53,15 @@ class BuchDeSearch
 		books[:image_url] = page.images.at(5)
 		book[:url] = link
 		book
+	end
+
+	def getAdvancedBookLinksFor(searchTerm, options)
+		page = agent.get('http://www.buecher.de/go/search_search/expert_search/lfa/quicksearchform/')
+		buch_form = page.form(:action => 'http://www.buecher.de/go/search_search/expert_search_result/receiver_object/shop_search_expertsearch/')
+		buch_form['form[personen]'] =  ((options[:author].nil?) ? '' : options[:author])
+		buch_form['form[schlagworte]'] = ((options[:title].nil?) ? '' : options[:title])
+		page = agent.submit(buch_form, buch_form.buttons.first)
+		books=  page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
 	def getItem(page, query)
