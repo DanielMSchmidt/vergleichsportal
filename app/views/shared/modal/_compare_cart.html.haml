@@ -1,3 +1,4 @@
+#encoding: utf-8
 #compare-cart-modal.reveal-modal.large
   %h3 Anbietervergleich
   -@providers.each do |provider|
@@ -9,7 +10,7 @@
           %li
             %img{:src => "http://placehold.it/450x350", :style => "margin-left: 80px;"}/
           %li.price
-            =@cart.calculate_overall_price(provider)
+            ="Preis #{number_to_currency(@active_cart.calculate_overall_price(provider), :locale => :de)}
           %li.cta-button
             %a.button{:href => "#"} Direkt zu Buch.de &raquo;
   %a.close-reveal-modal ×
