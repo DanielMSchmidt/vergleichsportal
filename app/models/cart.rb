@@ -8,14 +8,14 @@ class Cart < ActiveRecord::Base
   scope :last_used, order('updated_at DESC').first
 
   def get_count(article)
-    article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id)
+    article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
     article_cart_assignment.quantity
   end
 
   def add_article(article)
-    article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id)
+    article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
     if article_cart_assignment.nil?
-      ArticleCartAssignment.create(article_id: article.id, cart_id: self.id)
+      ArticleCartAssignment.create(article_id: article.id, cart_id: self.id, quantity: 1)
     else
       article_cart_assignment.quantity += 1
       article_cart_assignment.save
@@ -23,12 +23,12 @@ class Cart < ActiveRecord::Base
   end
 
   def remove_article(article)
-    article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id)
+    article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
     article_cart_assignment.destroy unless article_cart_assignment.nil?
   end
 
   def change_article_count(article, quantity)
-    assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id)
+    assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
     assignment ||= self.add_article(article)
     if 0 < quantity
       assignment.quantity = quantity
