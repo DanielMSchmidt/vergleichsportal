@@ -23,6 +23,9 @@ class Search
   def getAllNewestesPrices
     Rails.logger.info "Search#getAllNewestPrices called for #{@search_term}"
     query = SearchQuery.where(value: @search_term).first
+
+    SearchQueryWorker.perform_at(2.hours.from_now, query)
+
     if query.nil? || query.articles.empty?
       Rails.logger.info "Search#getAllNewestPrices no query found or no articles in query"
       return false
