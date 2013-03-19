@@ -1,1 +1,1 @@
-web: rails s puma -p $PORT
+web: thin start
