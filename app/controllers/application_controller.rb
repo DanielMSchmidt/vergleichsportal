@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_active_user
   before_filter :set_active_cart
   before_filter :fetch_add
+
   after_filter :setGuestUserInCookies
   after_filter :setActiveCartInCookies
 
@@ -13,13 +14,11 @@ class ApplicationController < ActionController::Base
     @active_user ||= fetchUserFromCookies   # There was allready a guest user created
     @active_user ||= User.generateGuest     # Last chance: create a new guest user
     Rails.logger.info "ApplicationController#set_active_user returns #{@active_user}"
-    @active_user
   end
 
   def set_active_cart
     @active_cart ||= fetchCartFromCookies
     @active_cart ||= @active_user.carts.create
-    @active_cart
   end
 
   def set_providers
