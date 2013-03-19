@@ -3,21 +3,23 @@ class ApplicationController < ActionController::Base
   before_filter :set_active_user
   before_filter :set_active_cart
   before_filter :fetch_add
-  after_filter :setGuestUserInSession
+  after_filter :setGuestUserInCookies
+  after_filter :setActiveCartInCookies
 
 
   def set_active_user
-
-    # The active User is allready set
-    # |              There is a logged in user
-    # |              |                There was allready a guest user created
-    # |              |                |                        Last chance: create a new guest user
-    # |              |                |                        |
-    @active_user ||= current_user ||= fetchUserFromSessiom ||= User.generateGuest
+    Rails.logger.info "ApplicationController#set_active_user called"
+    @active_user ||= current_user           # There is a logged in user
+    @active_user ||= fetchUserFromCookies   # There was allready a guest user created
+    @active_user ||= User.generateGuest     # Last chance: create a new guest user
+    Rails.logger.info "ApplicationController#set_active_user returns #{@active_user}"
+    @active_user
   end
 
   def set_active_cart
-    @active_cart ||= fetchCartFromSession ||= @active_user.carts.create
+    @active_cart ||= fetchCartFromCookies
+    @active_cart ||= @active_user.carts.create
+    @active_cart
   end
 
   def set_providers
@@ -31,16 +33,28 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def fetchCartFromSession
-    session[:active_cart]
+  def fetchCartFromCookies
+    Rails.logger.info "ApplicationController#fetchCartFromCookies called and fetched #{cookies[:active_cart]}"
+    cookies[:active_cart]
   end
 
-  def fetchUserFromSession
-    session[:guest_user_id]
+  def fetchUserFromCookies
+    Rails.logger.info "ApplicationController#fetchUserFromCookies called and fetched #{cookies[:guest_user_id]}"
+    user_id = cookies[:guest_user_id]
+    return nil if user_id.nil?
+    return User.find(user_id)
   end
 
-  def setGuestUserInSession
-    session[:guest_user_id] = @guest_user_id
+  def setGuestUserInCookies
+    unless logged_in?
+      #The active user is a guest
+      cookies[:guest_user_id] = @active_user.id
+    end
+    Rails.logger.info "ApplicationController#setGuestUserInCookies called and wrote #{cookies[:guest_user_id]} to sesion"
+  end
+
+  def setActiveCartInCookies
+    cookies[:active_cart] = @active_cart.id
   end
 
   protect_from_forgery
