@@ -70,4 +70,11 @@ class Cart < ActiveRecord::Base
     end
     price
   end
+
+  def available_for(provider)
+    self.articles.each do |article|
+      return false unless article.available_for(provider)
+    end
+    true
+  end
 end
