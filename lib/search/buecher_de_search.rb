@@ -21,6 +21,8 @@ class BuchDeSearch
     	else
       		links.take(options[:count]).collect{|link| getBookDataFor(link)}
     	end
+
+    	filterByType(articles, options)
 	end
 
 	def getNewestPriceFor(link)
@@ -52,6 +54,7 @@ class BuchDeSearch
 		books[:price] = page.search(@provider[:price]).to_s[/\d+,\d+/].tr(',','.').to_f
 		books[:image_url] = page.images.at(5)
 		book[:url] = link
+		book[:type] = getType(page)
 		book
 	end
 
@@ -64,7 +67,38 @@ class BuchDeSearch
 		books=  page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
+  	def filterByType(articles, options)
+    	if options[:type].nil?
+    		filteredArticles = books
+    	else
+    		articles.each do |element|
+        		if element.type == options[:type]
+          			filteredArticles = element
+        		end
+    		end
+    	end
+    filteredArticles
+ 	end
+ 	
 	def getItem(page, query)
 		page.search(query).first.text
 	end
+
+	def getType(page)
+    type = page.search('.pm_artikeltyp').first.text
+    if type == 'Audio CD'
+      type = 'cd'
+    elsif type == 'eBook, ePUB'
+      type = 'ebook'
+    elsif type == 'Gebundenes Buch' || type == 'Broschiertes Buch'
+      type = 'book'
+    elsif type == 'Blu-ray Disc'
+      type = 'bluray'
+  	elsif type == 'DVD'
+  	  type = 'dvd'	
+    end
+    type
+  end
+
+
 end

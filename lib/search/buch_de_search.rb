@@ -21,11 +21,12 @@ class BuchDeSearch
 
     #is there a number of results?
     if options[:count].nil?
-      books = links.collect{|link| getBookDataFor(link)}
+      articles = links.collect{|link| getBookDataFor(link)}
     else
-      books =links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
     end
 
+    filterByType(articles, options)
 
   end
 
@@ -55,6 +56,19 @@ class BuchDeSearch
     page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
   end
 
+  def filterByType(articles, options)
+    if options[:type].nil?
+      filteredArticles = books
+    else
+      articles.each do |element|
+        if element.type == options[:type]
+          filteredArticles = element
+        end
+      end
+    end
+    filteredArticles
+  end
+
   def getBookDataFor(link)
     Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
     page = @agent.get(link)
@@ -65,9 +79,24 @@ class BuchDeSearch
     book[:url] = link
     book[:image] = page.images.first #TODO: Returns a Mechanize object which can't be handled (url instead plz)
     book[:price] = book[:price].tr(',','.').to_f
+    book[:type] = getType(page)
 
     Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link} returns #{book}"
     book
+  end
+
+  def getType(page)
+    type = page.search('.pm_artikeltyp').first.text
+    if type == 'Hörbuch' || type == 'CD'
+      type = 'cd'
+    elsif type == 'ebooks'
+      type = 'ebook'
+    elsif type == 'buch'
+      type = 'book'
+    elsif type == 'blu-ray'
+      type = 'bluray'
+    end
+    type
   end
 
   def getItem(page, query)
