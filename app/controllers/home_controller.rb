@@ -4,9 +4,9 @@ class HomeController < ApplicationController
 
   def index
   	@user_new = User.new
-    @rating_new = Rating.new
   	@user_new.role_id = 1
     @providers = Provider.all
+    @current_rating = current_user.ratings
   end
 
   #TODO: Add filter that only results by active providers are displayed
