@@ -11,8 +11,6 @@ gem 'jquery-rails', '~> 2.2.1'
 gem 'mechanize', '~> 2.5.1'
 gem 'nokogiri', '~> 1.5.6'
 gem 'sorcery', '~> 0.8.1'
-gem 'resque', '~> 1.23.0'
-gem 'resque-scheduler', '~> 2.0.0'
 gem 'draper', '~> 1.1.0'
 gem "sidekiq", "~> 2.8.0"
 gem 'whenever', :require => false
