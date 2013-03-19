@@ -81,6 +81,6 @@ class Cart < ActiveRecord::Base
 
   def calculate_overall_price(provider)
     return -1 unless self.available_for(provider)
-    self.price_of_all_articles + self.calc_shipping
+    self.price_of_all_articles(provider) + self.calc_shipping(provider)
   end
 end
