@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   has_many :user_role_assignments
   has_many :comments
-  has_one :rating
+  has_many :ratings
   has_many :roles, through: :user_role_assignments
   has_many :carts
 

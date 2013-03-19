@@ -1,3 +1,8 @@
+-active = Array.new(5,false)
+-# Activate the right star 
+-if @current_rating and @current_rating.where(:provider_id => provider.id).last
+  -active[@current_rating.where(:provider_id => provider.id).last.value - 1] = "true"
+
 .row
   .three.columns
     %img{:src => provider.image_url, :style => "margin-top:18px;"}/
@@ -7,9 +12,9 @@
     %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "133"}
       %tr
         %td
-          =form_tag do
-            = radio_button_tag :value, 1, false, :class => "star required"
-            = radio_button_tag :value, 2, false, :class => "star"
-            = radio_button_tag :value, 3, false, :class => "star"
-            = radio_button_tag :value, 4, false, :class => "star"
-            = radio_button_tag :value, 5, false, :class => "star"
+          =form_tag provider_add_rating_path(provider), :method => :put do
+            = radio_button_tag :value, 1, active[0], :class => "star required auto-submit-star"
+            = radio_button_tag :value, 2, active[1], :class => "star auto-submit-star"
+            = radio_button_tag :value, 3, active[2], :class => "star auto-submit-star"
+            = radio_button_tag :value, 4, active[3], :class => "star auto-submit-star"
+            = radio_button_tag :value, 5, active[4], :class => "star auto-submit-star"

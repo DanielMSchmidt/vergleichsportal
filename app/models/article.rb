@@ -53,6 +53,18 @@ class Article < ActiveRecord::Base
     self.prices.where(provider_id: provider).any?
   end
 
+  def is_book?
+    ean_pre = self.ean[0..2]
+    return true if ean_pre == "978" or ean_pre == "979"
+    false
+  end
+
+  def get_price(provider)
+    price = self.prices.where(provider_id: provider)
+    return price.first.value unless price.nil?
+    -1
+  end
+
   def to_s
     "ID: #{self.id}, Name: #{self.name}, Author: #{self.author}"
   end

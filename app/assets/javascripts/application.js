@@ -60,3 +60,9 @@ function errornote(note,status){
   $("#errornote").append('<div class="alert-box '+ status +'">'+ note + '<a href="" class="close">&times;</a></div>');
 
 }
+
+$('.auto-submit-star').rating({
+  callback: function(value, link){
+    this.form.submit();
+  }
+});

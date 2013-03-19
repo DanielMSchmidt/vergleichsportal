@@ -72,6 +72,18 @@ class ProvidersController < ApplicationController
     end
   end
 
+  def add_rating
+    @provider = Provider.find(params[:id])
+    @rating = Rating.new(:value => params[:value],:user_id => current_user.id, :provider_id => @provider.id)
+    @rating.save
+    @provider.ratings << @rating
+    @provider.save
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: "Danke fuer die Bewertung"}
+      format.json { render json: @rating }
+    end
+  end
+
   # DELETE /providers/1
   # DELETE /providers/1.json
   def destroy
