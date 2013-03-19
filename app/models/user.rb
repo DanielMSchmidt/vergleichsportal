@@ -23,21 +23,14 @@ class User < ActiveRecord::Base
   #TODO Write Tests for code below
   def self.generateGuest
     user = User.create
-    Role.where(name: "Guest").each do |role|
-      UserRoleAssignment.create(role_id: role.id, user_id: user.id)
-    end
+    role = Role.where(name: "Guest").first
+    UserRoleAssignment.create(role_id: role.id, user_id: user.id)
     user
-  end
-
-  def addRole(rolename)
-    Role.where(name: rolename).each do |role|
-      UserRoleAssignment.create(role_id: role.id, user_id: self.id)
-    end
   end
 
   def guest?
     return true if self.roles.empty?
-    self.roles.collect{|role| role.name}.includes("Guest")
+    self.roles.collect{|role| role.name}.include?("Guest")
   end
 
   def activeCart
@@ -50,4 +43,19 @@ class User < ActiveRecord::Base
       cart.save!
     end
   end
+
+  def addRole(role_name)
+    unless self.roles.collect{|role| role.name}.include?(role_name)
+      Role.where(name: role_name).each do |role|
+        UserRoleAssignment.create!(role_id: role.id, user_id: self.id)
+      end
+    end
+  end
+
+  def removeRole(role_name)
+    self.roles.select{|role| role.name == role_name}.each do |role|
+      UserRoleAssignment.where(role_id: role.id, user_id: self.id).each{|assignment| assignment.delete}
+    end
+  end
+
 end
