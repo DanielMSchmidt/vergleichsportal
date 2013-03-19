@@ -58,6 +58,12 @@ class Article < ActiveRecord::Base
     false
   end
 
+  def get_price(provider)
+    price = self.prices.where(provider_id: provider)
+    return price.value unless price.nil?
+    -1
+  end
+
   def to_s
     "ID: #{self.id}, Name: #{self.name}, Author: #{self.author}"
   end

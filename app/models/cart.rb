@@ -62,4 +62,12 @@ class Cart < ActiveRecord::Base
     return 3 if article_price < 20
     0
   end
+
+  def price_of_all_articles(provider)
+    price = 0
+    self.articles.each do |article|
+      price += article.get_price(provider)
+    end
+    price
+  end
 end
