@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
-  before_filter :set_providers
   before_filter :set_active_user
   before_filter :set_active_cart
   before_filter :fetch_add
+  before_filter :set_providers
 
   after_filter :setGuestUserInCookies
   after_filter :setActiveCartInCookies
@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     @providers = []
     all_providers = Provider.all
     all_providers.each do |provider|
-      if @cart.available_for(provider)
+      if @active_cart.available_for(provider)
 	@providers << provider
       end
     end
