@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
 
   def fetchCartFromCookies
     Rails.logger.info "ApplicationController#fetchCartFromCookies called and fetched #{cookies[:active_cart]}"
-    cookies[:active_cart]
+    Cart.find(cookies[:active_cart]) unless cookies[:active_cart].nil?
   end
 
   def fetchUserFromCookies
