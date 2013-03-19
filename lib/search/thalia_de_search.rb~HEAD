@@ -15,15 +15,13 @@ class ThailaDeSearch
     	else
       		links = getAdvancedBookLinksFor(searchTerm, options)
     	end
-
+    	
     	#is there a number of results?
     	if options[:count].nil?
       		links.collect{|link| getBookDataFor(link)}
     	else
       		links.take(options[:count]).collect{|link| getBookDataFor(link)}
     	end
-
-    	filterByType(articles, options)
 	end
 
 	def getBookLinksFor(searchTerm)
@@ -54,7 +52,6 @@ class ThailaDeSearch
 		details_values = page.search(@provider[:detail_value])
 		position = details_headlines.collect{|value| value.text}.index("EAN:")
 		book[:ean] = details_values[position] if position
-		book[:type] = getType(page)
 		book
 	end
 
@@ -66,36 +63,7 @@ class ThailaDeSearch
    		page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
   	end
 
-  	def filterByType(articles, options)
-    	if options[:type].nil?
-    		filteredArticles = books
-    	else
-    		articles.each do |element|
-        		if element.type == options[:type]
-          			filteredArticles = element
-        		end
-    		end
-    	end
-    filteredArticles
-  end
-
 	def getItem(page, query)
 		page.search(query).last.text
 	end
-
-	def getType(page)
-    	type = page.search('.itemSubcategory').text.strip
-    	if type == 'Hörbuch' || type == 'Musik'
-      		type = 'cd'
-    	elsif type == 'Film'
-      		type = 'dvd'
-      	elsif type == 'Blu-ray'
-      		type = 'bluray'
-      	elsif type == 'eBook'
-      		type = 'ebook'
-      	elsif type == 'Buch'
-      		type = 'book'
-    	end    		
-    	type
-  	end
 end

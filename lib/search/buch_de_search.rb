@@ -1,5 +1,7 @@
+#encoding: utf-8
 require 'mechanize'
 require 'yaml'
+
 
 class BuchDeSearch
   #TODO add option support
@@ -59,7 +61,7 @@ class BuchDeSearch
 
   def filterByType(articles, options)
     if options[:type].nil?
-      filteredArticles = books
+      filteredArticles = articles
     else
       articles.each do |element|
         if element.type == options[:type]
@@ -87,14 +89,15 @@ class BuchDeSearch
   end
 
   def getType(page)
-    type = page.search('.pm_artikeltyp').first.text
-    if type == 'Hörbuch' || type == 'CD'
+    providers_type = page.search('.pm_artikeltyp').first.text
+
+    if providers_type == 'Hörbuch' || providers_type == 'CD'
       type = 'cd'
-    elsif type == 'ebooks'
+    elsif providers_type == 'ebooks'
       type = 'ebook'
-    elsif type == 'buch'
+    elsif providers_type == 'buch'
       type = 'book'
-    elsif type == 'blu-ray'
+    elsif providers_type == 'blu-ray'
       type = 'bluray'
     end
     type

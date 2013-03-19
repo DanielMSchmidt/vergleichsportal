@@ -20,5 +20,8 @@ namespace :db do
                      url: 'http://www.buecher.de',
                      image_url: 'http://bilder.buecher.de/images/logo_transp.gif',
                      active: true)
+
+    Role.create!(name: 'Guest')
+    Role.create!(name: 'Registered User')
   end
 end

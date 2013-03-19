@@ -1,27 +1,30 @@
+#encoding: utf-8
 require 'mechanize'
 require 'yaml'
 
-class ThailaDeSearch
+class ThaliaDeSearch
 
 	def initialize()
-		@provider = YAML.load_file "config/thaila_de.yml"
+		@provider = YAML.load_file "config/thalia_de.yml"
 		@agent = Mechanize.new
 	end
 
-	def search_by_keywords(searchTerm, options={})
+	def searchByKeywords(searchTerm, options={})
 
 		if options.empty?
       		links = getBookLinksFor(searchTerm)
     	else
       		links = getAdvancedBookLinksFor(searchTerm, options)
     	end
-    	
+
     	#is there a number of results?
     	if options[:count].nil?
-      		links.collect{|link| getBookDataFor(link)}
+      		articles = links.collect{|link| getBookDataFor(link)}
     	else
-      		links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      		articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
     	end
+
+    	filterByType(articles, options)
 	end
 
 	def getBookLinksFor(searchTerm)
@@ -36,7 +39,7 @@ class ThailaDeSearch
 	end
 
 	def getNewestPriceFor(link)
-    	Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
+    	Rails.logger.info "ThaliaDeSearch#getNewestPriceFor called for #{link}"
     	getBookDataFor(link)[:price]
  	end
 
@@ -52,6 +55,7 @@ class ThailaDeSearch
 		details_values = page.search(@provider[:detail_value])
 		position = details_headlines.collect{|value| value.text}.index("EAN:")
 		book[:ean] = details_values[position] if position
+		book[:type] = getType(page)
 		book
 	end
 
@@ -63,7 +67,36 @@ class ThailaDeSearch
    		page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
   	end
 
+  	def filterByType(articles, options)
+    	if options[:type].nil?
+    		filteredArticles = articles
+    	else
+    		articles.each do |element|
+        		if element.type == options[:type]
+          			filteredArticles = element
+        		end
+    		end
+    	end
+    filteredArticles
+ 	end
+
 	def getItem(page, query)
 		page.search(query).last.text
 	end
+
+	def getType(page)
+    	type = page.search('.itemSubcategory').text.strip
+    	if type == 'Hörbuch' || type == 'Musik'
+      		type = 'cd'
+    	elsif type == 'Film'
+      		type = 'dvd'
+      	elsif type == 'Blu-ray'
+      		type = 'bluray'
+      	elsif type == 'eBook'
+      		type = 'ebook'
+      	elsif type == 'Buch'
+      		type = 'book'
+    	end    		
+    	type
+  	end
 end

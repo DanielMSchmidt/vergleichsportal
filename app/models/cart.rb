@@ -6,7 +6,7 @@ class Cart < ActiveRecord::Base
   has_many :compares
   belongs_to :user
 
-  scope :last_used, order('updated_at DESC').first
+  scope :last_used, order('updated_at DESC')
 
   def get_count(article)
     article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
@@ -16,7 +16,7 @@ class Cart < ActiveRecord::Base
   def add_article(article)
     article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
     if article_cart_assignment.nil?
-      ArticleCartAssignment.create(article_id: article.id, cart_id: self.id)
+      ArticleCartAssignment.create(article_id: article.id, cart_id: self.id, quantity: 1)
     else
       article_cart_assignment.quantity += 1
       article_cart_assignment.save
@@ -72,5 +72,9 @@ class Cart < ActiveRecord::Base
   def calculate_overall_price(provider)
     return -1 unless self.available_for(provider)
     self.price_of_all_articles(provider) + self.calc_shipping(provider)
+  end
+  
+  def empty?
+    self.articles.empty?
   end
 end

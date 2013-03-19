@@ -1,14 +1,15 @@
+#encoding: utf-8
 require 'mechanize'
 require 'yaml'
 
-class BuchDeSearch
+class BuecherDeSearch
 
 	def initialize()
 		@provider = YAML.load_file "config/buecher_de.yml"
 		@agent = Mechanize.new
 	end
 
-	def search_by_keywords(searchTerm, options={})
+	def searchByKeywords(searchTerm, options={})
 		if options.empty?
       		links = getBookLinksFor(searchTerm)
     	else
@@ -17,20 +18,20 @@ class BuchDeSearch
     	
     	#is there a number of results?
     	if options[:count].nil?
-      		links.collect{|link| getBookDataFor(link)}
+      		articles = links.collect{|link| getBookDataFor(link)}
     	else
-      		links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      		articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
     	end
 
     	filterByType(articles, options)
 	end
 
 	def getNewestPriceFor(link)
-    	Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
+    	#Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
     	getBookDataFor(link)[:price]
  	end
 
-	def getBookLinksFor(searchTerm, options)
+	def getBookLinksFor(searchTerm)
 		page = @agent.get(@provider[:url])
 
 		buch_form = page.form(@provider[:search_form])
@@ -69,7 +70,7 @@ class BuchDeSearch
 
   	def filterByType(articles, options)
     	if options[:type].nil?
-    		filteredArticles = books
+    		filteredArticles = articles
     	else
     		articles.each do |element|
         		if element.type == options[:type]
@@ -79,7 +80,7 @@ class BuchDeSearch
     	end
     filteredArticles
  	end
- 	
+
 	def getItem(page, query)
 		page.search(query).first.text
 	end
