@@ -21,7 +21,7 @@
             =article.description
             %br
             %h1
-              = @cart.get_count(article)
+              = @active_cart.get_count(article)
           .row
             .six.columns
               =link_to 'remove', remove_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
