@@ -11,7 +11,7 @@ class BuchDeSearch
   end
 
   def searchByKeywords(searchTerm, options={})
-    Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
+    #Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
     
     if options.empty?
       links = getBookLinksFor(searchTerm)
@@ -30,13 +30,13 @@ class BuchDeSearch
   end
 
   def getNewestPriceFor(link)
-    Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
+    #Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
     getBookDataFor(link)[:price]
   end
 
 
-  def getBookLinksFor(searchTerm, options)
-    Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm} with #{options}"
+  def getBookLinksFor(searchTerm)
+    #Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm}
     page = @agent.get(@provider[:url])
 
     buch_form = page.form(@provider[:search_form])
@@ -57,7 +57,7 @@ class BuchDeSearch
   end
 
   def getBookDataFor(link)
-    Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
+    #Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
     page = @agent.get(link)
     book = {}
     @provider[:book].each do |key, value|
@@ -67,7 +67,7 @@ class BuchDeSearch
     book[:image] = page.images.first #TODO: Returns a Mechanize object which can't be handled (url instead plz)
     book[:price] = book[:price].tr(',','.').to_f
 
-    Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link} returns #{book}"
+    #Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link} returns #{book}"
     book
   end
 

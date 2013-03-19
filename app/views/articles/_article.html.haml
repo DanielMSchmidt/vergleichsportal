@@ -16,6 +16,13 @@
         .two.columns.offset-by-one
           =link_to 'add', add_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
       -else #view in cart
+
+        -active = Array.new(5,false)
+        -# Activate the right star 
+        -if @current_rating and @current_rating.where(:rateable_id => article.id).last
+          -active[@current_rating.where(:rateable_id => article.id).last.value - 1] = true
+
+
         .seven.columns.offset-by-one
           %p
             =article.description
@@ -26,10 +33,16 @@
             .six.columns
               =link_to 'remove', remove_article_path(cart_id: @cart.id, article_id: article.id), remote: true, class: 'button'
             .five.columns.offset-by-one
-              =form_tag do
-                = radio_button_tag :value, 1, false, :class => "star required"
-                = radio_button_tag :value, 2, false, :class => "star"
-                = radio_button_tag :value, 3, false, :class => "star"
-                = radio_button_tag :value, 4, false, :class => "star"
-                = radio_button_tag :value, 5, false, :class => "star"
+              %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "200"}
+                %tr
+                  %td
+                    =form_tag article_add_rating_path(article), :method => :put do
+                      = radio_button_tag :value, 1, active[0], :class => "star required auto-submit-star"
+                      = radio_button_tag :value, 2, active[1], :class => "star auto-submit-star"
+                      = radio_button_tag :value, 3, active[2], :class => "star auto-submit-star"
+                      = radio_button_tag :value, 4, active[3], :class => "star auto-submit-star"
+                      = radio_button_tag :value, 5, active[4], :class => "star auto-submit-star"
+                    Durchschnittliche Bewertung:
+                    = article.average_rating
+                    Sterne
 

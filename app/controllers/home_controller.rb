@@ -19,6 +19,9 @@ class HomeController < ApplicationController
     search = Search.new(@term, @options)
     @result = search.find.uniq
     @result.delete(false)
+    if current_user
+      @current_rating = current_user.ratings
+    end
   end
 
   def admin
