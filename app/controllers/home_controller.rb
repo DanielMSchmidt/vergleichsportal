@@ -11,7 +11,6 @@ class HomeController < ApplicationController
     end
   end
 
-  #TODO: Add filter that only results by active providers are displayed
   def search_results
     @user_new = User.new
     @term = params[:search][:term]
@@ -19,6 +18,11 @@ class HomeController < ApplicationController
     search = Search.new(@term, @options)
     @result = search.find.uniq
     @result.delete(false)
+    
+    if current_user
+      @current_rating = current_user.ratings
+    end
+    @result = search.find.reject{|result| result == false} # TODO: Check where nils come from
   end
 
   def admin

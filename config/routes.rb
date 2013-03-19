@@ -26,6 +26,8 @@ Vergleichsportal::Application.routes.draw do
 
   get "carts/:id/use" => "carts#use", as: 'use'
 
+  get "cart/add/:cart_id" => "UsersController#addCart", :as => 'add_cart_to_user'
+
   resources :users do
     member do
       get :activate
@@ -51,6 +53,7 @@ Vergleichsportal::Application.routes.draw do
 
   resources :articles
 
+  put "articles/:id/add_rating" => "articles#add_rating", :as => 'article_add_rating'
 
   get "api/search"
 
@@ -59,6 +62,7 @@ Vergleichsportal::Application.routes.draw do
   put "providers/:id/add_rating" => "providers#add_rating", :as => 'provider_add_rating'
 
   root to: 'home#index'
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

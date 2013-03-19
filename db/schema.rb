@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(:version => 20130319101258) do
   add_index "user_role_assignments", ["user_id"], :name => "index_user_role_assignments_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                             :null => false
+    t.string   "email"
     t.string   "crypted_password"
     t.string   "salt"
     t.boolean  "active",                          :default => true

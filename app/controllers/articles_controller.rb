@@ -69,6 +69,19 @@ class ArticlesController < ApplicationController
     end
   end
 
+
+  def add_rating
+    @article = Article.find(params[:id])
+    @rating = Rating.new(:value => params[:value],:user_id => current_user.id, :rateable_id => @article.id, :rateable_type => "article")
+    @rating.save
+    @article.ratings << @rating
+    @article.save
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: "Danke fuer die Bewertung"}
+      format.json { render json: @rating }
+    end
+  end
+
   # DELETE /articles/1
   # DELETE /articles/1.json
   def destroy
