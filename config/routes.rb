@@ -54,6 +54,8 @@ Vergleichsportal::Application.routes.draw do
 
   resources :providers
 
+  put "providers/:id/add_rating" => "providers#add_rating", :as => 'provider_add_rating'
+
   root to: 'home#index'
 
   # The priority is based upon order of creation:
