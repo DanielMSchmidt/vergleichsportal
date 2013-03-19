@@ -34,14 +34,24 @@ class ApplicationController < ActionController::Base
 
   def fetchCartFromCookies
     Rails.logger.info "ApplicationController#fetchCartFromCookies called and fetched #{cookies[:active_cart]}"
-    Cart.find(cookies[:active_cart]) unless cookies[:active_cart].nil?
+    begin
+      Cart.find(cookies[:active_cart]) unless cookies[:active_cart].nil?
+    rescue
+      nil
+    end
   end
 
   def fetchUserFromCookies
     Rails.logger.info "ApplicationController#fetchUserFromCookies called and fetched #{cookies[:guest_user_id]}"
     user_id = cookies[:guest_user_id]
     return nil if user_id.nil?
-    return User.find(user_id)
+    begin
+      user = User.find(user_id)
+      return user if user.guest?
+    rescue
+      Rails.logger.info "User not fount"
+    end
+    nil
   end
 
   def setGuestUserInCookies
