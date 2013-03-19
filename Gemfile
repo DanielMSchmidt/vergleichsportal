@@ -15,6 +15,7 @@ gem 'resque', '~> 1.23.0'
 gem 'resque-scheduler', '~> 2.0.0'
 gem 'draper', '~> 1.1.0'
 gem "sidekiq", "~> 2.8.0"
+gem 'whenever', :require => false
 
 group :production do
   gem 'pg', '~> 0.14.1'
