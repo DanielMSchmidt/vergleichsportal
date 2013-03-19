@@ -12,5 +12,13 @@ namespace :db do
                      url: 'http://www.buch.de',
                      image_url: 'http://www.gruenderszene.de/datenbank/uploads/company_normal/buch-de.jpg',
                      active: true)
+    Provider.create!(name: 'ThaliaDe',
+                     url: 'www.thalia.de',
+                     image_url: 'http://www.thalia.de/buch-resources/mandant/thalia11/img/logo_thalia.png',
+                     active: true) 
+    Provider.create!(name: 'BuecherDe',
+                     url: 'www.buecher.de',
+                     image_url: 'http://bilder.buecher.de/images/logo_transp.gif',
+                     active: true)
   end
 end

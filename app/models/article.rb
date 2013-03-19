@@ -1,5 +1,5 @@
 class Article < ActiveRecord::Base
-  attr_accessible :description, :ean, :name, :author
+  attr_accessible :description, :ean, :name, :author, :type
   validates_format_of :ean, with: /^((\d{7}-?\d{5}-?\d)|(\d{8}-?\d{4}-?\d)|(\d{9}-?\d{3}-?\d))$/
   validates_presence_of :description, :name
 
@@ -12,6 +12,7 @@ class Article < ActiveRecord::Base
   has_many :prices
   has_many :search_queries, through: :article_query_assignments
   has_many :urls
+
 
   def self.generate(article_hash)
     return false if article_hash[:ean].nil? || article_hash[:name].nil? || article_hash[:description].nil?
@@ -50,6 +51,18 @@ class Article < ActiveRecord::Base
 
   def available_for(provider)
     self.prices.where(provider_id: provider).any?
+  end
+
+  def is_book?
+    ean_pre = self.ean[0..2]
+    return true if ean_pre == "978" or ean_pre == "979"
+    false
+  end
+
+  def get_price(provider)
+    price = self.prices.where(provider_id: provider)
+    return price.first.value unless price.nil?
+    -1
   end
 
   def to_s

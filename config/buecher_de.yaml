@@ -1,0 +1,11 @@
+:url: http://buecher.de/
+:search_form: quicksearchform
+:search_field: form[q]
+:link_class: .booklink
+:produktinfo: .produktinfo li
+:price: .price
+:book:
+  :name: .titel
+  :author: .autorlink
+  :description: .produktbeschreibung_def
+
