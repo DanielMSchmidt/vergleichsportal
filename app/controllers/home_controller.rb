@@ -6,9 +6,7 @@ class HomeController < ApplicationController
 
   def index
     @user_new = User.new
-    @user_new.role_id = 1
     @providers = Provider.all
-
   end
 
   def search_results
@@ -21,17 +19,21 @@ class HomeController < ApplicationController
   end
 
   def admin
-    @users = User.all
-    @providers = Provider.all
-    @active_advertisments = Advertisment.active
-    @inactive_advertisments = Advertisment.inactive
-    @advertisment = Advertisment.new
+    if @active_user.guest?
+      redirect_to :root
+    else
+      @users = User.all
+      @providers = Provider.all
+      @active_advertisments = Advertisment.active
+      @inactive_advertisments = Advertisment.inactive
+      @advertisment = Advertisment.new
+    end
   end
 
 protected
 
   def add_query
-    query = SearchQuery.create(value: @term)
+    query = SearchQuery.create(value: @term, options: @options)
     query.articles = @result unless @result.nil?
     SearchQueryWorker.perform_at(2.hours.from_now, query)
   end

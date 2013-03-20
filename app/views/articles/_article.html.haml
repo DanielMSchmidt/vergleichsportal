@@ -32,37 +32,39 @@
             .six.columns
               =link_to 'remove', remove_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
             .five.columns.offset-by-one
-              %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "200"}
-                %tr
-                  %td
-                    =form_tag article_add_rating_path(article), :method => :put do
-                      = radio_button_tag :value, 1, active[0], :class => "star required auto-submit-star"
-                      = radio_button_tag :value, 2, active[1], :class => "star auto-submit-star"
-                      = radio_button_tag :value, 3, active[2], :class => "star auto-submit-star"
-                      = radio_button_tag :value, 4, active[3], :class => "star auto-submit-star"
-                      = radio_button_tag :value, 5, active[4], :class => "star auto-submit-star"
-                    Durchschnittliche Bewertung:
-                    = article.average_rating
-                    Sterne
-    .row
-      .seven.columns
-        -article.comments.each do |comment|
+              -if right_permission("create_rating")
+                %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "200"}
+                  %tr
+                    %td
+                      =form_tag article_add_rating_path(article), :method => :put do
+                        = radio_button_tag :value, 1, active[0], :class => "star required auto-submit-star"
+                        = radio_button_tag :value, 2, active[1], :class => "star auto-submit-star"
+                        = radio_button_tag :value, 3, active[2], :class => "star auto-submit-star"
+                        = radio_button_tag :value, 4, active[3], :class => "star auto-submit-star"
+                        = radio_button_tag :value, 5, active[4], :class => "star auto-submit-star"
+                      Durchschnittliche Bewertung:
+                      = article.average_rating
+                      Sterne
+    -if right_permission?("create_comment")
+      .row
+        .seven.columns
+          -article.comments.each do |comment|
+            .row
+              .eight.columns
+                %h7
+                  Kommentar:
+              .four.columns
+                =comment.user.email
+              %hr
+            .row
+              =comment.value
+        .four.columns
           .row
             .eight.columns
               %h7
-                Kommentar:
-            .four.columns
-              =comment.user.email
+                Neuer Kommentar:
             %hr
-          .row
-            =comment.value
-      .four.columns
-        .row
-          .eight.columns
-            %h7
-              Neuer Kommentar:
-          %hr
-        .row        
-        =form_tag article_add_comment_path(article), remote: true, :method => :put do
-          = text_field_tag :value
-          = button_tag
+          .row        
+          =form_tag article_add_comment_path(article), remote: true, :method => :put do
+            = text_field_tag :value
+            = button_tag

@@ -8,10 +8,7 @@ class UserSessionsController < ApplicationController
       if @user = login(params[:username],params[:password])
         logger.info "User: #{@user.to_s} logged in"
         @active_user = @user
-        @user.addCart(@active_cart) unless @user.activeCart.empty? || @active_cart.empty?
-
-        # is true if deleting either the active cart or the users last active cart causes a loss
-        @cart_conflict = @user.activeCart.any? && @active_cart.any? && @active_cart.id != @user.activeCart
+        @user.addCart(@active_cart) unless @active_cart.empty?
 
         format.html { redirect_back_or_to(root_path, :notice => 'Login successful.') }
         format.json { render :json => @user, :status => :created, :location => @user }

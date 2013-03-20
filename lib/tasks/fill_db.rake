@@ -21,7 +21,33 @@ namespace :db do
                      image_url: 'http://bilder.buecher.de/images/logo_transp.gif',
                      active: true)
 
+    #Create Guest User
     Role.create!(name: 'Guest')
-    Role.create!(name: 'Registered User')
+
+
+    #Create Permissions
+    #for User Role
+    r1 = Role.create!(name: "Registered User")
+    p1 = Permission.create!(value: "create_comment")
+    p2 = Permission.create!(value: "create_rating")
+    p3 = Permission.create!(value: "switch_cart")
+    p4 = Permission.create!(value: "compare_cart")
+    PermissionRoleAssignment.create!(role_id: r1.id, permission_id: p1.id)
+    PermissionRoleAssignment.create!(role_id: r1.id, permission_id: p2.id)
+    PermissionRoleAssignment.create!(role_id: r1.id, permission_id: p3.id)
+    PermissionRoleAssignment.create!(role_id: r1.id, permission_id: p4.id)
+
+    #for Admin Role
+    r2 = Role.create!(name: "Admin")
+    p5 = Permission.create!(value: "lock_user")
+    p6 = Permission.create!(value: "modify_ad")
+    p7 = Permission.create!(value: "view_statistic")
+    p8 = Permission.create!(value: "enable_provider")
+    PermissionRoleAssignment.create!(role_id: r2.id, permission_id: p5.id)
+    PermissionRoleAssignment.create!(role_id: r2.id, permission_id: p6.id)
+    PermissionRoleAssignment.create!(role_id: r2.id, permission_id: p7.id)
+    PermissionRoleAssignment.create!(role_id: r2.id, permission_id: p8.id)
+
+
   end
 end
