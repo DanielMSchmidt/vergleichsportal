@@ -6,7 +6,9 @@ class Cart < ActiveRecord::Base
   has_many :compares
   belongs_to :user
 
+  default_scope includes(:articles)
   scope :last_used, order('updated_at DESC')
+
 
   def get_count(article)
     article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
@@ -73,7 +75,7 @@ class Cart < ActiveRecord::Base
     return -1 unless self.available_for(provider)
     self.price_of_all_articles(provider) + self.calc_shipping(provider)
   end
-  
+
   def empty?
     self.articles.empty?
   end
