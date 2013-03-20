@@ -1,13 +1,2 @@
 alert("erfolgreich eingelogt");
-<% if @cart_conflict %>
-var answer = confirm('Sie haben Artikel in ihrem bisherigen Warenkorb. Soll dieser zu ihren Warenkörben hinzugefügt werden?');
-if (answer)
-{
-  $.ajax({
-    url: "<%= add_cart_to_user_path(cart_id: @active_cart) %>"
-  }).done(function() {
-    $(this).addClass("done");
-  });
-}
-<% end %>
 location.reload();

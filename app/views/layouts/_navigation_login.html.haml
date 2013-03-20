@@ -1,18 +1,3 @@
-/ Header and Nav
-
-.row
-  .three.columns
-    %h1
-      %a{:href=> "/home/index"}
-        %img{:src => "/assets/logo.png"}/
-  .two.columns.offset-by-seven
-    %img{:src => "/assets/ger.gif"}/
-    %img{:src => "/assets/gb.gif"}/
-.row
-  .three.columns
-    %a{:class => "button expand", "data-reveal-id" => "login-modal", :href => "#", :style => "font-size: 90%;"}
-      Anmelden / Registrieren
-  .nine.columns
-    = yield :head
-
-/ End Header and Nav
+.user_control
+  %a{:class => "button expand", "data-reveal-id" => "login-modal", :href => "#", :style => "font-size: 90%;"}
+    Anmelden / Registrieren

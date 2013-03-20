@@ -29,7 +29,11 @@ class User < ActiveRecord::Base
   end
 
   def activeCart
-    self.cart.last_used.first
+    self.carts.last_used.first
+  end
+
+  def get_empty_cart
+    self.carts.select{|cart| cart.empty?}.first
   end
 
   def addCart(cart_id)
