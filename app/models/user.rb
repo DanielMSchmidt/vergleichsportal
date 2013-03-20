@@ -15,16 +15,11 @@ class User < ActiveRecord::Base
   validates_length_of :password, :minimum => 3, :message => "password must be at least 3 characters long", :if => :password, :unless => :guest?
   validates_confirmation_of :password, :message => "should match confirmation", :if => :password, :unless => :guest?
 
-
-  def send_activation_needed_email!
-    super unless self.guest?
-  end
-
   #TODO Write Tests for code below
   def self.generateGuest
     user = User.create
     role = Role.where(name: "Guest").first
-    UserRoleAssignment.create(role_id: role.id, user_id: user.id)
+    UserRoleAssignment.create(role_id: role.id, user_id: user.id) unless user.nil? || role.nil?
     user
   end
 

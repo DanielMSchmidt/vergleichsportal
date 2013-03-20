@@ -4,7 +4,12 @@ class SearchQueryWorker
 
   def perform(query)
     Rails.logger.info "Starting SearchQueryWorker with query: #{query}"
-    search = Search.new(query[:value]) #TODO: Add options
-    search.getAllNewestesPrices
+    if query.nil? || query.empty?
+      Rails.logger.info "Stopping SearchQueryWorker with empty query"
+      return false
+    else
+      search = Search.new(query[:value]) #TODO: Add options
+      search.getAllNewestesPrices
+    end
   end
 end
