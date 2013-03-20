@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_providers
   before_filter :set_active_user
   before_filter :set_active_cart
+  before_filter :set_user_carts
   before_filter :fetch_add
 
   after_filter :setGuestUserInCookies
@@ -18,7 +19,12 @@ class ApplicationController < ActionController::Base
 
   def set_active_cart
     @active_cart ||= fetchCartFromCookies
+    @active_cart ||= @active_user.carts.last_used.first unless @active_user.carts.empty?
     @active_cart ||= @active_user.carts.create
+  end
+
+  def set_user_carts
+    @user_carts = @active_user.carts
   end
 
   def set_providers
