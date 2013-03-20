@@ -10,7 +10,6 @@ gem 'jquery-rails', '~> 2.2.1'
 gem 'mechanize', '~> 2.5.1'
 gem 'nokogiri', '~> 1.5.6'
 gem 'sorcery', '~> 0.8.1'
-gem 'draper', '~> 1.1.0'
 gem "sidekiq", "~> 2.8.0"
 gem 'slim'
 gem 'sinatra', '>= 1.3.0', :require => nil
