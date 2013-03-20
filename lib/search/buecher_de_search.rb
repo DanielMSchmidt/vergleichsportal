@@ -11,16 +11,16 @@ class BuecherDeSearch
 
 	def searchByKeywords(searchTerm, options={})
 		if options.empty?
-      		links = getBookLinksFor(searchTerm)
+      		links = getArticleLinksFor(searchTerm)
     	else
-      		links = getAdvancedBookLinksFor(searchTerm, options)
+      		links = getAdvancedArticleLinksFor(searchTerm, options)
     	end
-    	
-    	#is there a number of results?
+
+    	#is there a max number of results?
     	if options[:count].nil?
-      		articles = links.collect{|link| getBookDataFor(link)}
+      		articles = links.collect{|link| getArticleDataFor(link)}
     	else
-      		articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      		articles = links.take(options[:count]).collect{|link| getArticleDataFor(link)}
     	end
 
     	filterByType(articles, options)
@@ -28,10 +28,10 @@ class BuecherDeSearch
 
 	def getNewestPriceFor(link)
     	#Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
-    	getBookDataFor(link)[:price]
+    	getArticleDataFor(link)[:price]
  	end
 
-	def getBookLinksFor(searchTerm)
+	def getArticleLinksFor(searchTerm)
 		page = @agent.get(@provider[:url])
 
 		search_form = page.form(@provider[:search_form])
@@ -39,33 +39,35 @@ class BuecherDeSearch
 		search_form[@provider[:search_field]] = searchTerm
 
 		page = @agent.submit(search_form, search_form.buttons.first)
-		books = page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
+
+		books = page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
-	def getBookDataFor(link)
+	def getArticleDataFor(link)
 		page = @agent.get(link)
-		book = {}
+		article = {}
 		@provider[:book].each do |key, value|
-			book[key] = getItem(page,value)
+			article[key] = getItem(page,value)
 		end
 		page.search(@provider[:produktinfo]).each do |value|
 			value_array = value.text.split(": ")
-			book[:ean] =  value_array[1] if value_array[0] == 'ISBN-13'
+			article[:ean] =  value_array[1] if value_array[0] == 'ISBN-13'
 		end
-		book[:price] = page.search(@provider[:price]).to_s[/\d+,\d+/].tr(',','.').to_f
-		book[:image_url] = page.images.at(5)
-		book[:url] = link
-		book[:article_type] = getType(page)
-		book
+		
+		article[:price] = page.search(@provider[:price]).to_s[/\d+,\d+/].tr(',','.').to_f
+		article[:image_url] = page.images.at(5)
+		article[:url] = link
+		article[:article_type] = getType(page)
+		article
 	end
 
-	def getAdvancedBookLinksFor(searchTerm, options)
+	def getAdvancedArticleLinksFor(searchTerm, options)
 		page = agent.get('http://www.buecher.de/go/search_search/expert_search/lfa/quicksearchform/')
 		search_form = page.form(:action => 'http://www.buecher.de/go/search_search/expert_search_result/receiver_object/shop_search_expertsearch/')
 		search_form['form[personen]'] =  ((options[:author].nil?) ? '' : options[:author])
 		search_form['form[schlagworte]'] = ((options[:title].nil?) ? '' : options[:title])
 		page = agent.submit(search_form, search_form.buttons.first)
-		books=  page.links_with(:class => "booklink").collect{|link| link.href}
+		articles=  page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
   	def filterByType(articles, options)
@@ -82,24 +84,30 @@ class BuecherDeSearch
  	end
 
 	def getItem(page, query)
-		page.search(query).first.text
+		item = page.search(query).first
+		unless item.nil?
+			item = item.text
+		end
+		item
 	end
 
 	def getType(page)
-    type = page.search('.pm_artikeltyp').first.text
-    if type == 'Audio CD'
-      article_type = 'cd'
-    elsif type == 'eBook, ePUB'
-      article_type = 'ebook'
-    elsif type == 'Gebundenes Buch' || article_type == 'Broschiertes Buch'
-      article_type = 'book'
-    elsif type == 'Blu-ray Disc'
-      type = 'bluray'
-  	elsif type == 'DVD'
-  	  type = 'dvd'	
-    end
-    type
-  end
+		provider_type = page.search('#produkttyp')
+		provider_type = provider_type.text
+		provider_type = provider_type.strip
+		if provider_type == 'Audio CD'
+			article_type = 'cd'
+    	elsif provider_type == 'eBook, ePUB'
+    		article_type = 'ebook'
+    	elsif provider_type == 'Gebundenes Buch' || provider_type == 'Broschiertes Buch'
+      		article_type = 'book'
+    	elsif provider_type == 'Blu-ray Disc'
+      		article_type = 'bluray'
+  		elsif provider_type == 'DVD'
+  	  		article_type = 'dvd'  	  					
+    	end
+    	article_type
+  	end
 
 
 end

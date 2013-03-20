@@ -10,14 +10,12 @@ class ThaliaDeSearch
 	end
 
 	def searchByKeywords(searchTerm, options={})
-
 		if options.empty?
       		links = getArticleLinksFor(searchTerm)
     	else
       		links = getAdvancedArticleLinksFor(searchTerm, options)
     	end
-
-    	#is there a number of results?
+    	#is there a max number of results?
     	if options[:count].nil?
       		articles = links.collect{|link| getArticleDataFor(link)}
     	else
@@ -29,14 +27,12 @@ class ThaliaDeSearch
 
 	def getArticleLinksFor(searchTerm)
 		page = @agent.get(@provider[:url])
-
 		search_form = page.form(@provider[:search_form])
-
 		search_form[@provider[:search_field]] = searchTerm
-
 		page = @agent.submit(search_form, search_form.buttons.first)
-		articles = page.links_with(:href => @provider[:link_href]).collect{|link| link.href}.uniq
-	end
+		articles = page.links_with(:href => /^http:\/\/www.thalia.de\/shop\/tha_homestartseite\/suchartikel\/.*$/).collect{|link| link.href}.uniq	
+    articles
+  end
 
 	def getNewestPriceFor(link)
     	Rails.logger.info "ThaliaDeSearch#getNewestPriceFor called for #{link}"
@@ -85,18 +81,18 @@ class ThaliaDeSearch
 	end
 
 	def getType(page)
-    	type = page.search('.itemSubcategory').text.strip
-    	if type == 'Hörbuch' || type == 'Musik'
-      		type = 'cd'
-    	elsif type == 'Film'
-      		type = 'dvd'
-      	elsif type == 'Blu-ray'
-      		type = 'bluray'
-      	elsif type == 'eBook'
-      		type = 'ebook'
-      	elsif type == 'Buch'
-      		type = 'book'
+    	provider_type = page.search('.itemSubcategory').text.strip
+    	if provider_type == 'Hörbuch' || provider_type == 'Musik'
+      		article_type = 'cd'
+    	elsif provider_type == 'Film'
+      		article_type = 'dvd'
+      	elsif provider_type == 'Blu-ray'
+      		article_type = 'bluray'
+      	elsif provider_type == 'eBook'
+      		article_type = 'ebook'
+      	elsif provider_type == 'Buch'
+      		article_type = 'book'
     	end    		
-    	type
+    	article_type
   	end
 end

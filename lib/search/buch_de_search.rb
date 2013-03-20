@@ -2,14 +2,12 @@
 require 'mechanize'
 require 'yaml'
 
-
 class BuchDeSearch
   #TODO add option support
 
   def initialize()
     @provider = YAML.load_file "config/buch_de.yml"
-    @agent = Mechanize.new
-    
+    @agent = Mechanize.new    
   end
 
   def searchByKeywords(searchTerm, options={})
@@ -21,7 +19,7 @@ class BuchDeSearch
       links = getAdvancedArticleLinksFor(searchTerm, options)
     end
 
-    #is there a number of results?
+    #is there a max number of results?
     if options[:count].nil?
       articles = links.collect{|link| getArticleDataFor(link)}
     else
