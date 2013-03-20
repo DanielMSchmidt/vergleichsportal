@@ -55,6 +55,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def change_role
+    @user = User.find(params[:id])
+    if @user.admin?
+      @user.removeRole("Admin")
+    else
+      @user.addRole("Admin")
+    end
+  end
+
   # PUT /users/1
   # PUT /users/1.json
   def update
