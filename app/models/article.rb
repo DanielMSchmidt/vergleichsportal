@@ -79,4 +79,10 @@ class Article < ActiveRecord::Base
     end
     average
   end
+
+  def add_comment(comment)
+    self.comments << comment
+    comment.save
+    self.save
+  end
 end

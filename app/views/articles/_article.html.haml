@@ -45,4 +45,25 @@
                     Durchschnittliche Bewertung:
                     = article.average_rating
                     Sterne
-
+    .row
+      .seven.columns
+        -article.comments.each do |comment|
+          .row
+            .eight.columns
+              %h7
+                Kommentar:
+            .four.columns
+              =comment.user
+            %hr
+          .row
+            =comment.value
+      .four.columns
+        .row
+          .eight.columns
+            %h7
+              Neuer Kommentar:
+          %hr
+        .row        
+        =form_tag article_add_comment_path(article), remote: true, :method => :put do
+          = text_field_tag :value
+          = button_tag

@@ -82,6 +82,22 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def add_comment
+    @article = Article.find(params[:id])
+    @comment = Comment.new(value: params[:value], commentable_type: "article", commentable_id: @article.id, user_id: current_user.id)
+    respond_to do |format|
+      if @article.add_comment(@comment)
+        format.html { redirect_to root_path, notice: "Danke fuer den Kommentar!"}
+        format.json { render json: @comment }
+        format.js
+      else
+        format.html { redirect_to root_path, notice: "Der Kommentar muss zwischen "}
+        format.json { render json: @comment.errors }
+        format.js
+      end
+    end
+  end
+
   # DELETE /articles/1
   # DELETE /articles/1.json
   def destroy
