@@ -1,4 +1,4 @@
--content_for :head do 
+-content_for :head do
   %h3 Admin Dashboard
 
 %ul.accordion
@@ -13,7 +13,7 @@
       %h6 Aktiv
       %hr
       #active-ad
-        
+
         = render @active_advertisments
 
       %h6 Inactive
@@ -23,8 +23,10 @@
         = render @inactive_advertisments
       .row
         .six.columns.centered
-          %a.button.expand{"data-reveal-id" => "add-advertisment-modal", :href => "#"} Werbung hinzufügen 
-  %li
-    = render :partial => "home/admin/statistic" 
-- content_for :modal do 
+          %a.button.expand{"data-reveal-id" => "add-advertisment-modal", :href => "#"} Werbung hinzufügen
+  %li#statistics
+    = render :partial => "home/admin/statistic"
+- content_for :modal do
   = render :partial => "home/admin/add_advertisment"
+
+= render "home/admin/statistic_chart"
