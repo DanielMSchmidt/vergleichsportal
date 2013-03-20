@@ -1,7 +1,8 @@
 class HomeController < ApplicationController
+  # TODO: After oder before filter?? render after view?
   after_filter :add_query, only: [:search_results]
   after_filter :filter_results, only: [:search_results]
-  after_filter :add_rating
+  before_filter :add_rating
 
   def index
     @user_new = User.new

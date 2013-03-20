@@ -22,7 +22,6 @@
         -if @current_rating and @current_rating.where(:rateable_id => article.id).last
           -active[@current_rating.where(:rateable_id => article.id).last.value - 1] = true
 
-
         .seven.columns.offset-by-one
           %p
             =article.description
@@ -53,7 +52,7 @@
               %h7
                 Kommentar:
             .four.columns
-              =comment.user
+              =comment.user.email
             %hr
           .row
             =comment.value
