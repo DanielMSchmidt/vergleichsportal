@@ -38,6 +38,7 @@ class BuchDeSearch
   end
 
 
+
   def getArticleLinksFor(searchTerm)
     #Rails.logger.info "BuchDeSearch#getArticleLinksFor called for #{searchTerm}
     page = @agent.get(@provider[:url])
