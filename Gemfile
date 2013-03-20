@@ -15,6 +15,7 @@ gem "sidekiq", "~> 2.8.0"
 gem 'slim'
 gem 'active_model_serializers', '~> 0.7.0'
 gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'chartjs-rails'
 
 group :production do
   gem 'pg', '~> 0.14.1'
