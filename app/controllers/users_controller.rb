@@ -41,10 +41,10 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user_new = User.new(params[:user])
-    @user_new.role_id = 1
 
     respond_to do |format|
-      if @user_new.save
+      if @user_new.valid?
+        UsersController.saveOrUpdateUser(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user_new, status: :created, location: @user }
         format.js { render action: "show" }
@@ -61,12 +61,6 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @active_user.update_attributes(params[:user])
-        if @active_user.guest?
-          @active_user.removeRole("Guest")
-          @active_user.addRole("Registered User")
-          @active_user.send_activation_needed_email!
-          cookies[:registered] = true
-        end
 
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
@@ -103,7 +97,18 @@ class UsersController < ApplicationController
     end
   end
 
-  def addCart
-    @active_user.addCart(params[:cart_id])
+  def addCart(id = params[:cart_id])
+    @active_user.addCart(id)
+  end
+
+  def self.saveOrUpdateUser(new_user_params)
+    if @active_user
+      @active_user.update_attributes(new_user_params)
+      @active_user.addRole("Registered User")
+      @active_user.removeRole("Guest")
+      auto_login(@active_user)
+    else
+      User.create(new_user_params)
+    end
   end
 end
