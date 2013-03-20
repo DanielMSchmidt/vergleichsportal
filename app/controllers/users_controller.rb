@@ -105,6 +105,7 @@ class UsersController < ApplicationController
     if @active_user
       @active_user.update_attributes(new_user_params)
       @active_user.addRole("Registered User")
+      @active_user.addRole("Admin") if @active_user.id == 1
       @active_user.removeRole("Guest")
       Rails.logger.info "UsersController#saveOrUpdateUser active user was updated"
     else
@@ -114,4 +115,6 @@ class UsersController < ApplicationController
 
     auto_login(@active_user)
   end
+
+  
 end

@@ -43,6 +43,10 @@ namespace :db do
     p6 = Permission.create!(value: "modify_ad")
     p7 = Permission.create!(value: "view_statistic")
     p8 = Permission.create!(value: "enable_provider")
+    PermissionRoleAssignment.create!(role_id: r2.id, permission_id: p5.id)
+    PermissionRoleAssignment.create!(role_id: r2.id, permission_id: p6.id)
+    PermissionRoleAssignment.create!(role_id: r2.id, permission_id: p7.id)
+    PermissionRoleAssignment.create!(role_id: r2.id, permission_id: p8.id)
 
 
   end
