@@ -72,7 +72,12 @@ Vergleichsportal::Application.routes.draw do
   get "android/provider" => "android#provider"
   post "android/provider" => "android#rate_provider"
 
+  post "android/article/rate" => "android#rate_article"
+  post "android/article/comment" => "android#comment_article"
+
   get "android/search" => "android#search"
+
+  get "android/carts" => "android#all_carts"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

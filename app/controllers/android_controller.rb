@@ -90,7 +90,7 @@ class AndroidController < ApplicationController
 	def rate_article
 		@article = Article.find(params[:article_id])
 		if (@article != nil)
-		    @rating = Rating.new(:value => params[:value],:user_id => params[:user_id], :rateable_id => @article.id, :rateable_type => "article")
+		    @rating = Rating.new(:value => params[:rating],:user_id => params[:user_id], :rateable_id => @article.id, :rateable_type => "article")
 		    @rating.save
 		    @article.ratings << @rating
 		    @article.save
@@ -105,10 +105,8 @@ class AndroidController < ApplicationController
 	def comment_article
 		@article = Article.find(params[:article_id])
 		if (@article != nil)
-		    @comment = Comment.new(:value => params[:value],:user_id => params[:user], :commentable_id => @article.id, :commentable_type => "article")
-		    @comment.save
-		    @article.comments << @comment
-		    @article.save
+		    @comment = Comment.new(:value => params[:comment],:user_id => params[:user_id], :commentable_id => @article.id, :commentable_type => "article")
+		    @article.add_comment(@comment)
 		    render json: [], status: :accepted
 		else
 			render json: [], status: :not_found
@@ -117,6 +115,13 @@ class AndroidController < ApplicationController
 
 	######## CartAPIController methods ##########
 
-
+	def all_carts
+		@carts = Cart.where(user_id: params[:user_id])
+		if (@carts != nil)
+			render json: @carts, each_serializer: CartForAndroidSerializer, status: :ok
+		else
+			render json: [], status: :ok
+		end
+	end
 
 end
