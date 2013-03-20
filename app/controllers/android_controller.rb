@@ -85,8 +85,15 @@ class AndroidController < ApplicationController
 	end
 
 	def search
-	    search = Search.new(params[:options][:title])
+		@term = params[:options][:title]
+		@options = {}
+	    search = Search.new(@term, @options)
 	    @result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from (see home#search_results)
+	    # cache the query
+	    query = SearchQuery.create(value: @term, options: @options)
+	    query.articles = @result unless @result.nil?
+	    SearchQueryWorker.perform_in(2.hours, query)
+	    # render result
 	    render json: @result, each_serializer: ArticleForAndroidSerializer, status: :ok
 	end
 

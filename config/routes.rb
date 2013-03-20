@@ -82,7 +82,7 @@ Vergleichsportal::Application.routes.draw do
   post "android/article/comment" => "android#comment_article"
   post "android/article/comments" => "android#article_comments"
   
-  get "android/debug" => "android#debug"
+  get "android/debug" => "android#article_comments"
 
   post "android/search" => "android#search"
 
