@@ -36,6 +36,9 @@ Vergleichsportal::Application.routes.draw do
     end
   end
 
+  get "users/:id/change_role" => "users#change_role", :as => "user_change_role"
+
+
 
   resources :user_sessions
 

@@ -19,11 +19,15 @@ class HomeController < ApplicationController
   end
 
   def admin
-    @users = User.all
-    @providers = Provider.all
-    @active_advertisments = Advertisment.active
-    @inactive_advertisments = Advertisment.inactive
-    @advertisment = Advertisment.new
+    if @active_user.guest?
+      redirect_to :root
+    else
+      @users = User.all
+      @providers = Provider.all
+      @active_advertisments = Advertisment.active
+      @inactive_advertisments = Advertisment.inactive
+      @advertisment = Advertisment.new
+    end
   end
 
 protected
@@ -31,7 +35,7 @@ protected
   def add_query
     query = SearchQuery.create(value: @term, options: @options)
     query.articles = @result unless @result.nil?
-    SearchQueryWorker.perform_at(2.hours.from_now, query)
+    SearchQueryWorker.perform_in(2.hours, query)
   end
 
   def filter_results
