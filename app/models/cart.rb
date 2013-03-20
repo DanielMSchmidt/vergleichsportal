@@ -84,9 +84,17 @@ class Cart < ActiveRecord::Base
     self.articles.empty?
   end
 
+  def price_history
+    history = {}
+    @cart_providers.each do |provider|
+      history = history.merge({provider.name => self.provider_price_history(provider)})
+    end
+    history
+  end
+
   def history_possible?(provider, time)
     self.articles.each do |article|
-      return false unless article.old_price_available(provider, time)
+      return false unless article.old_price_available?(provider, time)
     end
     true
   end
@@ -96,9 +104,9 @@ class Cart < ActiveRecord::Base
     return nil unless history_possible?(provider, now)
     offset = 24*60*60*14
     while true
-      return now-offset unless history_possible?(provider, now-offset)
+      return now-offset if history_possible?(provider, now-offset)
       offset /= 2
-      if offset < 86400
+      if offset < 400
 	return nil
       end
     end
@@ -112,7 +120,7 @@ class Cart < ActiveRecord::Base
     price
   end
 
-  def price_history(provider)
+  def provider_price_history(provider)
     history = {}
     start_at = self.history_beginning(provider)
     return nil if start_at.nil?
