@@ -106,7 +106,8 @@ class CartsController < ApplicationController
   #GET /carts/1/use
   def use
     new_cart = Cart.find(params[:id])
-    @active_cart = cart unless cart.nil?
+    @active_cart = new_cart
+    respond_to :js
   end
 
   # DELETE /carts/1
