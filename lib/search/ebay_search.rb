@@ -10,9 +10,15 @@ class EbaySearch
 
   def searchByKeywords(searchTerm, options={})
     Rails.logger.info "EbaySearch#searchByKeywords called for #{searchTerm} with #{options}"
-    links = self.getBookLinksFor(searchTerm, options)
+    options.delete(:article_type)
+    if options.empty?
+      links = self.getArticleLinksFor(searchTerm)
+    else
+      links = getAdvancedArticleLinksFor(searchTerm, options) #MAYBE you need an 'self.'
+    end
+        
     items = []
-    #is there a number of results?
+    #is there a max number of results?
       if options[:count].nil?
         links.each{|link| items << getBookDataFor(link)}
       else
@@ -26,9 +32,25 @@ class EbaySearch
     getBookDataFor(link)[:price]
   end
 
-  def getBookLinksFor(searchTerm, options)
-    Rails.logger.info "EbaySearch#getBookLinksFor called for #{searchTerm} with #{options}"
+  def getArticleLinksFor(searchTerm)
+    Rails.logger.info "EbaySearch#getArticleLinksFor called for #{searchTerm} with #{options}"
 
+    #                 Suchbegriff                                      Neuwertig              Sofortkauf
+    #                 |                                                |                      |             Deutsche Anbieter
+    #                 |                                                |                      |             |
+    search_options = "&_nkw=" + URI.escape(searchTerm).tr(' ', '+') + "&LH_ItemCondition=3" + "&LH_BIN=1" + "&LH_PrefLoc=1"
+    page = @agent.get("http://www.ebay.de/sch/i.html?#{search_options}")
+
+    return page.links_with(:class => "vip").collect{|link| link.href}
+  end
+
+  def getAdvancedArticleLinksFor(searchTerm, options)
+    #The results get filtered later in search.rb
+    Rails.logger.info "EbaySearch#getAdvancedArticleLinksFor called for #{searchTerm} with #{options}"
+    title =  ((options[:title].nil?) ? '' : options[:title]) 
+    author = ((options[:author].nil?) ? '' : options[:author])
+
+    searchTerm = title+' '+author
     #                 Suchbegriff                                      Neuwertig              Sofortkauf
     #                 |                                                |                      |             Deutsche Anbieter
     #                 |                                                |                      |             |

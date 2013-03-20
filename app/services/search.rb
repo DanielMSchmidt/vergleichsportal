@@ -16,8 +16,9 @@ class Search
       return searches.includes(:articles).collect{|search| search.articles}.flatten
     else
       Rails.logger.info "No SearchQueries were found, starting search"
-      searchAtMultipleProviders(@provider, @search_term, @options)
+      results = searchAtMultipleProviders(@provider, @search_term, @options)
     end
+    results = filterByOptions(results)
   end
 
   def getAllNewestesPrices
@@ -80,6 +81,7 @@ class Search
     search_result.reject!{|provider_results| provider_results.nil? || provider_results.empty?}
 
     #TODO: Write test for this part, doesn't work jet
+    #TODO: Comments?
     search_result.each_with_index do |articles, provider_index|
       articles.each{ |article| article[:provider] = provider_index + 1;}
     end
@@ -140,5 +142,34 @@ class Search
     attrib = {}
     articles.collect{|x| x[attribute]}.each{|x| attrib.merge!(x)}
     attrib
+  end
+
+  def filterByOptions(results)
+    if options.has_key?(:author)
+      results.select!{|article| article.author == options[:author]}
+    end
+    if options.has_key?(:title)
+      results.select!{|article| article.title == options[:title]}
+    end
+    if options.has_key?(:min_price)
+      results.select!{|article| ishigher?(article)} 
+    end
+    if options.has_key?(:min_price)
+      results.select!{|article| islower?(article)}
+    end
+    if options.has_key?(:article_type)
+      results.select!{|article| article.article_type == options[:article_type]}
+    end
+    
+  end
+
+  def ishigher?(article)
+    result = article.price.collect{|provider_price| options[:min_price] < provider_price }
+    result.include?(true)
+  end
+
+  def islower?(article)
+    result = article.price.collect{|provider_price| options[:max_price] > provider_price }
+    result.include?(true)
   end
 end

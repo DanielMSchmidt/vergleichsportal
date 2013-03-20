@@ -12,13 +12,16 @@ class BuchDeSearch
 
   def searchByKeywords(searchTerm, options={})
     #Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
-    
+    options.delete(:article_type)
     if options.empty?
       links = getArticleLinksFor(searchTerm)
     else
       links = getAdvancedArticleLinksFor(searchTerm, options)
     end
 
+    #filter the providers offers
+    links = filterUselessLinks(links) 
+    
     #is there a max number of results?
     if options[:count].nil?
       articles = links.collect{|link| getArticleDataFor(link)}
@@ -49,7 +52,6 @@ class BuchDeSearch
     
     links = page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
 
-    links.take(10)
   end
 
   def getAdvancedArticleLinksFor(searchTerm, options)
@@ -58,6 +60,14 @@ class BuchDeSearch
     page = @agent.get('http://www.buch.de/shop/home/suche/?fi=&st='+title+'&sa='+author)
     #st: titel   sa:  autor 
     page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
+  end
+
+  def filterUselessLinks(links)
+    useless_links = links.drop(4) #take the offers
+    useless_links.each do |uselesslink|
+      links.delete(uselesslink)
+    end
+    links
   end
 
   def filterByType(articles, options)

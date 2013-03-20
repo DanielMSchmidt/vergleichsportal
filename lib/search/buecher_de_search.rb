@@ -10,6 +10,7 @@ class BuecherDeSearch
 	end
 
 	def searchByKeywords(searchTerm, options={})
+		options.delete(:article_type)
 		if options.empty?
       		links = getArticleLinksFor(searchTerm)
     	else
@@ -56,8 +57,13 @@ class BuecherDeSearch
 			value_array = value.text.split(": ")
 			article[:ean] =  value_array[1] if value_array[0] == 'ISBN-13'
 		end
-		
-		article[:price] = page.search(@provider[:price]).to_s[/\d+,\d+/].tr(',','.').to_f
+		price = page.search(@provider[:price]).to_s[/\d+,\d+/]
+		unless price.nil?
+			article[:price] = price.tr(',','.').to_f
+		else
+			article[:price] = nil
+		end
+
 		article[:image] = page.images.at(5)
 		article[:url] = link
 		article[:article_type] = getType(page)
@@ -65,11 +71,11 @@ class BuecherDeSearch
 	end
 
 	def getAdvancedArticleLinksFor(searchTerm, options)
-		page = agent.get('http://www.buecher.de/go/search_search/expert_search/lfa/quicksearchform/')
+		page = @agent.get('http://www.buecher.de/go/search_search/expert_search/lfa/quicksearchform/')
 		search_form = page.form(:action => 'http://www.buecher.de/go/search_search/expert_search_result/receiver_object/shop_search_expertsearch/')
 		search_form['form[personen]'] =  ((options[:author].nil?) ? '' : options[:author])
 		search_form['form[schlagworte]'] = ((options[:title].nil?) ? '' : options[:title])
-		page = agent.submit(search_form, search_form.buttons.first)
+		page = @agent.submit(search_form, search_form.buttons.first)
 		articles=  page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 

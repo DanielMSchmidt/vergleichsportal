@@ -10,12 +10,15 @@ class ThaliaDeSearch
 	end
 
 	def searchByKeywords(searchTerm, options={})
+    options.delete(:article_type)
 		if options.empty?
       		links = getArticleLinksFor(searchTerm)
     	else
       		links = getAdvancedArticleLinksFor(searchTerm, options)
     	end
-      links.take(10) #only take the search results
+      
+      #filter the providers offers
+      links = filterUselessLinks(links) 
     	#is there a max number of results?
     	if options[:count].nil?
       		articles = links.collect{|link| getArticleDataFor(link)}
@@ -43,13 +46,11 @@ class ThaliaDeSearch
 	def getArticleDataFor(link)
 		page = @agent.get(link)
 		article = {}
-    puts 'Fehler?'
 		@provider[:book].each do |key, value|
 			article[key] = getItem(page,value)
 		end
-    puts 'Fehler?2'
 		article[:price] = page.search(@provider[:price]).text[/\d+,\d+/].tr(',','.').to_f
-		article[:url] = link
+    article[:url] = link
 		details_headlines = page.search(@provider[:detail_headline])
 		details_values = page.search(@provider[:detail_value])
 		position = details_headlines.collect{|value| value.text}.index("EAN:")
@@ -59,12 +60,21 @@ class ThaliaDeSearch
 	end
 
 	def getAdvancedArticleLinksFor(searchTerm, options)
-    	title =  ((options[:title].nil?) ? '' : options[:title]) 
-    	author = ((options[:author].nil?) ? '' : options[:author])
-    	page = @agent.get('http://www.thalia.de/shop/tha_homestartseite/suche/?fi=&st='+title+'&sa='+author)
-    	#st: titel   sa:  autor 
-   		page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
-  	end
+    title =  ((options[:title].nil?) ? '' : options[:title]) 
+    author = ((options[:author].nil?) ? '' : options[:author])
+    page = @agent.get('http://www.thalia.de/shop/tha_homestartseite/suche/?fi=&st='+title+'&sa='+author)
+    #st: titel   sa:  autor 
+   	links = page.links_with(:href => /^http:\/\/www.thalia.de\/shop\/tha_homestartseite\/suchartikel\/.*$/).collect{|link| link.href}
+    links
+  end
+
+  def filterUselessLinks(links)
+    useless_links = links.drop(5) #take the offers
+    useless_links.each do |uselesslink|
+      links.delete(uselesslink)
+    end
+    links
+  end
 
   	def filterByType(articles, options)
     	if options[:article_type].nil?
