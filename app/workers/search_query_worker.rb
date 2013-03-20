@@ -8,7 +8,7 @@ class SearchQueryWorker
       Rails.logger.info "Stopping SearchQueryWorker with empty query"
       return false
     else
-      search = Search.new(query[:value]) #TODO: Add options
+      search = Search.new(query[:value], query[:options])
       search.getAllNewestesPrices
     end
   end

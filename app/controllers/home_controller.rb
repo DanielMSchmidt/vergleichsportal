@@ -6,9 +6,7 @@ class HomeController < ApplicationController
 
   def index
     @user_new = User.new
-    @user_new.role_id = 1
     @providers = Provider.all
-
   end
 
   def search_results
@@ -35,7 +33,7 @@ class HomeController < ApplicationController
 protected
 
   def add_query
-    query = SearchQuery.create(value: @term)
+    query = SearchQuery.create(value: @term, options: @options)
     query.articles = @result unless @result.nil?
     SearchQueryWorker.perform_at(2.hours.from_now, query)
   end
