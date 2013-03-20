@@ -18,11 +18,11 @@ class HomeController < ApplicationController
     search = Search.new(@term, @options)
     @result = search.find.uniq
     @result.delete(false)
-    
+
     if current_user
       @current_rating = current_user.ratings
     end
-    @result = search.find.reject{|result| result == false} # TODO: Check where nils come from
+    @result = search.find.reject{|result| result == false || result.id.nil?} # TODO: Check where nils come from
   end
 
   def admin
