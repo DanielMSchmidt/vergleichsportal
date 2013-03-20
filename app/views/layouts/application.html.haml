@@ -15,15 +15,28 @@
     = stylesheet_link_tag "application"
     = csrf_meta_tags
   %body{:style => "zoom:1;"}
-    - if logged_in?
-      = render "layouts/navigation_logout"
-    - else 
-      = render "layouts/navigation_login"
+    .row
+      .three.columns
+        %h1
+          %a{:href=> "/home/index"}
+            %img{:src => "/assets/logo.png"}/
+      .two.columns.offset-by-seven
+        %img{:src => "/assets/ger.gif"}/
+        %img{:src => "/assets/gb.gif"}/
+    .row
+      .three.columns
+        - if logged_in?
+          = render "layouts/navigation_logout"
+        - else
+          = render "layouts/navigation_login"
+
+      .nine.columns
+        = yield :head
 
     .row
       .three.columns
         %p
-          %a.button.expand{"data-reveal-id" => "cart-modal", :href => "#", :style => "background-image: url(/assets/cart.png); background-repeat: no-repeat; height: 38px; background-position: 84px 7px;"}
+          %a#cart-modal-button.button.expand{"data-reveal-id" => "cart-modal", :href => "#", :style => "background-image: url(/assets/cart.png); background-repeat: no-repeat; height: 38px; background-position: 84px 7px;"}
         %p{:id => "errornote"}
           - if notice
             .alert-box.success
@@ -32,7 +45,7 @@
         %p
           %a{:href => @active_advertisment.link_url}
             %img{:src => @active_advertisment.img_url}/
-    
+
       .nine.columns
         = yield
       = render :partial => "layouts/footer"
