@@ -22,7 +22,7 @@ class HomeController < ApplicationController
     if @active_user.guest?
       redirect_to :root
     else
-      @users = User.all
+      @users = User.all.reject{|user| user.guest?}
       @providers = Provider.all
       @active_advertisments = Advertisment.active
       @inactive_advertisments = Advertisment.inactive
