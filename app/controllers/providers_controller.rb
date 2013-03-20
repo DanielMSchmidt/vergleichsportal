@@ -74,7 +74,7 @@ class ProvidersController < ApplicationController
 
   def add_rating
     @provider = Provider.find(params[:id])
-    @rating = Rating.new(:value => params[:value],:user_id => current_user.id, :provider_id => @provider.id)
+    @rating = Rating.new(:value => params[:value],:user_id => @active_user.id, :provider_id => @provider.id)
     @rating.save
     @provider.ratings << @rating
     @provider.save

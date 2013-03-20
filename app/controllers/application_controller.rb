@@ -1,13 +1,13 @@
 class ApplicationController < ActionController::Base
-  before_filter :set_providers
   before_filter :set_active_user
   before_filter :set_active_cart
   before_filter :set_user_carts
   before_filter :fetch_add
+  before_filter :set_providers
+  before_filter :set_cart_providers
 
   after_filter :setGuestUserInCookies
   after_filter :setActiveCartInCookies
-
 
   def set_active_user
     Rails.logger.info "ApplicationController#set_active_user called"
@@ -28,7 +28,16 @@ class ApplicationController < ActionController::Base
   end
 
   def set_providers
-     @providers = Provider.all
+    @providers = Provider.all
+  end
+
+  def set_cart_providers
+    @cart_providers = []
+    @providers.each do |provider|
+      if provider.active and @active_cart.available_for(provider)
+	@cart_providers << provider
+      end
+    end
   end
 
   def fetch_add
