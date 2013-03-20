@@ -10,14 +10,30 @@ module HomeHelper
   end
 
   def getLabels
-    '"January","February","March","April","May","June","July"'
+    getLastWeek.map{ |date| date.strftime("%b %d") }.to_s
   end
 
   def getCompares
-    '65,59,90,81,56,55,40'
+    compares_per_day = []
+    getLastWeek.each do |day|
+      puts day
+      compares_per_day << Compare.where(created_at: day.beginning_of_day..day.end_of_day).count
+      puts compares_per_day
+    end
+    compares_per_day.to_s
   end
 
   def getSearches
-    '28,48,40,19,96,27,100'
+    queries_per_day = []
+    getLastWeek.each do |day|
+      puts day
+      queries_per_day << SearchQuery.where(created_at: day.beginning_of_day..day.end_of_day).count
+      puts queries_per_day
+    end
+    queries_per_day.to_s
+  end
+
+  def getLastWeek
+    7.day.ago.to_date..Date.today
   end
 end
