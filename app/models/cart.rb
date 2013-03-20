@@ -104,6 +104,14 @@ class Cart < ActiveRecord::Base
     end
   end
 
+  def old_price(provider, time)
+    price = 0
+    self.articles.each do |article|
+      price += article.old_price(provider, time)
+    end
+    price
+  end
+
   def price_history(provider)
     history = {}
     start_at = self.history_beginning(provider)
