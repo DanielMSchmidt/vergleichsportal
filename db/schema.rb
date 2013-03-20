@@ -46,10 +46,10 @@ ActiveRecord::Schema.define(:version => 20130319101258) do
     t.string   "name"
     t.string   "ean"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.string   "author"
-    t.string   "type"
+    t.string   "article_type"
   end
 
   create_table "authentications", :force => true do |t|
@@ -186,9 +186,6 @@ ActiveRecord::Schema.define(:version => 20130319101258) do
     t.integer  "role_id"
     t.datetime "created_at",                                        :null => false
     t.datetime "updated_at",                                        :null => false
-    t.string   "activation_state"
-    t.string   "activation_token"
-    t.datetime "activation_token_expires_at"
     t.string   "reset_password_token"
     t.datetime "reset_password_token_expires_at"
     t.datetime "reset_password_email_sent_at"
@@ -197,7 +194,6 @@ ActiveRecord::Schema.define(:version => 20130319101258) do
     t.datetime "last_activity_at"
   end
 
-  add_index "users", ["activation_token"], :name => "index_users_on_activation_token"
   add_index "users", ["last_logout_at", "last_activity_at"], :name => "index_users_on_last_logout_at_and_last_activity_at"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token"
   add_index "users", ["role_id"], :name => "index_users_on_role_id"
