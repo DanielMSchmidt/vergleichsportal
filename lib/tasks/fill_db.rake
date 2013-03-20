@@ -37,6 +37,13 @@ namespace :db do
     PermissionRoleAssignment.create!(role_id: r1.id, permission_id: p3.id)
     PermissionRoleAssignment.create!(role_id: r1.id, permission_id: p4.id)
 
+    #for Admin Role
+    r2 = Role.create!(name: "Admin")
+    p5 = Permission.create!(value: "lock_user")
+    p6 = Permission.create!(value: "modify_ad")
+    p7 = Permission.create!(value: "view_statistic")
+    p8 = Permission.create!(value: "enable_provider")
+
 
   end
 end

@@ -21,11 +21,15 @@ class HomeController < ApplicationController
   end
 
   def admin
-    @users = User.all
-    @providers = Provider.all
-    @active_advertisments = Advertisment.active
-    @inactive_advertisments = Advertisment.inactive
-    @advertisment = Advertisment.new
+    if @active_user.guest?
+      redirect_to :root
+    else
+      @users = User.all
+      @providers = Provider.all
+      @active_advertisments = Advertisment.active
+      @inactive_advertisments = Advertisment.inactive
+      @advertisment = Advertisment.new
+    end
   end
 
 protected
