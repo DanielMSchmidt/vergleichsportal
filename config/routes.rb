@@ -63,6 +63,15 @@ Vergleichsportal::Application.routes.draw do
 
   root to: 'home#index'
 
+  # Android API routes
+
+  post "android/login" => "android#check_auth"
+  post "android/register" => "android#register"
+
+  get "android/provider" => "android#provider"
+  post "android/provider" => "android#rate_provider"
+
+  get "android/search" => "android#search"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

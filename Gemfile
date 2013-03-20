@@ -13,6 +13,7 @@ gem 'sorcery', '~> 0.8.1'
 gem 'draper', '~> 1.1.0'
 gem "sidekiq", "~> 2.8.0"
 gem 'slim'
+gem 'active_model_serializers', '~> 0.7.0'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
 group :production do
