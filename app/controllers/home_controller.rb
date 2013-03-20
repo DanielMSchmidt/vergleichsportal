@@ -19,7 +19,7 @@ class HomeController < ApplicationController
   end
 
   def admin
-    @users = User.all
+    @users = User.all.reject{|user| user.guest?}
     @providers = Provider.all
     @active_advertisments = Advertisment.active
     @inactive_advertisments = Advertisment.inactive
