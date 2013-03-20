@@ -79,6 +79,7 @@ class BuchDeSearch
     @provider[:book].each do |key, value|
       article[key] = getItem(page,value)
     end
+
     article[:url] = link
     article[:image] = page.images.first #TODO: Returns a Mechanize object which can't be handled (url instead plz)
     article[:price] = article[:price].tr(',','.').to_f
