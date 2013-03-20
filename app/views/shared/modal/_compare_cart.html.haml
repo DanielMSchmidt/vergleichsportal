@@ -10,7 +10,7 @@
           %li
             %img{:src => "http://placehold.it/450x350", :style => "margin-left: 80px;"}/
           %li.price
-            ="Preis #{number_to_currency(@active_cart.calculate_overall_price(provider), :locale => :de)}
+            ="Preis #{number_to_currency(@active_cart.calculate_overall_price(provider), :format => '%n%u', :unit => '€')}"
           %li.cta-button
             %a.button{:href => "#"} Direkt zu Buch.de &raquo;
   %a.close-reveal-modal ×

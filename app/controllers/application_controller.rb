@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   after_filter :setGuestUserInCookies
   after_filter :setActiveCartInCookies
 
-
   def set_active_user
     Rails.logger.info "ApplicationController#set_active_user called"
     @active_user ||= current_user           # There is a logged in user

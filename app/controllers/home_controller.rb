@@ -3,8 +3,8 @@ class HomeController < ApplicationController
   after_filter :filter_results, only: [:search_results]
 
   def index
-  	@user_new = User.new
-  	@user_new.role_id = 1
+    @user_new = User.new
+    @user_new.role_id = 1
     @providers = Provider.all
     if current_user
       @current_rating = current_user.ratings
