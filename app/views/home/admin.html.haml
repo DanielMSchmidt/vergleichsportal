@@ -2,15 +2,15 @@
   %h3 Admin Dashboard
 
 %ul.accordion
-  -if right_permission?("lock_user")
+  -if has_permission?("lock_user")
     %li.active
       = render :partial => "home/admin/user"
 
-  -if right_permission?("enable_provider")
+  -if has_permission?("enable_provider")
     %li#provider
       = render :partial => "home/admin/provider"
 
-  -if right_permission?("modify_ad")
+  -if has_permission?("modify_ad")
     %li
       .title
         %h5 Werbung
@@ -32,7 +32,7 @@
     - content_for :modal do 
       = render :partial => "home/admin/add_advertisment"
 
-  -if right_permission?("view_statistic")
+  -if has_permission?("view_statistic")
     %li#statistics
       = render :partial => "home/admin/statistic"
     = render "home/admin/statistic_chart"
