@@ -54,12 +54,13 @@ class ApplicationController < ActionController::Base
     user_id = cookies[:guest_user_id]
     return nil if user_id.nil?
     begin
+      Rails.logger.info "User found"
       user = User.find(user_id)
       return user if user.guest?
     rescue
-      Rails.logger.info "User not fount"
+      Rails.logger.info "User not found"
+      nil
     end
-    nil
   end
 
   def setGuestUserInCookies
