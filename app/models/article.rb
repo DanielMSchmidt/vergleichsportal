@@ -79,4 +79,8 @@ class Article < ActiveRecord::Base
     end
     average
   end
+
+  def old_price_available?(provider, time)
+    Price.where(:article_id => self.id, :provider_id => provider.id).where("created_at <= ?", time).any?
+  end
 end
