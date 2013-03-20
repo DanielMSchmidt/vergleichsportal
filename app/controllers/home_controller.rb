@@ -31,7 +31,7 @@ protected
   def add_query
     query = SearchQuery.create(value: @term, options: @options)
     query.articles = @result unless @result.nil?
-    SearchQueryWorker.perform_at(2.hours.from_now, query)
+    SearchQueryWorker.perform_in(2.hours, query)
   end
 
   def filter_results

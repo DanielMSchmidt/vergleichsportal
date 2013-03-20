@@ -20,11 +20,8 @@ class Search
     end
   end
 
-  def getAllNewestesPrices
-    Rails.logger.info "Search#getAllNewestPrices called for #{@search_term}"
-    query = SearchQuery.where(value: @search_term).first
-
-    SearchQueryWorker.perform_at(2.hours.from_now, query)
+  def getAllNewestesPrices(query=SearchQuery.where(value: @search_term, options: @options).first)
+    Rails.logger.info "Search#getAllNewestPrices called for #{@search_term} with options: #{@options}"
 
     if query.nil? || query.articles.empty?
       Rails.logger.info "Search#getAllNewestPrices no query found or no articles in query"
@@ -42,8 +39,13 @@ class Search
   def getTheNewestPriceFor(article)
     Rails.logger.info "Search#getTheNewestPriceFor article:#{article}"
     price = {}
+
     @provider.each do |provider|
-      price[(provider.id)] = getProviderInstance(provider).getNewestPriceFor(article)
+      url = article.urls.where(id: provider.id).first
+      unless url.nil?
+        puts "URL: #{url}"
+        price[(provider.id)] = getProviderInstance(provider).getNewestPriceFor(url.value)
+      end
     end
     return price
   end

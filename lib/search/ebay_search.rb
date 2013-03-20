@@ -36,6 +36,7 @@ class EbaySearch
   def getBookDataFor(url)
     Rails.logger.info "EbaySearch#getBookDataFor called for #{url}"
     book = {}
+    return book unless valid?(url)
     page = @agent.get(url)
 
     details_array = []
@@ -63,5 +64,11 @@ class EbaySearch
 
     Rails.logger.info "EbaySearch#getBookDataFor called for #{url} returns #{book}"
     return book
+  end
+
+  def valid?(uri)
+    !!URI.parse(uri)
+  rescue URI::InvalidURIError
+    false
   end
 end
