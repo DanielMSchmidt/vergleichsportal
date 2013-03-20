@@ -95,4 +95,9 @@ class ProvidersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def add_provider
+    name = params[:name]
+    #send mail
+  end
 end

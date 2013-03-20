@@ -21,3 +21,6 @@
               = f.hidden_field :active, value: true
             .form-actions
               = f.button :submit, "deaktiviert:"+ provider.name
+    %li{:style => "padding-bottom: 20px;"}
+      .form-actions
+        = f.button :submit, "add Provider"
