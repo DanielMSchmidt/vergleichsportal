@@ -48,7 +48,11 @@ class BuchDeSearch
 
     page = @agent.submit(search_form, search_form.buttons.first)
     
-    page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
+    links = page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
+
+    links.pop
+
+    links
   end
 
   def getAdvancedArticleLinksFor(searchTerm, options)
