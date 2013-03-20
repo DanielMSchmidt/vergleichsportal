@@ -55,8 +55,9 @@ class Search
     providers.each do |single_provider|
       results << searchAtProvider(single_provider, search_term, options)
     end
-
+    Rails.logger.info "Search#searchAtMultipleProviders results found: #{results}"
     merged_results = merge(results)
+    Rails.logger.info "Search#searchAtMultipleProviders results were merged: #{merged_results}"
     merged_results.collect{|article| Article.generate(article)} unless merged_results.nil?
   end
 
@@ -74,7 +75,9 @@ class Search
   def merge(search_result)
     Rails.logger.info "Search#merge called for #{search_result}"
     # filter empty search_results
-    return [] if search_result.nil? || search_result.empty? || search_result.collect{|x| x.empty?}.include?(true)
+    return [] if search_result.nil? || search_result.empty?
+
+    search_result.reject!{|provider_results| provider_results.nil? || provider_results.empty?}
 
     #TODO: Write test for this part, doesn't work jet
     search_result.each_with_index do |articles, provider_index|
