@@ -78,11 +78,16 @@ class AndroidController < ApplicationController
 
 	######## ArticleAPIController methods ##########
 
-	def search
-		render json: [params[:options]], status: :forbidden
-	    /@search = Search.new(params[:term], params[:options])
+	def debug
+		@search = Search.new("illuminati")
 	    @result = @search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from (see home#search_results)
-	    render json: @result, status: :ok/
+	    render json: @result, each_serializer: ArticleForAndroidSerializer, status: :ok
+	end
+
+	def search
+	    search = Search.new(params[:options][:title])
+	    @result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from (see home#search_results)
+	    render json: @result, each_serializer: ArticleForAndroidSerializer, status: :ok
 	end
 
 	# used to save a made rating for an article as POST request
@@ -110,6 +115,15 @@ class AndroidController < ApplicationController
 		    render json: [], status: :accepted
 		else
 			render json: [], status: :not_found
+		end
+	end
+
+	def article_comments
+		@comments = Comment.where(commentable_id: params[:article_id], commentable_type: "Article")
+		if (@comments != nil)
+			render json: @comments, each_serializer: ArticleCommentForAndroidSerializer, status: :ok
+		else
+			render json: [], status: :ok
 		end
 	end
 
