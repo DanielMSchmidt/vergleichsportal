@@ -4,47 +4,47 @@ require 'yaml'
 
 class BuecherDeSearch
 
-	def initialize()
-		@provider = YAML.load_file "config/buecher_de.yml"
-		@agent = Mechanize.new
-	end
+  def initialize()
+    @provider = YAML.load_file "config/buecher_de.yml"
+    @agent = Mechanize.new
+  end
 
-	def searchByKeywords(searchTerm, options={})
-		options.delete(:article_type)
-		if options.empty?
-      		links = getArticleLinksFor(searchTerm)
-    	else
-      		links = getAdvancedArticleLinksFor(searchTerm, options)
-    	end
-    	links.take(10) #only take the search results
+  def searchByKeywords(searchTerm, options={})
+    options.delete(:article_type)
+    if options.empty?
+      links = getArticleLinksFor(searchTerm)
+    else
+      links = getAdvancedArticleLinksFor(searchTerm, options)
+    end
+     #filter the providers offers
+    links = filterUselessLinks(links) 
 
-    	#is there a max number of results?
-    	if options[:count].nil?
-      		articles = links.collect{|link| getArticleDataFor(link)}
-    	else
-      		articles = links.take(options[:count]).collect{|link| getArticleDataFor(link)}
-    	end
+    #is there a max number of results?
+    if options[:count].nil?
+      articles = links.collect{|link| getArticleDataFor(link)}
+    else
+      articles = links.take(options[:count]).collect{|link| getArticleDataFor(link)}
+    end
 
-    	articles = filterByType(articles, options)
-    	articles
-
-	end
+    articles = filterByType(articles, options)
+    articles
+  end
 
 	def getNewestPriceFor(link)
-    	#Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
-    	getArticleDataFor(link)[:price]
+    #Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
+    getArticleDataFor(link)[:price]
  	end
 
 	def getArticleLinksFor(searchTerm)
-		page = @agent.get(@provider[:url])
+	  page = @agent.get(@provider[:url])
 
-		search_form = page.form(@provider[:search_form])
+	  search_form = page.form(@provider[:search_form])
 
-		search_form[@provider[:search_field]] = searchTerm
+	  search_form[@provider[:search_field]] = searchTerm
 
-		page = @agent.submit(search_form, search_form.buttons.first)
+	  page = @agent.submit(search_form, search_form.buttons.first)
 
-		books = page.links_with(:class => "booklink").collect{|link| link.href}
+	  books = page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
 	def getArticleDataFor(link)
@@ -79,16 +79,24 @@ class BuecherDeSearch
 		articles=  page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
-  	def filterByType(articles, options)
-    	if options[:article_type].nil?
-    		filteredArticles = articles
-    	else
-    		articles.each do |element|
-        		if element.type == options[:article_type]
-          			filteredArticles = element
-        		end
-    		end
-    	end
+  def filterUselessLinks(links)
+    useless_links = links.drop(4) #take the offers
+    useless_links.each do |uselesslink|
+      links.delete(uselesslink)
+    end
+    links
+  end	
+
+  def filterByType(articles, options)
+   	if options[:article_type].nil?
+   		filteredArticles = articles
+   	else
+   		articles.each do |element|
+     		if element.type == options[:article_type]
+       		filteredArticles = element
+     		end
+  		end
+  	end
     filteredArticles
  	end
 
@@ -105,18 +113,18 @@ class BuecherDeSearch
 		provider_type = provider_type.text
 		provider_type = provider_type.strip
 		if provider_type == 'Audio CD'
-			article_type = 'cd'
-    	elsif provider_type == 'eBook, ePUB'
-    		article_type = 'ebook'
-    	elsif provider_type == 'Gebundenes Buch' || provider_type == 'Broschiertes Buch'
-      		article_type = 'book'
-    	elsif provider_type == 'Blu-ray Disc'
-      		article_type = 'bluray'
-  		elsif provider_type == 'DVD'
-  	  		article_type = 'dvd'  	  					
-    	end
-    	article_type
-  	end
+				article_type = 'cd'
+    elsif provider_type == 'eBook, ePUB'
+    	article_type = 'ebook'
+    elsif provider_type == 'Gebundenes Buch' || provider_type == 'Broschiertes Buch'
+     	article_type = 'book'
+    elsif provider_type == 'Blu-ray Disc'
+     	article_type = 'bluray'
+  	elsif provider_type == 'DVD'
+  	 	article_type = 'dvd'
+    end
+    article_type
+  end
 
 
 end
