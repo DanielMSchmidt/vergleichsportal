@@ -41,7 +41,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user_new = User.new(params[:user])
-
+    @user_new.addRole("Registered User")
     respond_to do |format|
       if @user_new.valid?
         UsersController.saveOrUpdateUser(params[:user])

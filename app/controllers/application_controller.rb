@@ -21,6 +21,15 @@ class ApplicationController < ActionController::Base
     @active_cart ||= @active_user.carts.create
   end
 
+  def right_permission?(permission)
+
+    permission = Permission.where(value: permission).first
+    # intersection of both arrays
+    valid_role = permission.roles & @active_user.roles 
+    valid_role.any?
+
+  end
+
   def set_providers
     @providers = Provider.all
   end
