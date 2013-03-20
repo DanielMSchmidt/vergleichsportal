@@ -32,7 +32,7 @@
             .six.columns
               =link_to 'remove', remove_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
             .five.columns.offset-by-one
-              -if right_permission("create_rating")
+              -if right_permission?("create_rating")
                 %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "200"}
                   %tr
                     %td
@@ -45,9 +45,10 @@
                       Durchschnittliche Bewertung:
                       = article.average_rating
                       Sterne
+    %hr
     -if right_permission?("create_comment")
       .row
-        .seven.columns
+        .six.columns.offset-by-one
           -article.comments.each do |comment|
             .row
               .eight.columns
@@ -60,11 +61,11 @@
               =comment.value
         .four.columns
           .row
-            .eight.columns
+            .ten.columns
               %h7
                 Neuer Kommentar:
             %hr
           .row        
           =form_tag article_add_comment_path(article), remote: true, :method => :put do
             = text_field_tag :value
-            = button_tag
+            = button_tag "Senden"
