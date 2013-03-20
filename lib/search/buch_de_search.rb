@@ -49,9 +49,7 @@ class BuchDeSearch
     
     links = page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
 
-    links.pop
-
-    links
+    links.take(10)
   end
 
   def getAdvancedArticleLinksFor(searchTerm, options)

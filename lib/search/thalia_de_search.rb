@@ -15,6 +15,7 @@ class ThaliaDeSearch
     	else
       		links = getAdvancedArticleLinksFor(searchTerm, options)
     	end
+      links.take(10) #only take the search results
     	#is there a max number of results?
     	if options[:count].nil?
       		articles = links.collect{|link| getArticleDataFor(link)}
@@ -42,9 +43,11 @@ class ThaliaDeSearch
 	def getArticleDataFor(link)
 		page = @agent.get(link)
 		article = {}
+    puts 'Fehler?'
 		@provider[:book].each do |key, value|
 			article[key] = getItem(page,value)
 		end
+    puts 'Fehler?2'
 		article[:price] = page.search(@provider[:price]).text[/\d+,\d+/].tr(',','.').to_f
 		article[:url] = link
 		details_headlines = page.search(@provider[:detail_headline])
@@ -77,7 +80,11 @@ class ThaliaDeSearch
  	end
 
 	def getItem(page, query)
-		page.search(query).last.text
+		item = page.search(query).last
+    unless item.nil?
+      item = item.text
+    end
+    item
 	end
 
 	def getType(page)

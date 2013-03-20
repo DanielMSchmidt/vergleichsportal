@@ -15,6 +15,7 @@ class BuecherDeSearch
     	else
       		links = getAdvancedArticleLinksFor(searchTerm, options)
     	end
+    	links.take(10) #only take the search results
 
     	#is there a max number of results?
     	if options[:count].nil?
@@ -23,7 +24,9 @@ class BuecherDeSearch
       		articles = links.take(options[:count]).collect{|link| getArticleDataFor(link)}
     	end
 
-    	filterByType(articles, options)
+    	articles = filterByType(articles, options)
+    	articles
+
 	end
 
 	def getNewestPriceFor(link)
@@ -55,7 +58,7 @@ class BuecherDeSearch
 		end
 		
 		article[:price] = page.search(@provider[:price]).to_s[/\d+,\d+/].tr(',','.').to_f
-		article[:image_url] = page.images.at(5)
+		article[:image] = page.images.at(5)
 		article[:url] = link
 		article[:article_type] = getType(page)
 		article
