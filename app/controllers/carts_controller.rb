@@ -114,11 +114,25 @@ class CartsController < ApplicationController
   # DELETE /carts/1.json
   def destroy
     @active_cart = Cart.find(params[:id])
+    @cart_id = @active_cart.id
     @active_cart.destroy
 
     respond_to do |format|
       format.html { redirect_to carts_url }
       format.json { head :no_content }
+      format.js
+    end
+  end
+
+  def add_new
+    Rails.logger.info "CartsController#add_new called, adding new cart to active user"
+    empty_cart = @active_user.get_empty_cart
+    if empty_cart
+      redirect_to use_cart_path(empty_cart.id)
+    else
+      new_cart = @active_user.carts.create!
+      cookies[:active_cart] = new_cart.id
+      respond_to :js
     end
   end
 end
