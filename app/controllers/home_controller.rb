@@ -30,6 +30,11 @@ class HomeController < ApplicationController
     end
   end
 
+  def track_compare
+    @active_cart.compares.create
+    render :json, nothing: true
+  end
+
 protected
 
   def add_query
