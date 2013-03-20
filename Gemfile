@@ -14,7 +14,6 @@ gem 'draper', '~> 1.1.0'
 gem "sidekiq", "~> 2.8.0"
 gem 'slim'
 gem 'sinatra', '>= 1.3.0', :require => nil
-gem "redis", "~> 3.0.3"
 
 group :production do
   gem 'pg', '~> 0.14.1'
