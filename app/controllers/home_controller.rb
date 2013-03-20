@@ -1,14 +1,13 @@
 class HomeController < ApplicationController
   after_filter :add_query, only: [:search_results]
   after_filter :filter_results, only: [:search_results]
+  after_filter :add_rating
 
   def index
   	@user_new = User.new
   	@user_new.role_id = 1
     @providers = Provider.all
-    if current_user
-      @current_rating = current_user.ratings
-    end
+
   end
 
   def search_results
@@ -16,13 +15,8 @@ class HomeController < ApplicationController
     @term = params[:search][:term]
     @options = {}
     search = Search.new(@term, @options)
-    @result = search.find.uniq
-    @result.delete(false)
 
-    if current_user
-      @current_rating = current_user.ratings
-    end
-    @result = search.find.reject{|result| result == false || result.id.nil?} # TODO: Check where nils come from
+    @result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from
   end
 
   def admin
@@ -44,5 +38,9 @@ protected
   def filter_results
     Rails.logger.info "HomeController#filter_results called"
     @result.select!{|article| article.available_for_any(Provider.where(active: true))} unless @result.nil?
+  end
+
+  def add_rating
+    @current_rating = @active_user.ratings
   end
 end
