@@ -4,8 +4,8 @@ class HomeController < ApplicationController
   after_filter :add_rating
 
   def index
-  	@user_new = User.new
-  	@user_new.role_id = 1
+    @user_new = User.new
+    @user_new.role_id = 1
     @providers = Provider.all
 
   end
