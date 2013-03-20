@@ -1,4 +1,4 @@
--content_for :head do 
+-content_for :head do
   %h3 Admin Dashboard
 
 %ul.accordion
@@ -33,5 +33,6 @@
       = render :partial => "home/admin/add_advertisment"
 
   -if right_permission?("view_statistic")
-    %li
+    %li#statistics
       = render :partial => "home/admin/statistic"
+    = render "home/admin/statistic_chart"

@@ -13,6 +13,7 @@ gem 'sorcery', '~> 0.8.1'
 gem "sidekiq", "~> 2.8.0"
 gem 'slim'
 gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'chartjs-rails'
 
 group :production do
   gem 'pg', '~> 0.14.1'
