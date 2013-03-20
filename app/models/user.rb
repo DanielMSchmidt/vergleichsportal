@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   def self.generateGuest
     user = User.create
     role = Role.where(name: "Guest").first
-    UserRoleAssignment.create(role_id: role.id, user_id: user.id)
+    UserRoleAssignment.create(role_id: role.id, user_id: user.id) unless user.nil? || role.nil?
     user
   end
 
