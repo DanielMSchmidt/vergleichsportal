@@ -54,6 +54,7 @@ Vergleichsportal::Application.routes.draw do
   resources :articles
 
   put "articles/:id/add_rating" => "articles#add_rating", :as => 'article_add_rating'
+  put "articles/:id/add_comment" => "articles#add_comment", :as => 'article_add_comment'
 
   get "api/search"
 

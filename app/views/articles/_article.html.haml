@@ -22,7 +22,6 @@
         -if @current_rating and @current_rating.where(:rateable_id => article.id).last
           -active[@current_rating.where(:rateable_id => article.id).last.value - 1] = true
 
-
         .seven.columns.offset-by-one
           %p
             =article.description
@@ -45,4 +44,25 @@
                     Durchschnittliche Bewertung:
                     = article.average_rating
                     Sterne
-
+    .row
+      .seven.columns
+        -article.comments.each do |comment|
+          .row
+            .eight.columns
+              %h7
+                Kommentar:
+            .four.columns
+              =comment.user.email
+            %hr
+          .row
+            =comment.value
+      .four.columns
+        .row
+          .eight.columns
+            %h7
+              Neuer Kommentar:
+          %hr
+        .row        
+        =form_tag article_add_comment_path(article), remote: true, :method => :put do
+          = text_field_tag :value
+          = button_tag
