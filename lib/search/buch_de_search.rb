@@ -59,11 +59,11 @@ class BuchDeSearch
   end
 
   def filterByType(articles, options)
-    if options[:type].nil?
+    if options[:article_type].nil?
       filteredArticles = articles
     else
       articles.each do |element|
-        if element.type == options[:type]
+        if element.type == options[:article_type]
           filteredArticles = element
         end
       end
@@ -81,7 +81,7 @@ class BuchDeSearch
     book[:url] = link
     book[:image] = page.images.first #TODO: Returns a Mechanize object which can't be handled (url instead plz)
     book[:price] = book[:price].tr(',','.').to_f
-    book[:type] = getType(page)
+    book[:article_type] = getType(page)
 
     #Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link} returns #{book}"
     book
