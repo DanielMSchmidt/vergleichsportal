@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
     self.roles.collect{|role| role.name}.include?("Guest")
   end
 
+  def admin?
+    return true if self.roles.where(name: "Admin").any?
+  end
+  
   def activeCart
     self.carts.last_used.first
   end
