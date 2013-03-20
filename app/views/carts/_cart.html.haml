@@ -1,4 +1,4 @@
-%li.active
+%li.active{:id => "cart-#{cart.id}"}
   .title
     %h5
       = cart.id
@@ -10,6 +10,6 @@
             %li
               =article.name
       .four.columns
-        %a.button.expand{:href => "#", :style => "margin-left: 50px; margin-bottom: 15px;"} Auswählen
-        %a.button.expand{:href => "#", :style => "margin-left: 50px;"} Löschen
+        = link_to "Auswählen", use_cart_path(cart.id), remote: true, :class => "button expand", :style => "margin-left: 50px; margin-bottom: 15px;"
+        = link_to "Löschen", delete_cart_path(cart.id), remote: true, :class => "button expand", :style => "margin-left: 50px;"
       .two.colums

@@ -1,5 +1,5 @@
 #switch-cart-modal.reveal-modal.medium
   %h3 Deine Warenkörbe
-  %ul.accordion{:id => "change-cart"}
-    = render @active_cart
+  %ul#change-cart.accordion
+    = render @user_carts.reject{|cart| cart == @active_cart}
   %a.close-reveal-modal ×

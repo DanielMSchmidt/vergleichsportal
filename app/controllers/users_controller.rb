@@ -44,9 +44,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user_new.valid?
-        UsersController.saveOrUpdateUser(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render json: @user_new, status: :created, location: @user }
+        saveOrUpdateUser(params[:user])
+        format.html { redirect_to @user_new, notice: 'User was successfully created.' }
+        format.json { render json: @user_new, status: :created, location: @user_new }
         format.js { render action: "show" }
       else
         format.html { render action: "new" }
@@ -101,14 +101,18 @@ class UsersController < ApplicationController
     @active_user.addCart(id)
   end
 
-  def self.saveOrUpdateUser(new_user_params)
+  def saveOrUpdateUser(new_user_params)
+   Rails.logger.info "UsersController#saveOrUpdateUser called for #{new_user_params}"
     if @active_user
       @active_user.update_attributes(new_user_params)
       @active_user.addRole("Registered User")
       @active_user.removeRole("Guest")
-      auto_login(@active_user)
+      Rails.logger.info "UsersController#saveOrUpdateUser active user was updated"
     else
+      Rails.logger.info "UsersController#saveOrUpdateUser a new user was created"
       User.create(new_user_params)
     end
+
+    auto_login(@active_user)
   end
 end
