@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   def set_cart_providers
     @cart_providers = []
     @providers.each do |provider|
-      if @active_cart.available_for(provider)
+      if provider.active and @active_cart.available_for(provider)
 	@cart_providers << provider
       end
     end
