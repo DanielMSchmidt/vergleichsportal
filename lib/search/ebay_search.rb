@@ -12,7 +12,12 @@ class EbaySearch
     Rails.logger.info "EbaySearch#searchByKeywords called for #{searchTerm} with #{options}"
     links = self.getBookLinksFor(searchTerm, options)
     items = []
-    links.take(options[:count] || 5).each{|link| items << getBookDataFor(link)}
+    #is there a number of results?
+      if options[:count].nil?
+        links.each{|link| items << getBookDataFor(link)}
+      else
+        links.take(options[:count]).each{|link| items << getBookDataFor(link)}
+      end
     return items
   end
 
@@ -60,6 +65,7 @@ class EbaySearch
     book[:image] = nil
     book[:description] = nil
     book[:url] = url
+    #book[:type] = details["Format: "]
 
     Rails.logger.info "EbaySearch#getBookDataFor called for #{url} returns #{book}"
     return book

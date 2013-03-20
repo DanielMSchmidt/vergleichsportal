@@ -12,54 +12,54 @@ class ThaliaDeSearch
 	def searchByKeywords(searchTerm, options={})
 
 		if options.empty?
-      		links = getBookLinksFor(searchTerm)
+      		links = getArticleLinksFor(searchTerm)
     	else
-      		links = getAdvancedBookLinksFor(searchTerm, options)
+      		links = getAdvancedArticleLinksFor(searchTerm, options)
     	end
 
     	#is there a number of results?
     	if options[:count].nil?
-      		articles = links.collect{|link| getBookDataFor(link)}
+      		articles = links.collect{|link| getArticleDataFor(link)}
     	else
-      		articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      		articles = links.take(options[:count]).collect{|link| getArticleDataFor(link)}
     	end
 
     	filterByType(articles, options)
 	end
 
-	def getBookLinksFor(searchTerm)
+	def getArticleLinksFor(searchTerm)
 		page = @agent.get(@provider[:url])
 
-		buch_form = page.form(@provider[:search_form])
+		search_form = page.form(@provider[:search_form])
 
-		buch_form[@provider[:search_field]] = searchTerm
+		search_form[@provider[:search_field]] = searchTerm
 
-		page = @agent.submit(buch_form, buch_form.buttons.first)
-		books = page.links_with(:href => @provider[:link_href]).collect{|link| link.href}.uniq
+		page = @agent.submit(search_form, search_form.buttons.first)
+		articles = page.links_with(:href => @provider[:link_href]).collect{|link| link.href}.uniq
 	end
 
 	def getNewestPriceFor(link)
     	Rails.logger.info "ThaliaDeSearch#getNewestPriceFor called for #{link}"
-    	getBookDataFor(link)[:price]
+    	getArticleDataFor(link)[:price]
  	end
 
-	def getBookDataFor(link)
+	def getArticleDataFor(link)
 		page = @agent.get(link)
-		book = {}
+		article = {}
 		@provider[:book].each do |key, value|
-			book[key] = getItem(page,value)
+			article[key] = getItem(page,value)
 		end
-		book[:price] = page.search(@provider[:price]).text[/\d+,\d+/].tr(',','.').to_f
-		book[:url] = link
+		article[:price] = page.search(@provider[:price]).text[/\d+,\d+/].tr(',','.').to_f
+		article[:url] = link
 		details_headlines = page.search(@provider[:detail_headline])
 		details_values = page.search(@provider[:detail_value])
 		position = details_headlines.collect{|value| value.text}.index("EAN:")
-		book[:ean] = details_values[position] if position
-		book[:type] = getType(page)
-		book
+		article[:ean] = details_values[position] if position
+		article[:article_type] = getType(page)
+		article
 	end
 
-	def getAdvancedBookLinksFor(searchTerm, options)
+	def getAdvancedArticleLinksFor(searchTerm, options)
     	title =  ((options[:title].nil?) ? '' : options[:title]) 
     	author = ((options[:author].nil?) ? '' : options[:author])
     	page = @agent.get('http://www.thalia.de/shop/tha_homestartseite/suche/?fi=&st='+title+'&sa='+author)
@@ -68,11 +68,11 @@ class ThaliaDeSearch
   	end
 
   	def filterByType(articles, options)
-    	if options[:type].nil?
+    	if options[:article_type].nil?
     		filteredArticles = articles
     	else
     		articles.each do |element|
-        		if element.type == options[:type]
+        		if element.type == options[:article_type]
           			filteredArticles = element
         		end
     		end

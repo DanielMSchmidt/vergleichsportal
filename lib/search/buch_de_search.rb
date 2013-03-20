@@ -16,16 +16,16 @@ class BuchDeSearch
     #Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
     
     if options.empty?
-      links = getBookLinksFor(searchTerm)
+      links = getArticleLinksFor(searchTerm)
     else
-      links = getAdvancedBookLinksFor(searchTerm, options)
+      links = getAdvancedArticleLinksFor(searchTerm, options)
     end
 
     #is there a number of results?
     if options[:count].nil?
-      articles = links.collect{|link| getBookDataFor(link)}
+      articles = links.collect{|link| getArticleDataFor(link)}
     else
-      articles = links.take(options[:count]).collect{|link| getBookDataFor(link)}
+      articles = links.take(options[:count]).collect{|link| getArticleDataFor(link)}
     end
 
     filterByType(articles, options)
@@ -34,24 +34,24 @@ class BuchDeSearch
 
   def getNewestPriceFor(link)
     #Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
-    getBookDataFor(link)[:price]
+    getArticleDataFor(link)[:price]
   end
 
 
-  def getBookLinksFor(searchTerm)
-    #Rails.logger.info "BuchDeSearch#getBookLinksFor called for #{searchTerm}
+  def getArticleLinksFor(searchTerm)
+    #Rails.logger.info "BuchDeSearch#getArticleLinksFor called for #{searchTerm}
     page = @agent.get(@provider[:url])
 
-    buch_form = page.form(@provider[:search_form])
+    search_form = page.form(@provider[:search_form])
 
-    buch_form[@provider[:search_field]] = searchTerm
+    search_form[@provider[:search_field]] = searchTerm
 
-    page = @agent.submit(buch_form, buch_form.buttons.first)
+    page = @agent.submit(search_form, search_form.buttons.first)
     
     page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
   end
 
-  def getAdvancedBookLinksFor(searchTerm, options)
+  def getAdvancedArticleLinksFor(searchTerm, options)
     title =  ((options[:title].nil?) ? '' : options[:title]) 
     author = ((options[:author].nil?) ? '' : options[:author])
     page = @agent.get('http://www.buch.de/shop/home/suche/?fi=&st='+title+'&sa='+author)
@@ -60,11 +60,11 @@ class BuchDeSearch
   end
 
   def filterByType(articles, options)
-    if options[:type].nil?
+    if options[:article_type].nil?
       filteredArticles = articles
     else
       articles.each do |element|
-        if element.type == options[:type]
+        if element.type == options[:article_type]
           filteredArticles = element
         end
       end
@@ -72,35 +72,35 @@ class BuchDeSearch
     filteredArticles
   end
 
-  def getBookDataFor(link)
-    #Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link}"
+  def getArticleDataFor(link)
+    #Rails.logger.info "BuchDeSearch#getArticleDataFor called for #{link}"
     page = @agent.get(link)
-    book = {}
+    article = {}
     @provider[:book].each do |key, value|
-      book[key] = getItem(page,value)
+      article[key] = getItem(page,value)
     end
-    book[:url] = link
-    book[:image] = page.images.first #TODO: Returns a Mechanize object which can't be handled (url instead plz)
-    book[:price] = book[:price].tr(',','.').to_f
-    book[:type] = getType(page)
+    article[:url] = link
+    article[:image] = page.images.first #TODO: Returns a Mechanize object which can't be handled (url instead plz)
+    article[:price] = article[:price].tr(',','.').to_f
+    article[:article_type] = getType(page)
 
-    #Rails.logger.info "BuchDeSearch#getBookDataFor called for #{link} returns #{book}"
-    book
+    #Rails.logger.info "BuchDeSearch#getArticleDataFor called for #{link} returns #{article}"
+    article
   end
 
   def getType(page)
     providers_type = page.search('.pm_artikeltyp').first.text
 
     if providers_type == 'Hörbuch' || providers_type == 'CD'
-      type = 'cd'
+      article_type = 'cd'
     elsif providers_type == 'ebooks'
-      type = 'ebook'
+      article_type = 'ebook'
     elsif providers_type == 'buch'
-      type = 'book'
+      article_type = 'book'
     elsif providers_type == 'blu-ray'
-      type = 'bluray'
+      article_type = 'bluray'
     end
-    type
+    article_type
   end
 
   def getItem(page, query)

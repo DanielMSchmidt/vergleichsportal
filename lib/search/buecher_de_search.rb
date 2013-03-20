@@ -34,11 +34,11 @@ class BuecherDeSearch
 	def getBookLinksFor(searchTerm)
 		page = @agent.get(@provider[:url])
 
-		buch_form = page.form(@provider[:search_form])
+		search_form = page.form(@provider[:search_form])
 
-		buch_form[@provider[:search_field]] = searchTerm
+		search_form[@provider[:search_field]] = searchTerm
 
-		page = @agent.submit(buch_form, buch_form.buttons.first)
+		page = @agent.submit(search_form, search_form.buttons.first)
 		books = page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
 	end
 
@@ -52,28 +52,28 @@ class BuecherDeSearch
 			value_array = value.text.split(": ")
 			book[:ean] =  value_array[1] if value_array[0] == 'ISBN-13'
 		end
-		books[:price] = page.search(@provider[:price]).to_s[/\d+,\d+/].tr(',','.').to_f
-		books[:image_url] = page.images.at(5)
+		book[:price] = page.search(@provider[:price]).to_s[/\d+,\d+/].tr(',','.').to_f
+		book[:image_url] = page.images.at(5)
 		book[:url] = link
-		book[:type] = getType(page)
+		book[:article_type] = getType(page)
 		book
 	end
 
 	def getAdvancedBookLinksFor(searchTerm, options)
 		page = agent.get('http://www.buecher.de/go/search_search/expert_search/lfa/quicksearchform/')
-		buch_form = page.form(:action => 'http://www.buecher.de/go/search_search/expert_search_result/receiver_object/shop_search_expertsearch/')
-		buch_form['form[personen]'] =  ((options[:author].nil?) ? '' : options[:author])
-		buch_form['form[schlagworte]'] = ((options[:title].nil?) ? '' : options[:title])
-		page = agent.submit(buch_form, buch_form.buttons.first)
+		search_form = page.form(:action => 'http://www.buecher.de/go/search_search/expert_search_result/receiver_object/shop_search_expertsearch/')
+		search_form['form[personen]'] =  ((options[:author].nil?) ? '' : options[:author])
+		search_form['form[schlagworte]'] = ((options[:title].nil?) ? '' : options[:title])
+		page = agent.submit(search_form, search_form.buttons.first)
 		books=  page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
   	def filterByType(articles, options)
-    	if options[:type].nil?
+    	if options[:article_type].nil?
     		filteredArticles = articles
     	else
     		articles.each do |element|
-        		if element.type == options[:type]
+        		if element.type == options[:article_type]
           			filteredArticles = element
         		end
     		end
@@ -88,11 +88,11 @@ class BuecherDeSearch
 	def getType(page)
     type = page.search('.pm_artikeltyp').first.text
     if type == 'Audio CD'
-      type = 'cd'
+      article_type = 'cd'
     elsif type == 'eBook, ePUB'
-      type = 'ebook'
-    elsif type == 'Gebundenes Buch' || type == 'Broschiertes Buch'
-      type = 'book'
+      article_type = 'ebook'
+    elsif type == 'Gebundenes Buch' || article_type == 'Broschiertes Buch'
+      article_type = 'book'
     elsif type == 'Blu-ray Disc'
       type = 'bluray'
   	elsif type == 'DVD'
