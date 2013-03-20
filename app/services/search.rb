@@ -18,7 +18,7 @@ class Search
       Rails.logger.info "No SearchQueries were found, starting search"
       results = searchAtMultipleProviders(@provider, @search_term, @options)
     end
-    results = filterByOptions(results)
+    results #= filterByOptions(results)
   end
 
   def getAllNewestesPrices
@@ -145,31 +145,32 @@ class Search
   end
 
   def filterByOptions(results)
-    if options.has_key?(:author)
-      results.select!{|article| article.author == options[:author]}
+    if @options.has_key?(:author)
+      results.select!{|article| article.author == @options[:author]}
     end
-    if options.has_key?(:title)
-      results.select!{|article| article.title == options[:title]}
+    if @options.has_key?(:title)
+      results.select!{|article| article.title == @options[:title]}
     end
-    if options.has_key?(:min_price)
+    if @options.has_key?(:min_price)
       results.select!{|article| ishigher?(article)} 
     end
-    if options.has_key?(:min_price)
+    if @options.has_key?(:min_price)
       results.select!{|article| islower?(article)}
     end
-    if options.has_key?(:article_type)
-      results.select!{|article| article.article_type == options[:article_type]}
+    if @options.has_key?(:article_type)
+      results.select!{|article| article.article_type == @options[:article_type]}
     end
+    results
     
   end
 
   def ishigher?(article)
-    result = article.price.collect{|provider_price| options[:min_price] < provider_price }
+    result = article.price.collect{|provider_price| @options[:min_price] < provider_price }
     result.include?(true)
   end
 
   def islower?(article)
-    result = article.price.collect{|provider_price| options[:max_price] > provider_price }
+    result = article.price.collect{|provider_price| @options[:max_price] > provider_price }
     result.include?(true)
   end
 end

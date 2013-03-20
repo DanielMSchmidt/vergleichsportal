@@ -18,9 +18,11 @@ class BuchDeSearch
     else
       links = getAdvancedArticleLinksFor(searchTerm, options)
     end
+    puts '-------------------BUCHDE-------------------------'
+    puts links
 
     #filter the providers offers
-    links = filterUselessLinks(links) 
+    links = filterProviderOffer(links) 
     
     #is there a max number of results?
     if options[:count].nil?
@@ -62,11 +64,11 @@ class BuchDeSearch
     page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
   end
 
-  def filterUselessLinks(links)
-    useless_links = links.drop(4) #take the offers
-    useless_links.each do |uselesslink|
-      links.delete(uselesslink)
-    end
+  def filterProviderOffer(links)
+    useless_links = links.pop #take the offers
+    #useless_links.each do |uselesslink|
+      links.delete(useless_links)
+    #end
     links
   end
 

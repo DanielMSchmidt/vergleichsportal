@@ -33,7 +33,7 @@ class EbaySearch
   end
 
   def getArticleLinksFor(searchTerm)
-    Rails.logger.info "EbaySearch#getArticleLinksFor called for #{searchTerm} with #{options}"
+    Rails.logger.info "EbaySearch#getArticleLinksFor called for #{searchTerm}"
 
     #                 Suchbegriff                                      Neuwertig              Sofortkauf
     #                 |                                                |                      |             Deutsche Anbieter

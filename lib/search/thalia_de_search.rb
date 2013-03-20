@@ -16,14 +16,15 @@ class ThaliaDeSearch
     	else
       		links = getAdvancedArticleLinksFor(searchTerm, options)
     	end
-      
+      puts '--------------Thalia---------------------'
+      puts links
       #filter the providers offers
-      links = filterUselessLinks(links) 
+      links = filterProviderOffer(links) 
     	#is there a max number of results?
     	if options[:count].nil?
-      		articles = links.collect{|link| getArticleDataFor(link)}
+      	articles = links.collect{|link| getArticleDataFor(link)}
     	else
-      		articles = links.take(options[:count]).collect{|link| getArticleDataFor(link)}
+      	articles = links.take(options[:count]).collect{|link| getArticleDataFor(link)}
     	end
 
     	filterByType(articles, options)
@@ -68,11 +69,11 @@ class ThaliaDeSearch
     links
   end
 
-  def filterUselessLinks(links)
-    useless_links = links.drop(5) #take the offers
-    useless_links.each do |uselesslink|
-      links.delete(uselesslink)
-    end
+  def filterProviderOffer(links)
+    useless_links = links.pop #take the offers
+    #useless_links.each do |uselesslink|
+      links.delete(useless_links)
+    #end
     links
   end
 

@@ -16,8 +16,11 @@ class BuecherDeSearch
     else
       links = getAdvancedArticleLinksFor(searchTerm, options)
     end
+
+    puts '------------BUECEHR------------------'
+    puts links
      #filter the providers offers
-    links = filterUselessLinks(links) 
+    links = filterProviderOffer(links) 
 
     #is there a max number of results?
     if options[:count].nil?
@@ -44,7 +47,7 @@ class BuecherDeSearch
 
 	  page = @agent.submit(search_form, search_form.buttons.first)
 
-	  books = page.links_with(:class => "booklink").collect{|link| link.href}
+	  links = page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
 	def getArticleDataFor(link)
@@ -79,11 +82,11 @@ class BuecherDeSearch
 		articles=  page.links_with(:class => "booklink").collect{|link| link.href}
 	end
 
-  def filterUselessLinks(links)
-    useless_links = links.drop(4) #take the offers
-    useless_links.each do |uselesslink|
-      links.delete(uselesslink)
-    end
+  def filterProviderOffer(links)
+    useless_links = links.pop #take the offers
+    #useless_links.each do |uselesslink|
+      links.delete(useless_links)
+    #end
     links
   end	
 
@@ -92,9 +95,9 @@ class BuecherDeSearch
    		filteredArticles = articles
    	else
    		articles.each do |element|
-     		if element.type == options[:article_type]
-       		filteredArticles = element
-     		end
+     	  if element.type == options[:article_type]
+      		filteredArticles = element
+     	  end
   		end
   	end
     filteredArticles
