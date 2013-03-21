@@ -60,9 +60,12 @@ class EbaySearch
     return page.links_with(:class => "vip").collect{|link| link.href}
   end
 
+<<<<<<< HEAD
   def getArticleDataFor(url)
     Rails.logger.info "EbaySearch#getArticleDataFor called for #{url}"
     article = {}
+
+    #return article unless valid?(url)
     page = @agent.get(url)
 
     details_array = []
@@ -91,5 +94,11 @@ class EbaySearch
 
     Rails.logger.info "EbaySearch#getArticleDataFor called for #{url} returns #{article}"
     return article
+  end
+
+  def valid?(uri)
+    !!URI.parse(uri)
+  rescue URI::InvalidURIError
+    false
   end
 end

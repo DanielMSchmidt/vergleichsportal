@@ -72,13 +72,29 @@ class ArticlesController < ApplicationController
 
   def add_rating
     @article = Article.find(params[:id])
-    @rating = Rating.new(:value => params[:value],:user_id => current_user.id, :rateable_id => @article.id, :rateable_type => "article")
+    @rating = Rating.new(:value => params[:value],:user_id => @active_user.id, :rateable_id => @article.id, :rateable_type => "article")
     @rating.save
     @article.ratings << @rating
     @article.save
     respond_to do |format|
       format.html { redirect_to root_path, notice: "Danke fuer die Bewertung"}
       format.json { render json: @rating }
+    end
+  end
+
+  def add_comment
+    @article = Article.find(params[:id])
+    @comment = Comment.new(value: params[:value], commentable_type: "article", commentable_id: @article.id, user_id: @active_user.id)
+    respond_to do |format|
+      if @article.add_comment(@comment)
+        format.html { redirect_to root_path, notice: "Danke fuer den Kommentar!"}
+        format.json { render json: @comment }
+        format.js
+      else
+        format.html { redirect_to root_path, notice: "Der Kommentar muss zwischen "}
+        format.json { render json: @comment.errors }
+        format.js
+      end
     end
   end
 

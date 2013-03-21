@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require hogan.js
+//= require chart
 //= require_tree ./templates
 //= require_tree .
 

@@ -28,8 +28,16 @@ class User < ActiveRecord::Base
     self.roles.collect{|role| role.name}.include?("Guest")
   end
 
+  def admin?
+    return true if self.roles.where(name: "Admin").any?
+  end
+  
   def activeCart
-    self.cart.last_used.first
+    self.carts.last_used.first
+  end
+
+  def get_empty_cart
+    self.carts.select{|cart| cart.empty?}.first
   end
 
   def addCart(cart_id)

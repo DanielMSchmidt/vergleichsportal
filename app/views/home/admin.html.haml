@@ -1,30 +1,38 @@
--content_for :head do 
+-content_for :head do
   %h3 Admin Dashboard
 
 %ul.accordion
-  %li.active
-    = render :partial => "home/admin/user"
-  %li#provider
-    = render :partial => "home/admin/provider"
-  %li
-    .title
-      %h5 Werbung
-    .content
-      %h6 Aktiv
-      %hr
-      #active-ad
+  -if has_permission?("lock_user")
+    %li.active
+      = render :partial => "home/admin/user"
+
+  -if has_permission?("enable_provider")
+    %li#provider
+      = render :partial => "home/admin/provider"
+
+  -if has_permission?("modify_ad")
+    %li
+      .title
+        %h5 Werbung
+      .content
+        %h6 Aktiv
+        %hr
+        #active-ad
         
-        = render @active_advertisments
+          = render @active_advertisments
 
-      %h6 Inactive
-      %hr
-      #ad-list
+        %h6 Inactive
+        %hr
+        #ad-list
 
-        = render @inactive_advertisments
-      .row
-        .six.columns.centered
-          %a.button.expand{"data-reveal-id" => "add-advertisment-modal", :href => "#"} Werbung hinzufügen 
-  %li
-    = render :partial => "home/admin/statistic" 
-- content_for :modal do 
-  = render :partial => "home/admin/add_advertisment"
+          = render @inactive_advertisments
+        .row
+          .six.columns.centered
+            %a.button.expand{"data-reveal-id" => "add-advertisment-modal", :href => "#"} Werbung hinzufügen
+    - content_for :modal do 
+      = render :partial => "home/admin/add_advertisment"
+
+  -if has_permission?("view_statistic")
+    %li#statistics
+      = render :partial => "home/admin/statistic"
+    = render "home/admin/statistic_chart"

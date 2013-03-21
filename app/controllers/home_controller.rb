@@ -1,13 +1,12 @@
 class HomeController < ApplicationController
+  # TODO: After oder before filter?? render after view?
   after_filter :add_query, only: [:search_results]
   after_filter :filter_results, only: [:search_results]
-  after_filter :add_rating
+  before_filter :add_rating
 
   def index
     @user_new = User.new
-    @user_new.role_id = 1
     @providers = Provider.all
-
   end
 
   def search_results
@@ -20,19 +19,28 @@ class HomeController < ApplicationController
   end
 
   def admin
-    @users = User.all
-    @providers = Provider.all
-    @active_advertisments = Advertisment.active
-    @inactive_advertisments = Advertisment.inactive
-    @advertisment = Advertisment.new
+    if @active_user.guest?
+      redirect_to :root
+    else
+      @users = User.all.reject{|user| user.guest?}
+      @providers = Provider.all
+      @active_advertisments = Advertisment.active
+      @inactive_advertisments = Advertisment.inactive
+      @advertisment = Advertisment.new
+    end
+  end
+
+  def track_compare
+    @active_cart.compares.create
+    render :json, nothing: true
   end
 
 protected
 
   def add_query
-    query = SearchQuery.create(value: @term)
+    query = SearchQuery.create(value: @term, options: @options)
     query.articles = @result unless @result.nil?
-    SearchQueryWorker.perform_at(2.hours.from_now, query)
+    SearchQueryWorker.perform_in(2.hours, query)
   end
 
   def filter_results

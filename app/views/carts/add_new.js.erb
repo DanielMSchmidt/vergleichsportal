@@ -1,0 +1,5 @@
+$("#cart li").remove();
+$("#switch-cart-modal #change-cart li").remove();
+$("#cart").append("<%= escape_javascript(render @active_cart.articles, search: false) %>");
+$("#switch-cart-modal #change-cart").append("<%= escape_javascript(render @active_user.carts.reject{|cart| cart == @active_cart}) %>");
+errornote("Ein neuer Warenkorb wurde hinzugefügt!", "success");

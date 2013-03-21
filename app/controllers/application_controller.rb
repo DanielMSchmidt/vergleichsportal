@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_filter :set_active_user
   before_filter :set_active_cart
+  before_filter :set_user_carts
   before_filter :fetch_add
   before_filter :set_providers
   before_filter :set_cart_providers
@@ -18,7 +19,12 @@ class ApplicationController < ActionController::Base
 
   def set_active_cart
     @active_cart ||= fetchCartFromCookies
+    @active_cart ||= @active_user.carts.last_used.first unless @active_user.carts.empty?
     @active_cart ||= @active_user.carts.create
+  end
+
+  def set_user_carts
+    @user_carts = @active_user.carts
   end
 
   def set_providers
@@ -28,8 +34,8 @@ class ApplicationController < ActionController::Base
   def set_cart_providers
     @cart_providers = []
     @providers.each do |provider|
-      if @active_cart.available_for(provider)
-	@cart_providers << provider
+      if provider.active && @active_cart.available_for(provider)
+        @cart_providers << provider
       end
     end
   end
@@ -44,10 +50,12 @@ class ApplicationController < ActionController::Base
   def fetchCartFromCookies
     Rails.logger.info "ApplicationController#fetchCartFromCookies called and fetched #{cookies[:active_cart]}"
     begin
-      Cart.find(cookies[:active_cart]) unless cookies[:active_cart].nil?
+      cart = Cart.find(cookies[:active_cart]) unless cookies[:active_cart].nil?
+      cart if cart.user == @active_user
     rescue
       nil
     end
+    nil
   end
 
   def fetchUserFromCookies
@@ -55,12 +63,13 @@ class ApplicationController < ActionController::Base
     user_id = cookies[:guest_user_id]
     return nil if user_id.nil?
     begin
+      Rails.logger.info "User found"
       user = User.find(user_id)
       return user if user.guest?
     rescue
-      Rails.logger.info "User not fount"
+      Rails.logger.info "User not found"
+      nil
     end
-    nil
   end
 
   def setGuestUserInCookies

@@ -52,7 +52,8 @@
 
                   -# Make Admin button
                   .three.columns
-                    %a.button.expand{:href => "#"} 
+                    =link_to_if(user.admin?, "Lösche Admin Rolle", user_change_role_path(user), remote: true, class: "button") do
+                      =link_to("Admin Rolle hinzufügen", user_change_role_path(user), remote: true, class: "button")
 
                 %a.close-reveal-modal ×
 

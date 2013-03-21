@@ -10,8 +10,6 @@ Vergleichsportal::Application.routes.draw do
 
   resources :password_resets
 
-
-
   get "home/index" => "home#index"
 
   get "home/search" => "home#search_results"
@@ -20,19 +18,28 @@ Vergleichsportal::Application.routes.draw do
 
   resources :carts
 
+  get "carts/:id/delete" => "carts#destroy", as: 'delete_cart'
+
+  get "carts/add/new" => "carts#add_new", as: 'add_new'
+
   get "carts/:cart_id/add/:article_id" => "carts#add_article", as: 'add_article'
 
   get "carts/:cart_id/remove/:article_id" => "carts#remove_article", as: 'remove_article'
 
-  get "carts/:id/use" => "carts#use", as: 'use'
+  get "carts/:id/use" => "carts#use", as: 'use_cart'
 
-  get "cart/add/:cart_id" => "UsersController#addCart", :as => 'add_cart_to_user'
+  get "cart/add/:cart_id" => "users#addCart", as: 'add_cart_to_user'
+
+  get "cart/add-compare" => "home#track_compare", as: 'track_compare'
 
   resources :users do
     member do
       get :activate
     end
   end
+
+  get "users/:id/change_role" => "users#change_role", :as => "user_change_role"
+
 
 
   resources :user_sessions
@@ -54,6 +61,7 @@ Vergleichsportal::Application.routes.draw do
   resources :articles
 
   put "articles/:id/add_rating" => "articles#add_rating", :as => 'article_add_rating'
+  put "articles/:id/add_comment" => "articles#add_comment", :as => 'article_add_comment'
 
   get "api/search"
 
