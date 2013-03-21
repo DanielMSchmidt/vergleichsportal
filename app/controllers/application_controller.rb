@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :fetch_add
   before_filter :set_providers
   before_filter :set_cart_providers
+  before_filter :log_locked_user_out
 
   after_filter :setGuestUserInCookies
   after_filter :setActiveCartInCookies
@@ -82,6 +83,10 @@ class ApplicationController < ActionController::Base
 
   def setActiveCartInCookies
     cookies[:active_cart] = @active_cart.id
+  end
+
+  def log_locked_user_out
+    logout unless @active_user.active
   end
 
   protect_from_forgery
