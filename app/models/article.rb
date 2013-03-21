@@ -88,6 +88,17 @@ class Article < ActiveRecord::Base
     self.save
   end
 
+  def get_price_of_day(provider_id, day)
+    prices = Price.where(:article_id => self.id, :provider_id => provider_id).where(created_at: (day.beginning_of_day)..(day.end_of_day))
+    price = prices.sort{|a,b| a.created_at <=> b.created_at }.last
+    unless price.nil?
+      price.value
+    else
+      0
+    end
+  end
+
+
   def old_price_available?(provider, time)
     Price.where(:article_id => self.id, :provider_id => provider.id).where("created_at <= ?", time).any?
   end
