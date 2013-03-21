@@ -100,7 +100,8 @@ class ProvidersController < ApplicationController
     UserMailer.provider_quotation(params[:name]).deliver
 
     respond_to do |format|
-      format.html { redirect_to admin_home_path }
+      format.html { redirect_to admin_home_path, notice: "Email wurde erfolgreich an das Develop Team gesendet"}
+      format.js
     end
   end
 end
