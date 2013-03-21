@@ -4,7 +4,8 @@
     =render @active_cart.articles, search: false
   .row
     .three.columns
-      = link_to 'Neuer Warenkorb', add_new_path, remote: true, :class => "button expand"
+      -if has_permission?("switch_cart")
+        = link_to 'Neuer Warenkorb', add_new_path, remote: true, :class => "button expand"
     .three.columns.offset-by-one
       -if has_permission?("switch_cart")
         %a.button.expand{"data-reveal-id" => "switch-cart-modal", :href => "#"} Ändere / Lösche Warenkorb
