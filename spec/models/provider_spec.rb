@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Provider do
-  let(:provider) { FactoryGirl.create(:provider) }
+  let(:provider) { FactoryGirl.create(:provider_buch) }
+  let(:user) { FactoryGirl.create(:user) }
 
   describe "validations" do
     it "should validate presence of image_url" do
@@ -24,7 +25,7 @@ describe Provider do
     end
 
     it "should delete its ratings if deleted" do
-      provider.ratings.create!(user_id:1)
+      provider.ratings.create(user_id:user.id, rateable_type:"provider", rateable_id:provider.id)
       expect {provider.destroy}.to change{Rating.count}.by(-1)
     end
   end

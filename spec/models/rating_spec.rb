@@ -5,8 +5,8 @@ describe Rating do
     it "should validate presence of user_id" do
       should validate_presence_of(:user_id)
     end
-    it "should validate presence of provider_id" do
-      should validate_presence_of(:provider_id)
+    it "should validate presence of rateable_id" do
+      should validate_presence_of(:rateable_id)
     end
   end
 
