@@ -104,5 +104,9 @@ describe Article do
 	c.destroy
       end
     end
+    it "should average the rating" do
+      article.ratings.create(user_id:1, value:2)
+      article.average_rating.should == 2
+    end
   end
 end
