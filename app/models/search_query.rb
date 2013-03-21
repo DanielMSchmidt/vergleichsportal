@@ -16,7 +16,11 @@ class SearchQuery < ActiveRecord::Base
   private
 
   def parse_options_to_db
-    self.options = self.options.to_json unless self.options.nil?
+    unless self.options.nil?
+      self.options = self.options.to_json
+    else
+      self.options = {}.to_json
+    end
   end
 
 end
