@@ -9,8 +9,8 @@ class SearchQueryWorker
       return false
     else
       search = Search.new(query["value"], query["options"])
-      search.getAllNewestesPrices(query)
+      search.getAllNewPrices(query)
     end
-    SearchQueryWorker.perform_in(2.hours, 5)
+    SearchQueryWorker.perform_in(2.hours, query)
   end
 end
