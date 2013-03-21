@@ -44,7 +44,6 @@ class Search
     @provider.each do |provider|
       url = article.urls.where(id: provider.id).first
       unless url.nil?
-        puts "URL: #{url}"
         price[(provider.id)] = getProviderInstance(provider).getNewestPriceFor(url.value)
       end
     end
@@ -154,7 +153,7 @@ class Search
       results.select!{|article| article.title == @options[:title]}
     end
     if @options.has_key?(:min_price)
-      results.select!{|article| ishigher?(article)} 
+      results.select!{|article| ishigher?(article)}
     end
     if @options.has_key?(:min_price)
       results.select!{|article| islower?(article)}
@@ -163,7 +162,7 @@ class Search
       results.select!{|article| article.article_type == @options[:article_type]}
     end
     results
-    
+
   end
 
   def ishigher?(article)
