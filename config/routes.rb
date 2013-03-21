@@ -83,13 +83,14 @@ Vergleichsportal::Application.routes.draw do
   post "android/article/comment" => "android#comment_article"
   post "android/article/comments" => "android#comments_for_article"
   
-  get "android/debug" => "android#debug"
+  get "android/debug" => "android#articles_for_cart"
 
   post "android/search" => "android#search"
 
   post "android/carts" => "android#all_carts"
   post "android/cart/articles" => "android#articles_for_cart"
   post "android/cart/articles/add" => "android#add_article"
+  post "android/cart/articles/remove" => "android#remove_article"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

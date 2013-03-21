@@ -133,7 +133,7 @@ class AndroidController < ApplicationController
 	end
 
 	def comments_for_article
-		@comments = Comment.where(commentable_id: params[:article_id], commentable_type: "article")
+		@comments = Comment.where(commentable_id: params[:article_id], commentable_type: "Article")
 		if (@comments != nil)
 			render json: @comments, each_serializer: ArticleCommentForAndroidSerializer, status: :ok
 		else
@@ -182,6 +182,29 @@ class AndroidController < ApplicationController
 			end
 		else
 			render json: ["cart"], status: :not_found
+		end
+	end
+
+	def remove_article
+		if (params[:cart_id]==-1)
+			render json: ["cart_id must not be -1"], status: :forbidden
+		else
+			@cart = Cart.find(params[:cart_id])
+			if (@cart != nil) 
+				@article = Article.find(params[:article_id])
+				if (@article != nil)
+					if (@cart.change_article_count(@article, @cart.get_count(@article)-1))
+						render json: [{"article_count"=>@cart.get_count(@article)}], status: :ok
+					else
+						@cart.remove_article(@article)
+						render json: [{"article_count"=>0}], status: :ok
+					end
+				else
+					render json: [], status: :not_found
+				end
+			else
+				render json: [], status: :not_found
+			end
 		end
 	end
 

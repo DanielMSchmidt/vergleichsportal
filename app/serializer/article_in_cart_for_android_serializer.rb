@@ -1,6 +1,6 @@
 class ArticleInCartForAndroidSerializer < ActiveModel::Serializer
 
-	attributes :count_in_cart, :id, :ean, :title, :imageURL, :description, :type, :rating, :ratecount, :author, :prices
+	attributes :count_in_cart, :id, :ean, :title, :imageURL, :description, :type, :rating, :ratecount, :author
 
 	def count_in_cart
 		object.quantity
@@ -31,7 +31,7 @@ class ArticleInCartForAndroidSerializer < ActiveModel::Serializer
 	end
 
 	def type
-		"#{object.article_type}"
+		"#{object.article.article_type}"
 	end
 
 	def rating
@@ -40,10 +40,6 @@ class ArticleInCartForAndroidSerializer < ActiveModel::Serializer
 
 	def ratecount
 		object.article.ratings.size
-	end
-
-	def prices
-		object.article.prices
 	end
 
 end
