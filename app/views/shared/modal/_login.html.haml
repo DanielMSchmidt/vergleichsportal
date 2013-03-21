@@ -1,9 +1,4 @@
 #login-modal.reveal-modal.small
-  %h3 Externe Dienste
-  .row
-    .ten.columns.centered
-      %a.button.expand{:href => "#"} Anmelden mit Facebook
-  %hr/
   %h3 Anmelden
   = form_tag user_sessions_path, :method => :post, :remote => true do
     .row
