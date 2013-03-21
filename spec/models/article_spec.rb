@@ -1,3 +1,4 @@
+#encoding: utf-8
 require 'spec_helper'
 
 describe Article do
@@ -113,5 +114,11 @@ describe Article do
       article.get_price_of_day(provider.id, Time.now.to_date).should == 10
       p.destroy
     end
+    it "should generate a new article" do
+      a = Article.generate({:name=>"hier", :ean=>"5051890045614", :author=>"David YatesDaniel RadcliffeRupert GrintEmma Watson", :description=>"da", :article_type=>nil, :images=>{2=>"http://media.buch.de/img-adb/29386984-00-03/harry_potter_und_die_heiligtuemer_des_todes_teil_2.jpg" "Harry Potter und die Heiligtümer ..."}, :prices=>{2=>14.99}, :urls=>{2=>"http://www.buch.de/shop/home/suchartikel/harry_potter_und_die_heiligtuemer_des_todes_teil_2/joanne_k_rowling/EAN5051890045614/ID29386984.html?fftrk=6%3A1%3A10%3A10%3A1&jumpId=1507325"}})
+      a.ean.should match /5051890045614/
+      a.name.should match /hier/
+      a.description.should match /da/
+    end				     
   end
 end
