@@ -21,8 +21,14 @@ class Search
     results #= filterByOptions(results)
   end
 
-  def getAllNewestesPrices(query=SearchQuery.where(value: @search_term, options: @options).first)
+  def getAllNewestesPrices(query_args=SearchQuery.where(value: @search_term, options: @options).first)
     Rails.logger.info "Search#getAllNewestPrices called for #{@search_term} with options: #{@options}"
+
+    if query_args.class == Hash
+      query = SearchQuery.find(query_args["id"])
+    else
+      query = query_args
+    end
 
     if query.nil? || query.articles.empty?
       Rails.logger.info "Search#getAllNewestPrices no query found or no articles in query"
