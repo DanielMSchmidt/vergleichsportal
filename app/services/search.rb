@@ -28,7 +28,7 @@ class Search
     results #= filterByOptions(results)
   end
 
-  def getAllNewestesPrices(query_args=SearchQuery.where(value: @search_term, options: @options).first)
+  def getAllNewPrices(query_args=SearchQuery.where(value: @search_term, options: @options).first)
     Rails.logger.info "Search#getAllNewestPrices called for #{@search_term} with options: #{@options}"
 
     if query_args.class == Hash
