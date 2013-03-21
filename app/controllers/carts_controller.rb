@@ -1,39 +1,4 @@
 class CartsController < ApplicationController
-  # GET /carts
-  # GET /carts.json
-  def index
-    @carts = Cart.find(:all)
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @carts }
-    end
-  end
-
-  # GET /carts/1
-  # GET /carts/1.json
-  def show
-    @active_cart = Cart.find(params[:id])
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @active_cart }
-    end
-  end
-
-  # GET /carts/new
-  # GET /carts/new.json
-  def new
-    @cart = Cart.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @cart }
-    end
-  end
-
-  # GET /carts/1/edit
-  def edit
-    @active_cart = Cart.find(params[:id])
-  end
 
   # POST /carts
   # POST /carts.json
@@ -74,6 +39,8 @@ class CartsController < ApplicationController
 
     respond_to do |format|
       if @active_cart.add_article(article)
+        @active_cart = Cart.find(@active_cart.id)
+        set_cart_providers
 	      format.html { redirect_to @active_cart, notice: 'Article was successfully added.' }
 	      format.json { head :no_contest }
         format.js
@@ -92,6 +59,8 @@ class CartsController < ApplicationController
 
     respond_to do |format|
       if @active_cart.remove_article(article)
+        @active_cart = Cart.find(@active_cart.id)
+        set_cart_providers
 	      format.html { redirect_to @active_cart, notice: 'Article was successfully removed.' }
 	      format.json { head :no_contest }
         format.js

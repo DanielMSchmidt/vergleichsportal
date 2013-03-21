@@ -8,7 +8,7 @@ class BuchDeSearch
 
   def initialize()
     @provider = YAML.load_file "config/buch_de.yml"
-    @agent = Mechanize.new    
+    @agent = Mechanize.new
   end
 
   def searchByKeywords(searchTerm, options={})
@@ -21,8 +21,8 @@ class BuchDeSearch
     end
 
     #filter the providers offers
-    links = filterProviderOffer(links) 
-    
+    links = filterProviderOffer(links)
+
     #is there a max number of results?
     if options[:count].nil?
       articles = links.collect{|link| getArticleDataFor(link)}
@@ -50,16 +50,16 @@ class BuchDeSearch
     search_form[@provider[:search_field]] = searchTerm
 
     page = @agent.submit(search_form, search_form.buttons.first)
-    
+
     links = page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
 
   end
 
   def getAdvancedArticleLinksFor(searchTerm, options)
-    title =  ((options[:title].nil?) ? '' : options[:title]) 
+    title =  ((options[:title].nil?) ? '' : options[:title])
     author = ((options[:author].nil?) ? '' : options[:author])
     page = @agent.get('http://www.buch.de/shop/home/suche/?fi=&st='+title+'&sa='+author)
-    #st: titel   sa:  autor 
+    #st: titel   sa:  autor
     page.links_with(:class => @provider[:link_class]).collect{|link| link.href}
   end
 

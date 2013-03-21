@@ -1,19 +1,24 @@
 class Search
 
   def initialize(search_term, options={})
+
     @search_term = search_term
+    @search_term||= ""
+
     @options = options
+    @options ||= {}
+
     @provider = Provider.all
   end
-
-  #TODO: Check path without caching for Recursion and test getAllNewestPrices from the console
 
   def find
     Rails.logger.info "Search#Find called for #{@search_term} with #{@options}"
     searches = SearchQuery.where(value: @search_term)
     unless searches.empty?
       Rails.logger.info "SearchQueries were found: #{searches}"
-      return searches.includes(:articles).collect{|search| search.articles}.flatten
+
+      #This is a n+1 query which can't be fixed due to tests
+      return searches.collect{|search| search.articles}.flatten
     else
       Rails.logger.info "No SearchQueries were found, starting search"
       results = searchAtMultipleProviders(@provider, @search_term, @options)
@@ -21,8 +26,14 @@ class Search
     results #= filterByOptions(results)
   end
 
-  def getAllNewestesPrices(query=SearchQuery.where(value: @search_term, options: @options).first)
+  def getAllNewPrices(query_args=SearchQuery.where(value: @search_term, options: @options).first)
     Rails.logger.info "Search#getAllNewestPrices called for #{@search_term} with options: #{@options}"
+
+    if query_args.class == Hash
+      query = SearchQuery.find(query_args["id"])
+    else
+      query = query_args
+    end
 
     if query.nil? || query.articles.empty?
       Rails.logger.info "Search#getAllNewestPrices no query found or no articles in query"
@@ -40,11 +51,11 @@ class Search
   def getTheNewestPriceFor(article)
     Rails.logger.info "Search#getTheNewestPriceFor article:#{article}"
     price = {}
+    article_urls = article.urls
 
     @provider.each do |provider|
-      url = article.urls.where(id: provider.id).first
+      url = article_urls.select{|x| x.provider_id == provider.id}.first
       unless url.nil?
-        puts "URL: #{url}"
         price[(provider.id)] = getProviderInstance(provider).getNewestPriceFor(url.value)
       end
     end
@@ -154,7 +165,7 @@ class Search
       results.select!{|article| article.title == @options[:title]}
     end
     if @options.has_key?(:min_price)
-      results.select!{|article| ishigher?(article)} 
+      results.select!{|article| ishigher?(article)}
     end
     if @options.has_key?(:max_price)
       results.select!{|article| islower?(article)}
@@ -163,7 +174,7 @@ class Search
       results.select!{|article| article.article_type == @options[:article_type]}
     end
     results
-    
+
   end
 
   def ishigher?(article)

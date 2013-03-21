@@ -1,5 +1,8 @@
-$("#cart li").remove();
+$("#carts li").remove();
 $("#switch-cart-modal #change-cart li").remove();
-$("#cart").append("<%= escape_javascript(render @active_cart.articles, search: false) %>");
+$("#carts").append("<%= escape_javascript(render @active_cart.articles, search: false) %>");
 $("#switch-cart-modal #change-cart").append("<%= escape_javascript(render @active_user.carts.reject{|cart| cart == @active_cart}) %>");
+$("#compare-cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/compare_cart') %>"); 
 errornote((t "carts.carts_added:"), "success");
+reloadStars();
+

@@ -1,2 +1,2 @@
 $("#provider").html('<%= escape_javascript(render :partial => "home/admin/provider") %>');
-errornote("Anbieter <%= @provider.display_name %> wurde aktualisiert!", "success");
+errornote("Die Mail an das Develop Team wurde versendet", "success");

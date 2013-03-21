@@ -1,2 +1,4 @@
 $("#change-cart li#cart-<%= @cart_id %>").hide("slow").remove()
 errornote((t "carts.carts_delete"), "success");
+reloadStars();
+

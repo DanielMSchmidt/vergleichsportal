@@ -1,16 +1,25 @@
 #encoding: utf-8
-#compare-cart-modal.reveal-modal.large
-  %h3 Anbietervergleich
-  -@cart_providers.each do |provider|
-    .row
-      .ten.columns.centered
+#compare-cart-modal.reveal-modal.xlarge
+  .row
+    .three.columns
+      %h3
+        Anbietervergleich
+        %br
+      - @cart_providers.each do |provider|
         %ul.pricing-table
-          %li.title 
-            =provider.name
-          %li
-            %img{:src => "http://placehold.it/450x350", :style => "margin-left: 80px;"}/
-          %li.price
-            ="Preis #{number_to_currency(@active_cart.calculate_overall_price(provider), :format => '%n%u', :unit => '€')}"
-          %li.cta-button
-            %a.button{:href => "#"} Direkt zu Buch.de &raquo;
+          %li.title
+            =provider.display_name
+            %li.price
+              ="Preis #{number_to_currency(@active_cart.calculate_overall_price(provider), :format => '%n%u', :unit => '€')}"
+            %li.cta-button
+              = link_to raw("Direkt zu #{provider.display_name} &raquo;"), provider.url, :class => "button"
+    .nine.columns
+      %h3{style: "text-align: center"}
+        Preisverlauf
+        %br
+
+      %canvas{:height => "300", :width => "600", :style => "margin-left: 20px"}
+      .row
+        .five.columns.offset-by-one
+          = render 'shared/price_history_data'
   %a.close-reveal-modal ×

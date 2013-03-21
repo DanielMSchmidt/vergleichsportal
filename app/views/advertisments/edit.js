@@ -1,1 +1,0 @@
-$(".advertisment#<%= @advertisment.id %>").replaceWith("<%= escape_javascript(render @advertisment)%>");

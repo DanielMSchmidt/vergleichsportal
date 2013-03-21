@@ -27,7 +27,13 @@ class Cart < ActiveRecord::Base
 
   def remove_article(article)
     article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
-    article_cart_assignment.destroy unless article_cart_assignment.nil?
+    unless article_cart_assignment.nil?
+      if article_cart_assignment.quantity == 1
+	      article_cart_assignment.destroy
+      else
+	      self.change_article_count(article, article_cart_assignment.quantity - 1)
+      end
+    end
   end
 
   def change_article_count(article, quantity)
@@ -49,7 +55,7 @@ class Cart < ActiveRecord::Base
   end
 
   def calc_shipping(provider)
-    return 0 if provider.name == "ebay" or provider.name == "bücherDe"
+    return 0 if provider.name == "ebay" || provider.name == "bücherDe"
     return 0 if self.is_book_in_cart?
     article_price = self.price_of_all_articles(provider)
     return 3 if article_price < 20
@@ -60,10 +66,9 @@ class Cart < ActiveRecord::Base
     price = 0
     self.articles.each do |article|
       if article.get_price(provider) == -1
-	put "Provider #{provider.name} hat keinen preis für #{self.name}"
-	return -1
+        return -1
       else
-	price += article.get_price(provider)
+        price += article.get_price(provider)*self.get_count(article)
       end
     end
     price
@@ -87,51 +92,34 @@ class Cart < ActiveRecord::Base
   end
 
   def price_history
-    history = {}
-    @cart_providers.each do |provider|
-      history = history.merge({provider.name => self.provider_price_history(provider)})
+    providers = Provider.active
+
+    history = {
+                data: [],
+                labels: get_price_history_labels,
+                provider_names: providers.collect{|x| x.display_name}
+              }
+    providers.each do |provider|
+      history[:data] = history[:data] << self.provider_prices_for_last_week(provider)
     end
     history
   end
 
-  def history_possible?(provider, time)
-    self.articles.each do |article|
-      return false unless article.old_price_available?(provider, time)
-    end
-    true
+  def get_price_history_labels
+    #get labels of last week
+    get_last_week.collect{ |date| date.strftime("%b %d") }.to_s
   end
 
-  def history_beginning(provider)
-    now = Time.zone.now
-    return nil unless history_possible?(provider, now)
-    offset = 24*60*60*14
-    while true
-      return now-offset if history_possible?(provider, now-offset)
-      offset /= 2
-      if offset < 400
-	return nil
-      end
-    end
+  def get_last_week
+    7.day.ago.to_date..Date.today
   end
 
-  def old_price(provider, time)
-    price = 0
-    self.articles.each do |article|
-      price += article.old_price(provider, time)
+  def provider_prices_for_last_week(provider)
+    prices = []
+    articles = self.articles
+    get_last_week.each do |day|
+      prices << articles.collect{|article| article.get_price_of_day(provider.id, day) || 0}.inject(:+).to_f
     end
-    price
-  end
-
-  def provider_price_history(provider)
-    history = {}
-    start_at = self.history_beginning(provider)
-    return nil if start_at.nil?
-    step = (Time.zone.now - start_at) / 100
-    100.times do |count|
-      current = start_at + count*step
-      price = self.old_price(provider, current)
-      history = history.merge({current => price})
-    end
-    history.sort
+    prices
   end
 end

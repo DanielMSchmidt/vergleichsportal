@@ -19,7 +19,7 @@ class ThaliaDeSearch
     	end
 
       #filter providers offers
-      links = filterProviderOffer(links) 
+      links = filterProviderOffer(links)
     	#is there a max number of results?
     	if options[:count].nil?
       	articles = links.collect{|link| getArticleDataFor(link)}
@@ -35,7 +35,7 @@ class ThaliaDeSearch
 		search_form = page.form(@provider[:search_form])
 		search_form[@provider[:search_field]] = searchTerm
 		page = @agent.submit(search_form, search_form.buttons.first)
-		articles = page.links_with(:href => /^http:\/\/www.thalia.de\/shop\/tha_homestartseite\/suchartikel\/.*$/).collect{|link| link.href}.uniq	
+		articles = page.links_with(:href => /^http:\/\/www.thalia.de\/shop\/tha_homestartseite\/suchartikel\/.*$/).collect{|link| link.href}.uniq
     articles
   end
 
@@ -50,7 +50,8 @@ class ThaliaDeSearch
 		@provider[:book].each do |key, value|
 			article[key] = getItem(page,value)
 		end
-		article[:price] = page.search(@provider[:price]).text[/\d+,\d+/].tr(',','.').to_f
+		price_text = page.search(@provider[:price]).text[/\d+,\d+/]
+		article[:price] = price_text.tr(',','.').to_f unless price_text.nil?
     article[:url] = link
 		details_headlines = page.search(@provider[:detail_headline])
 		details_values = page.search(@provider[:detail_value])
@@ -61,10 +62,10 @@ class ThaliaDeSearch
 	end
 
 	def getAdvancedArticleLinksFor(searchTerm, options)
-    title =  ((options[:title].nil?) ? '' : options[:title]) 
+    title =  ((options[:title].nil?) ? '' : options[:title])
     author = ((options[:author].nil?) ? '' : options[:author])
     page = @agent.get('http://www.thalia.de/shop/tha_homestartseite/suche/?fi=&st='+title+'&sa='+author)
-    #st: titel   sa:  autor 
+    #st: titel   sa:  autor
    	links = page.links_with(:href => /^http:\/\/www.thalia.de\/shop\/tha_homestartseite\/suchartikel\/.*$/).collect{|link| link.href}
     links
   end
@@ -109,7 +110,7 @@ class ThaliaDeSearch
       		article_type = 'ebook'
       	elsif provider_type == 'Buch'
       		article_type = 'book'
-    	end    		
+    	end
     	article_type
   	end
 end

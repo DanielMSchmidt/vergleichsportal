@@ -5,7 +5,7 @@ class UserSessionsController < ApplicationController
 
   def create
     respond_to do |format|
-      if (@user = login(params[:username],params[:password]) )
+      if @user = login(params[:username],params[:password])
         logger.info "User: #{@user.to_s} logged in"
         @active_user = @user
         @user.addCart(@active_cart) unless @active_cart.empty?
