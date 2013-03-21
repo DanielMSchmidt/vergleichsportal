@@ -1,8 +1,11 @@
+#encoding: utf-8
 require 'spec_helper'
 
 describe Article do
   let(:article) { FactoryGirl.create(:article) }
+  let(:no_book) { FactoryGirl.create(:article_not_a_book) }
   let(:provider) { FactoryGirl.create(:provider_buch) }
+  let(:provider_ebay) { FactoryGirl.create(:provider_ebay) }
   let!(:image) { FactoryGirl.create(:image) }
 
   describe "attributes" do
@@ -68,5 +71,54 @@ describe Article do
     it "should have a available for method" do
       should respond_to(:available_for)
     end
+  end
+  describe "functions" do
+    it "should be able to test if available for multiply provider provider" do
+      provs = []
+      p1 = article.prices.create(provider_id:provider.id, value:4)
+      p2 = article.prices.create(provider_id:provider_ebay.id, value:5)
+      provs << provider
+      provs << provider_ebay
+      article.available_for_each(provs).should == true
+      p1.destroy
+      p2.destroy
+    end
+    it "should be able to test if available for any of  multiply provider provider" do
+      provs = []
+      provs << provider
+      provs << provider_ebay
+      article.available_for_any(provs).should == false
+    end
+    it "shouldn't be a book with an EAN with 123456789-123-1" do
+      no_book.is_book?.should == false
+    end
+    it "should be -1 if the provider does not provide the article" do
+      article.get_price(provider).should == -1
+    end
+    it "should be the right string" do
+      article.to_s.should match /^ID: #{article.id}, Name: #{article.name}, Author: #{article.author}$/
+    end
+    describe "the number of comments" do
+      it "should add a comment" do
+	c = Comment.create(value:"haha haha haha haha haha haha haha haha haha haha haha ")
+	expect{ article.add_comment(c) }.to change{article.comments.count}.by(1)
+	c.destroy
+      end
+    end
+    it "should average the rating" do
+      article.ratings.create(user_id:1, value:2)
+      article.average_rating.should == 2
+    end
+    it "should return the current price" do
+      p = article.prices.create(provider_id:provider.id, value:10)
+      article.get_price_of_day(provider.id, Time.now.to_date).should == 10
+      p.destroy
+    end
+    it "should generate a new article" do
+      a = Article.generate({:name=>"hier", :ean=>"5051890045614", :author=>"David YatesDaniel RadcliffeRupert GrintEmma Watson", :description=>"da", :article_type=>nil, :images=>{2=>"http://media.buch.de/img-adb/29386984-00-03/harry_potter_und_die_heiligtuemer_des_todes_teil_2.jpg" "Harry Potter und die Heiligtümer ..."}, :prices=>{2=>14.99}, :urls=>{2=>"http://www.buch.de/shop/home/suchartikel/harry_potter_und_die_heiligtuemer_des_todes_teil_2/joanne_k_rowling/EAN5051890045614/ID29386984.html?fftrk=6%3A1%3A10%3A10%3A1&jumpId=1507325"}})
+      a.ean.should match /5051890045614/
+      a.name.should match /hier/
+      a.description.should match /da/
+    end				     
   end
 end
