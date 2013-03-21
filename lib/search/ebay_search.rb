@@ -60,7 +60,7 @@ class EbaySearch
     return page.links_with(:class => "vip").collect{|link| link.href}
   end
 
-<<<<<<< HEAD
+
   def getArticleDataFor(url)
     Rails.logger.info "EbaySearch#getArticleDataFor called for #{url}"
     article = {}
