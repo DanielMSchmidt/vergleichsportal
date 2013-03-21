@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Cart do
   let(:cart) { FactoryGirl.create(:cart) }
   let(:article) { FactoryGirl.create(:article) }
-  cart = FactoryGirl.create(:cart)
+  cart_w_books = Cart.create()
   cart_wo_books = Cart.create()
   book = FactoryGirl.create(:article_book)
   article = FactoryGirl.create(:article_not_a_book)
@@ -22,8 +22,8 @@ describe Cart do
   Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
   Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
 
-  ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart.id)
-  ArticleCartAssignment.create(:article_id => article.id, :cart_id => cart.id)
+  ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+  ArticleCartAssignment.create(:article_id => article.id, :cart_id => cart_w_books.id)
   ArticleCartAssignment.create(:article_id => article.id, :cart_id => cart_wo_books.id)
   describe "relations" do
     it "should have many articles" do
@@ -40,18 +40,23 @@ describe Cart do
   end
 
   describe "calculating" do
+    describe "count articles" do
+      it "should be 1" do
+	cart_w_books.get_count(article).should == 1
+      end
+    end
     describe "cart with books" do
       it "should cost at ebay 39,98" do
-	cart.calculate_overall_price(ebay).to_s.should == "39.98"
+	cart_w_books.calculate_overall_price(ebay).to_s.should == "39.98"
       end
       it "should cost at buch.de 19.98" do
-	cart.calculate_overall_price(buch).to_s.should == "19.98"
+	cart_w_books.calculate_overall_price(buch).to_s.should == "19.98"
       end
       it "should cost at thalia 15,98" do
-	cart.calculate_overall_price(thalia).to_s.should == "15.98"
+	cart_w_books.calculate_overall_price(thalia).to_s.should == "15.98"
       end
       it "should cost at buecher.de 109,98" do
-	cart.calculate_overall_price(buecher).to_s.should == "30.01"
+	cart_w_books.calculate_overall_price(buecher).to_s.should == "30.01"
       end
     end
     describe "cart without books" do
