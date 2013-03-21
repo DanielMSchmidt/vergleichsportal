@@ -56,19 +56,45 @@
 
 })(jQuery, this);
 
+
+
+
+
 function errornote(note,status){
 
   $("#errornote").append('<div class="alert-box '+ status +'">'+ note + '<a href="" class="close">&times;</a></div>');
 
 }
 
+
+function loadScript(scriptname) {  
+  var snode = document.createElement('script');  
+  snode.setAttribute('type','text/javascript');  
+  snode.setAttribute('src',scriptname);  
+  document.getElementsByTagName('head')[0].appendChild(snode);  
+}
+
+
 function showSearch(){
   $("#search-hidden").toggle();
   $("#search").toggle();
 }
 
-$('.auto-submit-star').rating({
-  callback: function(value, link){
-    this.form.submit();
-  }
+
+function activateStars(){
+
+  $('.auto-submit-star').rating({
+    callback: function(value, link){
+      this.form.submit();
+    }
+  });
+
+}
+
+function reloadStars(){
+  activateStars();
+}
+
+$(document).ready(function() {
+  activateStars();
 });
