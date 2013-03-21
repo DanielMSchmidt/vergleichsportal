@@ -86,5 +86,21 @@ describe Cart do
         expect{ cart.add_article(article) }.to change{ArticleCartAssignment.find_for_article_and_cart(article.id, cart.id).first.quantity}.by(1)
       end
     end
+    describe "remove_article" do
+      it "should decrease quantity by one, delete the item an do nothing" do
+	cart.add_article(book)
+	cart.add_article(book)
+	expect{ cart.remove_article(book) }.to  change{ArticleCartAssignment.count}.by(0)
+	expect{ cart.remove_article(book) }.to  change{ArticleCartAssignment.count}.by(-1)
+	expect{ cart.remove_article(book) }.to  change{ArticleCartAssignment.count}.by(0)
+      end
+    end
+    describe "change article count" do
+      it "shouldn't do anything if new count negativ" do
+	cart.add_article(book)
+	cart.change_article_count(book, -1)
+	cart.get_count(book).should == 1
+      end
+    end
   end
 end
