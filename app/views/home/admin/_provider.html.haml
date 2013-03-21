@@ -10,14 +10,14 @@
             .form-inputs
               = f.hidden_field :active, value: false
             .form-actions
-              = f.button :submit, provider.name + " deaktivieren"
+              = f.button :submit, provider.display_name + " deaktivieren"
         - else
           = simple_form_for(provider, remote: true) do |f|
             = f.error_notification
             .form-inputs
               = f.hidden_field :active, value: true
             .form-actions
-              = f.button :submit, provider.name + " aktivieren"
+              = f.button :submit, provider.display_name + " aktivieren"
     %li{:style => "padding-bottom: 20px;"}
       =form_tag(add_provider_path, remote: true)
       =text_field_tag :name
