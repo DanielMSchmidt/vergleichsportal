@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Article do
   let(:article) { FactoryGirl.create(:article) }
+  let(:no_book) { FactoryGirl.create(:article_not_a_book) }
   let(:provider) { FactoryGirl.create(:provider_buch) }
   let(:provider_ebay) { FactoryGirl.create(:provider_ebay) }
   let!(:image) { FactoryGirl.create(:image) }
@@ -86,6 +87,9 @@ describe Article do
       provs << provider
       provs << provider_ebay
       article.available_for_any(provs).should == false
+    end
+    it "shouldn't be a book with an EAN with 123456789-123-1" do
+      no_book.is_book?.should == false
     end
   end
 end
