@@ -65,7 +65,7 @@ class EbaySearch
     Rails.logger.info "EbaySearch#getArticleDataFor called for #{url}"
     article = {}
 
-    #return article unless valid?(url)
+  
     page = @agent.get(url)
 
     details_array = []
