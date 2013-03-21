@@ -11,8 +11,6 @@ class Search
     @provider = Provider.all
   end
 
-  #TODO: Check path without caching for Recursion and test getAllNewestPrices from the console
-
   def find
     Rails.logger.info "Search#Find called for #{@search_term} with #{@options}"
     searches = SearchQuery.where(value: @search_term)
@@ -53,9 +51,10 @@ class Search
   def getTheNewestPriceFor(article)
     Rails.logger.info "Search#getTheNewestPriceFor article:#{article}"
     price = {}
+    article_urls = article.urls
 
     @provider.each do |provider|
-      url = article.urls.where(id: provider.id).first
+      url = article_urls.select{|x| x.provider_id == provider.id}.first
       unless url.nil?
         price[(provider.id)] = getProviderInstance(provider).getNewestPriceFor(url.value)
       end
