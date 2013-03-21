@@ -2,6 +2,7 @@ class Article < ActiveRecord::Base
   attr_accessible :description, :ean, :name, :author, :article_type
   validates_format_of :ean, with: /^((\d{7}-?\d{5}-?\d)|(\d{8}-?\d{4}-?\d)|(\d{9}-?\d{3}-?\d))$/
   validates_presence_of :description, :name
+  validate :ean, unique: true
 
   has_many :article_cart_assignments
   has_many :article_query_assignments
@@ -87,6 +88,17 @@ class Article < ActiveRecord::Base
     comment.save
     self.save
   end
+
+  def get_price_of_day(provider_id, day)
+    prices = Price.where(:article_id => self.id, :provider_id => provider_id).where(created_at: (day.beginning_of_day)..(day.end_of_day))
+    price = prices.sort{|a,b| a.created_at <=> b.created_at }.last
+    unless price.nil?
+      price.value
+    else
+      0
+    end
+  end
+
 
   def old_price_available?(provider, time)
     Price.where(:article_id => self.id, :provider_id => provider.id).where("created_at <= ?", time).any?

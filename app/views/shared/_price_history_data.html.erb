@@ -1,0 +1,31 @@
+<script>
+<% price_history_data = @active_cart.price_history %>
+<%
+  colors = []
+  Provider.count.times{|x| colors << "#{rand(64) + 120},#{rand(64) + 120},#{rand(64) + 120}" }
+  names = price_history_data[:provider_names]
+%>
+<% legende = [] %>
+price_history_graph_data  = {
+  labels: <%= raw(price_history_data[:labels]) %>,
+  datasets: [
+    <% price_history_data[:data].each do |data| %>
+      <% index = price_history_data[:data].index(data) %>
+      <% graph_color = colors.pop %>
+
+      <% legende << "<span style='background-color: rgb(#{graph_color});'>#{names.pop}</span><br />" %>
+      {
+        fillColor: "rgba(<%= graph_color %>,0.5)",
+        strokeColor: "rgba(<%= graph_color %>,1)",
+        pointColor: "rgba(<%= graph_color %>,1)",
+        pointStrokeColor: "#fff",
+        data: <%= data %>
+      },
+    <% end %>
+  ]
+};
+<% @legend_string = legende.join(" ") %>
+</script>
+<div class="legende">
+  <%= raw(@legend_string) %>
+</div>

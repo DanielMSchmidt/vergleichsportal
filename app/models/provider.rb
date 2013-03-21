@@ -1,7 +1,7 @@
 class Provider < ActiveRecord::Base
   scope :active, where(active: true)
-  attr_accessible :image_url, :name, :url, :active
-  validates :image_url, :name, :url, presence: true
+  attr_accessible :image_url, :name, :url, :active, :display_name
+  validates :image_url, :name, :url, :display_name, presence: true
   validates :image_url, image_url: true
   validates :url, url: true
 
