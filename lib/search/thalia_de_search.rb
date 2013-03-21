@@ -110,7 +110,7 @@ class ThaliaDeSearch
       		article_type = 'ebook'
       	elsif provider_type == 'Buch'
       		article_type = 'book'
-    	end    		
+    	end
     	article_type
   	end
 end
