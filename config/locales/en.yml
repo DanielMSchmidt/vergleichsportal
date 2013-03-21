@@ -42,6 +42,7 @@ en:
     delete_admin_role: "Delete admin role"
     add_admin_role: "Add admin role"
     add_advertisment: "Add advertisement"
+    search_result_text: "Search results"
 
   users:
     congratulation: "Congratulations"

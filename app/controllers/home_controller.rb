@@ -13,12 +13,16 @@ class HomeController < ApplicationController
   def search_results
     @user_new = User.new
 
+    @options = params[:search_options]
+    if @options.nil? and params[:search].nil?
+      redirect_to(root_path)
+    end
     unless params[:search].nil?
       @term = params[:search][:term]
     else
       @term = "Erweiterte Suche"
     end
-    @options = params[:search_options]
+
     search = Search.new(@term, @options)
 
     @result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from

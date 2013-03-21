@@ -43,6 +43,7 @@ de:
     delete_admin_role: "Lösche Adminrolle"
     add_admin_role: "Adminrolle hinzufügen"
     add_advertisment: "Werbung hinzufügen"
+    search_result_text: "Suchergebnisse"
 
 
   users:

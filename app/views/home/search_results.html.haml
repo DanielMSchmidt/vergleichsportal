@@ -2,10 +2,10 @@
   = render :partial => "shared/search_head"
 
 - content_for :title do
-  = t "home.search_result"+@term.humanize
+  = (t "home.search_result")+@term.humanize
 
 %h3{:style => "margin-bottom: 19px;"}
-  Suchergebnisse:
+  = t "home.search_result_text"
   %small
     = @term.humanize
 %ul.accordion
