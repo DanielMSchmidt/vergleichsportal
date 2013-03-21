@@ -21,9 +21,11 @@
   .row
     .ten.columns.centered
       %p{:style => "text-align: centered;"}
-        Du hast noch kein Konto?
-        %a{"data-reveal-id" => "register-modal", :href => "#"} Registrieren!
+        = (t "shared.have_account")
+        %a{"data-reveal-id" => "register-modal", :href => "#"} 
+          = (t "shared.register")
         %br/
-        Wenn du dein Passwort vergessen hast
-        %a{"data-reveal-id" => "forgot-password-modal", :href => "#"} klicke hier!
+        = t "shared.password_forget"
+        %a{"data-reveal-id" => "forgot-password-modal", :href => "#"}
+          = (t "shared.click_here")
   %a.close-reveal-modal ×

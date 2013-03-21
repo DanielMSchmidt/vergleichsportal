@@ -1,5 +1,6 @@
 #cart-modal.reveal-modal.xlarge
-  %h3 Items in Cart
+  %h3 
+    = t "shared.item_in_cart"
   %ul.accordion#carts
     =render @active_cart.articles, search: false
   .row

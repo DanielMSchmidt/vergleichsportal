@@ -79,6 +79,11 @@ de:
     find_text: "Finden!"
     advanced_search: "Erweiterte Suche"
     login_text: "Anmelden"
+    have_account: "Haben Sie noch kein Konto?"
+    register_text: "Registrieren!"
+    password_forget: "Wenn Sie ihr Password vergessen haben:"
+    click_here: "Klick Hier!"
+    item_in_cart: "Artikel im Warenkorb"
 
   provider:
     open_text: "Öffnen"

@@ -77,6 +77,12 @@ en:
     find_text: "Search!"
     advanced_search: "Advanced search"
     login_text: "Login"
+    have_account: "Didn't you have an account?"
+    register_text: "Register!"
+    password_forget: "If you forgot your password"
+    click_here: "Click here!"
+    item_in_cart: "Items in cart"
+
 
   provider:
     open_text: "Open"
