@@ -113,7 +113,7 @@ class AndroidController < ApplicationController
 	      options = {}
 	    else
 	      term = "Erweiterte Suche"
-	      options = params[:search][:options]
+	      options = params[:search]
 	    end
 	    search = Search.new(term, options)
 	    result = search.find.reject{|result| result == false || result.id.nil?}.uniq
@@ -230,6 +230,16 @@ class AndroidController < ApplicationController
 			else
 				render json: [], status: :not_found
 			end
+		end
+	end
+
+	def delete_cart
+		cart = Cart.find(params[:cart_id])
+		unless cart.nil?
+			cart.destroy
+			render json: [], status: :ok
+		else
+			render json: [], status: :not_found
 		end
 	end
 

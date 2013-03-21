@@ -16,6 +16,7 @@ class Search
   def find
     Rails.logger.info "Search#Find called for #{@search_term} with #{@options}"
     searches = SearchQuery.where(value: @search_term)
+    searches = searches.select { |v| v.get_options.eql?(@options) }
     unless searches.empty?
       Rails.logger.info "SearchQueries were found: #{searches}"
 
