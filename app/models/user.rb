@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :active, :role_id, :email, :password, :password_confirmation
+  attr_accessible :active, :email, :password, :password_confirmation
 
   authenticates_with_sorcery!
 
@@ -9,8 +9,7 @@ class User < ActiveRecord::Base
   has_many :roles, through: :user_role_assignments
   has_many :carts
 
-  validates :email, :role_id, presence: true, :unless => :guest?
-  validates :email, uniqueness: true, :unless => :guest?
+  validates :email, presence: true, uniqueness: true, :unless => :guest?
 
   validates_length_of :password, :minimum => 3, :message => "password must be at least 3 characters long", :if => :password, :unless => :guest?
   validates_confirmation_of :password, :message => "should match confirmation", :if => :password, :unless => :guest?
@@ -31,7 +30,7 @@ class User < ActiveRecord::Base
   def admin?
     return true if self.roles.where(name: "Admin").any?
   end
-  
+
   def activeCart
     self.carts.last_used.first
   end
