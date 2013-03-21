@@ -13,19 +13,6 @@ describe Cart do
   let(:thalia) { FactoryGirl.create(:provider_thalia) }
   let(:ebay) { FactoryGirl.create(:provider_ebay) }
   
-  Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
-  Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
-  Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
-  Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
-  
-  Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
-  Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
-  Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
-  Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
-
-  ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
-  ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
-  ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
   describe "relations" do
     it "should have many articles" do
       should have_many(:articles).through(:article_cart_assignments)
@@ -43,35 +30,170 @@ describe Cart do
   describe "calculating" do
     describe "count articles" do
       it "should be 1" do
-	cart_w_books.get_count(article).should == 1
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
+	cart_w_books.get_count(book).should == 1
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
     end
     describe "cart with books" do
       it "should cost at ebay 39,98" do
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
 	cart_w_books.calculate_overall_price(ebay).to_s.should == "39.98"
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
       it "should cost at buch.de 19.98" do
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
 	cart_w_books.calculate_overall_price(buch).to_s.should == "19.98"
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
       it "should cost at thalia 15,98" do
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
 	cart_w_books.calculate_overall_price(thalia).to_s.should == "15.98"
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
       it "should cost at buecher.de 109,98" do
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
 	cart_w_books.calculate_overall_price(buecher).to_s.should == "30.01"
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
     end
     describe "cart without books" do
       it "should cost at ebay 19,99" do
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
 	cart_wo_books.calculate_overall_price(ebay).to_s.should == "19.99"
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
       it "should cost at buch 12,99" do
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
 	cart_wo_books.calculate_overall_price(buch).to_s.should == "12.99"
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
       it "should cost at buecher 99,99" do
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
 	cart_wo_books.calculate_overall_price(buecher).to_s.should == "20.02"
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
       it "should cost at thalia 10,99" do
+        Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+        Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
+        
+        Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
+        Price.create(:article_id => book.id, :provider_id => thalia.id, :value => "7.99")
+        Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
+    
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+        ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
 	cart_wo_books.calculate_overall_price(thalia).to_s.should == "10.99"
+	Price.all.each{|x| x.destroy}
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
     end
   end
@@ -108,12 +230,18 @@ describe Cart do
 	cart.empty?.should == true
       end
       it "should return false if there is an article in cart" do
+	ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
 	cart_w_books.empty?.should == false
+	ArticleCartAssignment.all.each{|x| x.destroy}
       end
     end
     describe "price_history" do
       it "shoudl work" do
-	cart.price_history.sort.should == {:data=>[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], :labels=>"[\"Mar 14\", \"Mar 15\", \"Mar 16\", \"Mar 17\", \"Mar 18\", \"Mar 19\", \"Mar 20\", \"Mar 21\"]", :provider_names=>["Ebay.de", "Buch.de", "Thalia.de", "Bücher.de"]}.sort
+	ebay
+	buch
+	thalia
+	buecher
+	cart.price_history.sort.should == {:data=>[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], :labels=>"#{(7.day.ago.to_date..Date.today).collect{ |date| date.strftime("%b %d") }.to_s}", :provider_names=>["Ebay.de", "Buch.de", "Thalia.de", "Bücher.de"]}.sort
       end
     end
   end
