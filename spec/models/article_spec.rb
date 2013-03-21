@@ -97,5 +97,12 @@ describe Article do
     it "should be the right string" do
       article.to_s.should match /^ID: #{article.id}, Name: #{article.name}, Author: #{article.author}$/
     end
+    describe "the number of comments" do
+      it "should add a comment" do
+	c = Comment.create(value:"haha haha haha haha haha haha haha haha haha haha haha ")
+	expect{ article.add_comment(c) }.to change{article.comments.count}.by(1)
+	c.destroy
+      end
+    end
   end
 end
