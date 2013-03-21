@@ -2,16 +2,15 @@
 class UserMailer < ActionMailer::Base
   default from: "volker@vergleichsportal.de"
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.user_mailer.reset_password_email.subject
-  #
   def reset_password_email(user)
     @user = user
-    @url  = "http://0.0.0.0:3000/password_resets/#{user.reset_password_token}/edit"
+    if Rails.env == "development"
+      @url  = "http://0.0.0.0:3000/password_resets/#{user.reset_password_token}/edit"
+    else
+      @url  = "http://www.volkers-vergleichsportal.de/de/password_resets/#{user.reset_password_token}/edit"
+    end
     mail(:to => user.email,
-         :subject => "Your password has been reset")
+         :subject => "Dein Password wurde zurückgesetzt.")
   end
 
   def provider_quotation(name)
