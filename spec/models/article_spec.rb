@@ -73,11 +73,13 @@ describe Article do
   describe "functions" do
     it "should be able to test if available for multiply provider provider" do
       provs = []
-      p1 = Price.create(provider_id:provider.id, article_id:article.id)
-      p2 = Price.create(provider_id:provider_ebay.id, article_id:article.id)
+      p1 = article.prices.create(provider_id:provider.id, value:4)
+      p2 = article.prices.create(provider_id:provider_ebay.id, value:5)
       provs << provider
       provs << provider_ebay
-      article.available_for_each(provs).should == false
+      article.available_for_each(provs).should == true
+      p1.destroy
+      p2.destroy
     end
     it "should be able to test if available for any of  multiply provider provider" do
       provs = []
