@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Article do
   let(:article) { FactoryGirl.create(:article) }
-  let(:provider) { FactoryGirl.create(:provider) }
+  let(:provider) { FactoryGirl.create(:provider_buch) }
   let!(:image) { FactoryGirl.create(:image) }
 
   describe "attributes" do
