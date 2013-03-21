@@ -64,7 +64,7 @@ class Article < ActiveRecord::Base
 
   def get_price(provider)
     price = self.prices.where(provider_id: provider)
-    return price.first.value unless price.nil?
+    return price.first.value unless price.first.nil?
     -1
   end
 

@@ -91,5 +91,8 @@ describe Article do
     it "shouldn't be a book with an EAN with 123456789-123-1" do
       no_book.is_book?.should == false
     end
+    it "should be -1 if the provider does not provide the article" do
+      article.get_price(provider).should == -1
+    end
   end
 end
