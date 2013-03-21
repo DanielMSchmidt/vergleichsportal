@@ -77,4 +77,4 @@
           .row
           =form_tag article_add_comment_path(article), remote: true, :method => :put do
             = text_field_tag :value
-            = button_tag "Senden"
+            = button_tag "Senden", class: "button"

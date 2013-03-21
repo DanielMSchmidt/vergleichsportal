@@ -11,6 +11,6 @@
         %a.button.expand{"data-reveal-id" => "switch-cart-modal", :href => "#"} Ändere / Lösche Warenkorb
     .three.columns.offset-by-one
       -if has_permission?("compare_cart")
-        =link_to 'Vergleiche Anbieter', track_compare_path ,remote: true, :class => "button expand", "data-reveal-id" => "compare-cart-modal"
+        =link_to 'Vergleiche Anbieter', track_compare_path ,remote: true, :class => "button expand", "data-reveal-id" => "compare-cart-modal", :id => "cart-modal-button"
     .one.columns
   %a.close-reveal-modal ×

@@ -40,6 +40,7 @@ class CartsController < ApplicationController
     respond_to do |format|
       if @active_cart.add_article(article)
         @active_cart = Cart.find(@active_cart.id)
+        set_cart_providers
 	      format.html { redirect_to @active_cart, notice: 'Article was successfully added.' }
 	      format.json { head :no_contest }
         format.js
@@ -59,6 +60,7 @@ class CartsController < ApplicationController
     respond_to do |format|
       if @active_cart.remove_article(article)
         @active_cart = Cart.find(@active_cart.id)
+        set_cart_providers
 	      format.html { redirect_to @active_cart, notice: 'Article was successfully removed.' }
 	      format.json { head :no_contest }
         format.js
