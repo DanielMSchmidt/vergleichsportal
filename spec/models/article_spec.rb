@@ -108,5 +108,10 @@ describe Article do
       article.ratings.create(user_id:1, value:2)
       article.average_rating.should == 2
     end
+    it "should return the current price" do
+      p = article.prices.create(provider_id:provider.id, value:10)
+      article.get_price_of_day(provider.id, Time.now.to_date).should == 10
+      p.destroy
+    end
   end
 end
