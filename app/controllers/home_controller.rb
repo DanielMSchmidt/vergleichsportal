@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   after_filter :add_query, only: [:search_results]
   after_filter :filter_results, only: [:search_results]
   before_filter :add_rating
+  before_filter :set_options
 
   def index
     @user_new = User.new
@@ -11,9 +12,17 @@ class HomeController < ApplicationController
 
   def search_results
     @user_new = User.new
-    @term = params[:search][:term]
-    @options = {}
+
+    unless params[:search].nil?
+      @term = params[:search][:term] 
+    else
+      @term = "Erweiterte Suche"
+    end
+    
+    @options = params[:search_options]
+    
     search = Search.new(@term, @options)
+
 
     @result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from
   end
@@ -50,5 +59,9 @@ protected
 
   def add_rating
     @current_rating = @active_user.ratings
+  end
+
+  def set_options
+    @options ||= {}
   end
 end

@@ -62,6 +62,11 @@ function errornote(note,status){
 
 }
 
+function showSearch(){
+  $("#search-hidden").toggle();
+  $("#search").toggle();
+}
+
 $('.auto-submit-star').rating({
   callback: function(value, link){
     this.form.submit();
