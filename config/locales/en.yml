@@ -48,6 +48,8 @@ en:
     congratulation: "Congratulations"
     successful_login: "You are successfully logged in"
     successful_register: "You are successfully registered"
+    reset_passwort: "Reset Passwort"
+    create_user: "Create User"
 
   advertisments:
     new_advertisment_text: "New advertisement"
@@ -83,6 +85,7 @@ en:
     password_forget: "If you forgot your password"
     click_here: "Click here!"
     item_in_cart: "Items in cart"
+    send_email: "send e-mail"
 
 
   provider:

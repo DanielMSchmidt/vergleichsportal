@@ -50,6 +50,8 @@ de:
     congratulation: "Herzlichen Glückwunsch"
     successful_login: "Sie haben sich erfolgreich angemeldet"
     successful_register: "Sie haben sich erfolgreich registriert"
+    reset_passwort: "Passwort zurücksetzten"
+    create_user: "Erstelle Nutzer"
 
   advertisments:
     new_advertisment_text: "Neue Werbung"
@@ -85,6 +87,7 @@ de:
     password_forget: "Wenn Sie ihr Password vergessen haben:"
     click_here: "Klick Hier!"
     item_in_cart: "Artikel im Warenkorb"
+    send_email: "Sende E-Mail"
 
   provider:
     open_text: "Öffnen"

@@ -15,10 +15,10 @@
       .four.columns
         %img{:src => article.images.first.url}/
       -if search #view in search!
-        .four.columns.offset-by-one
+        .four.columns
           %p
             =article.description
-        .two.columns.offset-by-one
+        .three.columns.offset-by-one
           =link_to (t "general.add_text"), add_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
       -else #view in cart
 

@@ -1,6 +1,6 @@
 #login-modal.reveal-modal.small
   %h3 
-    = t "shared.login_register"
+    = t "shared.login_text"
   = form_tag user_sessions_path, :method => :post, :remote => true do
     .row
       .ten.columns.centered
@@ -16,14 +16,14 @@
     .row
       .five.columns.centered
         .actions
-          = submit_tag (t "shared.login_register"), :class => "button"
+          = submit_tag (t "shared.login_text"), :class => "button"
   %hr/
   .row
     .ten.columns.centered
       %p{:style => "text-align: centered;"}
         = (t "shared.have_account")
         %a{"data-reveal-id" => "register-modal", :href => "#"} 
-          = (t "shared.register")
+          = (t "shared.register_text")
         %br/
         = t "shared.password_forget"
         %a{"data-reveal-id" => "forgot-password-modal", :href => "#"}

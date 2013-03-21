@@ -56,10 +56,8 @@
 
     = yield :modal
 
-    -if logged_in?
-      = render :partial => "shared/modal/edit_user"
 
-    -else
+    -unless logged_in?
       = render :partial => "shared/modal/register"
       = render :partial => "shared/modal/login"
       = render :partial => "shared/modal/forgot_password"
