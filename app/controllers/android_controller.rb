@@ -5,6 +5,7 @@ class AndroidController < ApplicationController
   	skip_before_filter :fetch_add
   	skip_before_filter :set_providers
   	skip_before_filter :set_cart_providers
+  	skip_before_filter :log_locked_user_out
 
   	skip_after_filter :setGuestUserInCookies
   	skip_after_filter :setActiveCartInCookies
@@ -88,27 +89,40 @@ class AndroidController < ApplicationController
 	######## ArticleAPIController methods ##########
 
 	def debug
-		search = Search.new("illuminati")
-	    result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from (see home#search_results)
-	    render json: result, each_serializer: ArticleForAndroidSerializer, status: :ok
-	end
-
-	def search
-		if params[:options].has_key?(:ean)
-			term = params[:options][:ean]
-			options = {}
-		else
-			term = ""
-			options = params[:options]
-		end
+		unless params[:search].nil?
+	      term = params[:search][:term] 
+	    else
+	      term = "Erweiterte Suche"
+	    end
+	    options = {"title" => "illuuminati"}  
 	    search = Search.new(term, options)
-	    result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from (see home#search_results)
+	    result = search.find.reject{|result| result == false || result.id.nil?}.uniq
 	    # cache the query
 	    query = SearchQuery.create(value: term, options: options)
 	    query.articles = result unless result.nil?
 	    SearchQueryWorker.perform_in(2.hours, query)
 	    # filter the result for active providers
-	    result.select!{|article| article.available_for_any(Provider.where(active: true))} unless result.nil?
+	    result.select!{|article| article.available_for_any(Provider.where(active: true))} unless @result.nil?
+	    # render result
+	    render json: result, each_serializer: ArticleForAndroidSerializer, status: :ok
+	end
+
+	def search
+		unless params[:search][:ean].nil?
+	      term = params[:search][:ean]
+	      options = {}
+	    else
+	      term = "Erweiterte Suche"
+	      options = params[:search][:options]
+	    end
+	    search = Search.new(term, options)
+	    result = search.find.reject{|result| result == false || result.id.nil?}.uniq
+	    # cache the query
+	    query = SearchQuery.create(value: term, options: options)
+	    query.articles = result unless result.nil?
+	    SearchQueryWorker.perform_in(2.hours, query)
+	    # filter the result for active providers
+	    result.select!{|article| article.available_for_any(Provider.where(active: true))} unless @result.nil?
 	    # render result
 	    render json: result, each_serializer: ArticleForAndroidSerializer, status: :ok
 	end
