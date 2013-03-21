@@ -3,7 +3,7 @@
     %h5
       =article.name
     %small
-      ISBN-13:
+      EAN:
       =article.ean
   .content
     .row
@@ -18,7 +18,7 @@
       -else #view in cart
 
         -active = Array.new(5,false)
-        -# Activate the right star 
+        -# Activate the right star
         -if @current_rating and @current_rating.where(:rateable_id => article.id).last
           -active[@current_rating.where(:rateable_id => article.id).last.value - 1] = true
 
@@ -65,7 +65,7 @@
               %h7
                 Neuer Kommentar:
             %hr
-          .row        
+          .row
           =form_tag article_add_comment_path(article), remote: true, :method => :put do
             = text_field_tag :value
             = button_tag "Senden"
