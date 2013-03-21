@@ -3,6 +3,7 @@ require 'mechanize'
 require 'yaml'
 
 class ThaliaDeSearch
+  #TODO abstract buch_de_search, buecher_de_search, thalia_de_search
 
 	def initialize()
 		@provider = YAML.load_file "config/thalia_de.yml"
@@ -16,9 +17,8 @@ class ThaliaDeSearch
     	else
       		links = getAdvancedArticleLinksFor(searchTerm, options)
     	end
-      puts '--------------Thalia---------------------'
-      puts links
-      #filter the providers offers
+
+      #filter providers offers
       links = filterProviderOffer(links) 
     	#is there a max number of results?
     	if options[:count].nil?
@@ -69,11 +69,10 @@ class ThaliaDeSearch
     links
   end
 
+  #Filter links whitch doesnt match with the search
   def filterProviderOffer(links)
     useless_links = links.pop #take the offers
-    #useless_links.each do |uselesslink|
-      links.delete(useless_links)
-    #end
+    links.delete(useless_links)
     links
   end
 

@@ -20,16 +20,16 @@ class EbaySearch
     items = []
     #is there a max number of results?
       if options[:count].nil?
-        links.each{|link| items << getBookDataFor(link)}
+        links.each{|link| items << getArticleDataFor(link)}
       else
-        links.take(options[:count]).each{|link| items << getBookDataFor(link)}
+        links.take(options[:count]).each{|link| items << getArticleDataFor(link)}
       end
     return items
   end
 
   def getNewestPriceFor(link)
     Rails.logger.info "EbaySearch#getNewestPriceFor called for #{link}"
-    getBookDataFor(link)[:price]
+    getArticleDataFor(link)[:price]
   end
 
   def getArticleLinksFor(searchTerm)
@@ -60,9 +60,9 @@ class EbaySearch
     return page.links_with(:class => "vip").collect{|link| link.href}
   end
 
-  def getBookDataFor(url)
-    Rails.logger.info "EbaySearch#getBookDataFor called for #{url}"
-    book = {}
+  def getArticleDataFor(url)
+    Rails.logger.info "EbaySearch#getArticleDataFor called for #{url}"
+    article = {}
     page = @agent.get(url)
 
     details_array = []
@@ -80,16 +80,16 @@ class EbaySearch
       shipping_price = 0
     end
 
-    book[:ean] = details["EAN: "] ||= details["ISBN-13: "] ||= details["ISBN: "]
-    book[:author] = details["Autor: "]
-    book[:name] = details["Titel: "]
-    book[:price] = (shipping_price || 0) + (normal_price || 0)
-    book[:image] = nil
-    book[:description] = nil
-    book[:url] = url
-    #book[:type] = details["Format: "]
+    article[:ean] = details["EAN: "] ||= details["ISBN-13: "] ||= details["ISBN: "]
+    article[:author] = details["Autor: "]
+    article[:name] = details["Titel: "]
+    article[:price] = (shipping_price || 0) + (normal_price || 0)
+    article[:image] = nil
+    article[:description] = nil
+    article[:url] = url
+    #article[:type] = details["Format: "]
 
-    Rails.logger.info "EbaySearch#getBookDataFor called for #{url} returns #{book}"
-    return book
+    Rails.logger.info "EbaySearch#getArticleDataFor called for #{url} returns #{article}"
+    return article
   end
 end
