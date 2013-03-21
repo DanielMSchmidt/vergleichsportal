@@ -63,12 +63,8 @@ function errornote(note,status){
 }
 
 function showSearch(){
-  if ($("#search-hidden").css("display")=="none") {
-
-    $("#search-hidden").show();
-  } else {
-    $("#search-hidden").hide();
-  }
+  $("#search-hidden").toggle();
+  $("#search").toggle();
 }
 
 $('.auto-submit-star').rating({

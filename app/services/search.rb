@@ -1,8 +1,13 @@
 class Search
 
   def initialize(search_term, options={})
+
     @search_term = search_term
+    @search_term||= ""
+
     @options = options
+    @options ||= {}
+    
     @provider = Provider.all
   end
 

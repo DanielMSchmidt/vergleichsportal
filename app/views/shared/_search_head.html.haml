@@ -1,4 +1,4 @@
-.row.collapse
+.row.collapse#search
   = form_for(:search, :url => home_search_path,:method => "get") do |f|
     .ten.mobile-three.columns
       =f.text_field :term
@@ -7,7 +7,8 @@
 
 -content_for :search do
   .nine.columns#search-hidden{style: 'display: none'}
-    = simple_form_for(:options, :url => home_search_path, :method => "get") do |f|
+
+    = simple_form_for(:search_options, :url => home_search_path, :method => "get") do |f|
       =f.input :title
       .row
         .eight.columns
