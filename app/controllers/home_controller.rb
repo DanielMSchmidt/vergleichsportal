@@ -11,8 +11,17 @@ class HomeController < ApplicationController
 
   def search_results
     @user_new = User.new
-    @term = params[:search][:term]
-    @options = {}
+    if params[:search]
+      @term = params[:search][:term]
+    else
+      @term = {}
+    end
+    
+    if params[:options]
+      @options = params[:option]
+    else
+      @options = {}
+    end
     search = Search.new(@term, @options)
 
     @result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from

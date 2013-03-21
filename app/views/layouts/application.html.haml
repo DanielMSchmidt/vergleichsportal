@@ -47,6 +47,8 @@
             %img{:src => @active_advertisment.img_url}/
 
       .nine.columns
+        .row
+          = yield :search
         = yield
       = render :partial => "layouts/footer"
 

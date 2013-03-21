@@ -1,7 +1,26 @@
 .row.collapse
-
   = form_for(:search, :url => home_search_path,:method => "get") do |f|
     .ten.mobile-three.columns
       =f.text_field :term
     .two.mobile-one.columns
       =f.submit "Finden!", :class => "button"
+
+-content_for :search do
+  .nine.columns#search-hidden{style: 'display: none'}
+    = simple_form_for(:options, :url => home_search_path, :method => "get") do |f|
+      =f.input :title
+      .row
+        .eight.columns
+          =f.input :author
+        .four.columns
+          =f.input :article_type , collection: [:book, :ebook, :cd, :dvd, :bluray]
+      .row
+        .six.columns
+          =f.input :min_price
+        .six.columns
+          =f.input :max_price
+      =f.button :submit, "Suche!"
+
+  .tree.columns
+    %a{:href => "javascript:showSearch()"} 
+      Erweiterte Suche

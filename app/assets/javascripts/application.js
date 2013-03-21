@@ -62,6 +62,15 @@ function errornote(note,status){
 
 }
 
+function showSearch(){
+  if ($("#search-hidden").css("display")=="none") {
+
+    $("#search-hidden").show();
+  } else {
+    $("#search-hidden").hide();
+  }
+}
+
 $('.auto-submit-star').rating({
   callback: function(value, link){
     this.form.submit();
