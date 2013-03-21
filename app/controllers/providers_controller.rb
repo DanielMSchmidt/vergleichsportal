@@ -97,7 +97,10 @@ class ProvidersController < ApplicationController
   end
 
   def add_provider
-    name = params[:name]
-    #send mail
+    UserMailer.provider_quotation(params[:name]).deliver
+
+    respond_to do |format|
+      format.html { redirect_to admin_home_path }
+    end
   end
 end

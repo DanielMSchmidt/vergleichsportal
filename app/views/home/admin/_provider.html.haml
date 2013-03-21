@@ -7,20 +7,18 @@
         -if provider.active
           = simple_form_for(provider, remote: true) do |f|
             = f.error_notification
-
             .form-inputs
               = f.hidden_field :active, value: false
             .form-actions
               = f.button :submit, "aktive:"+ provider.name
-              
         - else
           = simple_form_for(provider, remote: true) do |f|
             = f.error_notification
-
             .form-inputs
               = f.hidden_field :active, value: true
             .form-actions
               = f.button :submit, "deaktiviert:"+ provider.name
     %li{:style => "padding-bottom: 20px;"}
-      .form-actions
-        = f.button :submit, "add Provider"
+      =form_tag(add_provider_path, remote: true)
+      =text_field_tag :name
+      =submit_tag "Anfrage für den neuen Provider abschicken", class: "button"
