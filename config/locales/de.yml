@@ -1,0 +1,29 @@
+# Sample localization file for German. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  layout:
+    admin_dashboard: "Admin Übersicht"
+    login_register: "Anmelden / Registrieren"
+    logout: "Abmelden"
+
+  home: 
+    rate_our_providers: "Bewerte unsere Provider!"
+    search_result: "Suchergebnisse für "
+
+  users:
+    congratulation: "Herzlichen Glückwunsch"
+    successful_login: "Sie haben sich erfolgreich angemeldet"
+    successful_register: "Sie haben sich erfolgreich registriert"
+
+  advertisment:
+    confirm_text: "Sind sie sich sicher?"
+    delete_text: "löschen"
+    show_text: "Anzeigen"
+    back_text: "Zurück"
+    edit_text: "Bearbeiten"
+    new_advertisment_text: "Neue Werbung"
+    activated: "Werbung wurde aktiviert!"
+    delete_advertisment_text: "Werbung wurde gelöscht!"
+    added: "Werbung wurde hinzugefügt!"
+    updated: "Werbung wurde aktualisiert!"

@@ -2,7 +2,7 @@
   = render :partial => "shared/search_head"
 
 - content_for :title do
-  = "Suchergebnisse für #{@term.humanize}"
+  = t "home.search_result"+@term.humanize
 
 %h3{:style => "margin-bottom: 19px;"}
   Suchergebnisse:

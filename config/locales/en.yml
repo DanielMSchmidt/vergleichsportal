@@ -2,4 +2,24 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  layout:
+    admin_dashboard: "Admin Dashboard"
+    login_register: "Login / Register"
+    logout: "Logout"
+
+  home: 
+    rate_our_providers: "Rate our providers!"
+    search_result: "Search results for "
+
+  users:
+    congratulation: "Congratulation"
+    successful_login: "You are successful login"
+    successful_register: "You are successful register"
+
+  advertisment:
+    confirm_text: "Are you sure?"
+    delete_text: "delete"
+    show_text: "show"
+    back_text: "back"
+    edit_text: "edit"
+    new_advertisment_text: "New advertisment"

@@ -31,6 +31,10 @@ class User < ActiveRecord::Base
   def admin?
     return true if self.roles.where(name: "Admin").any?
   end
+
+  def active?
+    return self.active
+  end
   
   def activeCart
     self.carts.last_used.first

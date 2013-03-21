@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :fetch_add
   before_filter :set_providers
   before_filter :set_cart_providers
+  before_filter :set_locale
 
   after_filter :setGuestUserInCookies
   after_filter :setActiveCartInCookies
@@ -82,6 +83,16 @@ class ApplicationController < ActionController::Base
 
   def setActiveCartInCookies
     cookies[:active_cart] = @active_cart.id
+  end
+
+  private
+  def set_locale  
+    I18n.locale = params[:locale] if params[:locale].present?
+    
+  end
+
+  def default_url_options(options = {})
+    {locale: I18n.locale}
   end
 
   protect_from_forgery
