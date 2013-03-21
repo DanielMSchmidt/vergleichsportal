@@ -2,6 +2,17 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  general:
+    confirm_text: "Are you sure?"
+    delete_text: "delete"
+    show_text: "show"
+    back_text: "back"
+    edit_text: "edit"
+    add_text: "add"
+    remove_text: "delete"
+    send_text: "send"
+
+
   layout:
     admin_dashboard: "Admin Dashboard"
     login_register: "Login / Register"
@@ -17,11 +28,6 @@ en:
     successful_register: "You are successful register"
 
   advertisments:
-    confirm_text: "Are you sure?"
-    delete_text: "delete"
-    show_text: "show"
-    back_text: "back"
-    edit_text: "edit"
     new_advertisment_text: "New advertisment"
     activated: "Advertisment is activated!"
     delete_advertisment_text: "Advertisment ís delete!"
@@ -29,4 +35,8 @@ en:
     updated: "Advertisment is updated!"
 
   articles:
-    add_text: "add"
+    average_rating_text: "average rating:"
+    new_comment: "new comment:"
+    comment_thanks: "Thanks for your rating!"
+    comment_error: "The comment should be longer or shorter! BEARBEITE MICH" 
+    new_article: "new article"

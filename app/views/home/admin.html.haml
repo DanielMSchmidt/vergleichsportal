@@ -13,9 +13,9 @@
   -if has_permission?("modify_ad")
     %li
       .title
-        %h5 Werbung
+        = %h5 (t "general.advertisment")
       .content
-        %h6 Aktiv
+        = %h6 (t "general.aktiv")
         %hr
         #active-ad
         
@@ -28,7 +28,7 @@
           = render @inactive_advertisments
         .row
           .six.columns.centered
-            %a.button.expand{"data-reveal-id" => "add-advertisment-modal", :href => "#"} Werbung hinzufügen
+            = %a.button.expand{"data-reveal-id" => "add-advertisment-modal", :href => "#"} (t "home.add_advertisment") 
     - content_for :modal do 
       = render :partial => "home/admin/add_advertisment"
 

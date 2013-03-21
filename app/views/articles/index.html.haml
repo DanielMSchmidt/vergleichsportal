@@ -14,10 +14,10 @@
       %td= article.name
       %td= article.ean
       %td= article.description
-      %td= link_to 'Show', article
-      %td= link_to 'Edit', edit_article_path(article)
-      %td= link_to 'Destroy', article, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to (t "general.show_text"), article
+      %td= link_to (t "general.edit_text"), edit_article_path(article)
+      %td= link_to (t "general.delete_text"), article, :method => :delete, :data => { :confirm => (t "general.confirm_text") }
 
 %br
 
-= link_to 'New Article', new_article_path
+= link_to (t "articles.new_article"), new_article_path

@@ -5,6 +5,6 @@
   = @active_cart.user_id
 %ul.accordion
   =render @active_cart.articles, search: false
-= link_to 'Edit', edit_cart_path(@active_cart)
+= link_to (t "general.edit_text"), edit_cart_path(@active_cart)
 \|
-= link_to 'Back', carts_path
+= link_to (t "general.back_text"), carts_path

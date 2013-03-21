@@ -1,5 +1,5 @@
 .title
-  %h5 Nutzer
+  =%h5 (t "general.user_text")
 .content
   .row
     .five.columns
@@ -23,14 +23,14 @@
             - content_for :modal do
               .reveal-modal.medium{:id => "user-delete-modal"+user.id.to_s}
                 %h3
-                  Manage User:
+                  = (t "home.manage_user")
                   %small
                     =user.email
                 .row
 
                   -# Delete button
                   .three.columns
-                    =link_to 'Delete User', user, :method => :delete, :remote => true, :data => { :confirm => 'Are you sure?' }, :class => "button"
+                    =link_to (t "delete_user"), user, :method => :delete, :remote => true, :data => { :confirm => (t "general.confirm_text") }, :class => "button"
                     .one.columns
 
                   -# Lock button
@@ -41,19 +41,19 @@
                         .form-inputs
                           = f.hidden_field :active, value: false
                         .form-actions
-                          = f.button :submit, "Sperren", :class => "button"
+                          = f.button :submit, (t "home.lock_text"), :class => "button"
                       -else
                         .form-inputs
                           = f.hidden_field :active, value: true
                         .form-actions
-                          = f.button :submit, "Freigeben", :class => "button"
+                          = f.button :submit, (t "home.unlock_text"), :class => "button"
 
                     .one.columns
 
                   -# Make Admin button
                   .three.columns
-                    =link_to_if(user.admin?, "Lösche Admin Rolle", user_change_role_path(user), remote: true, class: "button") do
-                      =link_to("Admin Rolle hinzufügen", user_change_role_path(user), remote: true, class: "button")
+                    =link_to_if(user.admin?, (t "home.delete_admin_role"), user_change_role_path(user), remote: true, class: "button") do
+                      =link_to((t "home.add_admin_role"), user_change_role_path(user), remote: true, class: "button")
 
                 %a.close-reveal-modal ×
 

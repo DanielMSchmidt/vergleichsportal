@@ -2,6 +2,22 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 de:
+  general:
+    confirm_text: "Sind sie sich sicher?"
+    delete_text: "Löschen"
+    show_text: "Anzeigen"
+    back_text: "Zurück"
+    edit_text: "Bearbeiten"
+    add_text: "Hinzufügen"
+    remove_text: "Entfernen"
+    send_text: "Senden"
+    select_text: "Auswählen"
+    use_text: "Anwenden"
+    user_text: "Nutzer"
+    advertisment_text: "Werbung"
+    aktiv_text: "Aktiv"
+
+
   layout:
     admin_dashboard: "Admin Übersicht"
     login_register: "Anmelden / Registrieren"
@@ -10,6 +26,15 @@ de:
   home: 
     rate_our_providers: "Bewerte unsere Provider!"
     search_result: "Suchergebnisse für "
+    activate: "aktivieren"
+    deactivate: "deaktivieren"
+    manage_user: "Nutzer Verwalten:"
+    delete_user: "Nutzer löschen"
+    lock_text: "Sperren"
+    unlock_text: "Freigeben"
+    delete_admin_role: "Lösche Admin Rolle"
+    add_admin_role: "Admin Rolle hinzufügen"
+    add_advertisment: "Werbung hinzufügen"
 
   users:
     congratulation: "Herzlichen Glückwunsch"
@@ -17,11 +42,6 @@ de:
     successful_register: "Sie haben sich erfolgreich registriert"
 
   advertisments:
-    confirm_text: "Sind sie sich sicher?"
-    delete_text: "löschen"
-    show_text: "Anzeigen"
-    back_text: "Zurück"
-    edit_text: "Bearbeiten"
     new_advertisment_text: "Neue Werbung"
     activated: "Werbung wurde aktiviert!"
     delete_advertisment_text: "Werbung wurde gelöscht!"
@@ -29,10 +49,18 @@ de:
     updated: "Werbung wurde aktualisiert!"
 
   articles:
-    add_text: "Hinzufügen"
-    remove_text: "Entfernen"
     average_rating_text: "Durchschnittliche Bewertung:"
     new_comment: "Neuer Kommentar:"
-    send_text: "Senden"
     comment_thanks: "Danke für die Bewertung!"
     comment_error: "Der Kommentar ist zu kurz oder zu lang!"
+    new_article: "Neuer Artikel"
+
+  carts:
+    article_added: "Artikel wurde hinzugefügt!"
+    carts_added: "Ein neuer Warenkorb wurde hinzugefügt!"
+    carts_delete: "Der Warenkorb wurder erfolgreich gelöscht!"
+    new_cart: "Neuer Warenkorb"
+    article_removed: "Artikel wurde entfernt!"
+
+  passwort_reset:
+    reset_my_password: "Setzt mein Passwort zurück!"

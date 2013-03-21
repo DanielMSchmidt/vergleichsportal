@@ -156,7 +156,7 @@ class Search
     if @options.has_key?(:min_price)
       results.select!{|article| ishigher?(article)} 
     end
-    if @options.has_key?(:min_price)
+    if @options.has_key?(:max_price)
       results.select!{|article| islower?(article)}
     end
     if @options.has_key?(:article_type)
