@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Article do
   let(:article) { FactoryGirl.create(:article) }
   let(:provider) { FactoryGirl.create(:provider_buch) }
+  let(:provider_ebay) { FactoryGirl.create(:provider_ebay) }
   let!(:image) { FactoryGirl.create(:image) }
 
   describe "attributes" do
@@ -67,6 +68,14 @@ describe Article do
     end
     it "should have a available for method" do
       should respond_to(:available_for)
+    end
+  end
+  describe "functions" do
+    it "should be able to test if available for multiply provider provider" do
+      provs = []
+      provs << provider
+      provs << provider_ebay
+      article.available_for_each(provs).should == false
     end
   end
 end
