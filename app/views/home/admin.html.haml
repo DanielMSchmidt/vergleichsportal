@@ -2,6 +2,10 @@
   %h3 Admin Dashboard
 
 %ul.accordion
+
+  -unless @active_user.admin?
+    %p
+      Bitte melden Sie sich als Admin ein.
   -if has_permission?("lock_user")
     %li.active
       = render :partial => "home/admin/user"
