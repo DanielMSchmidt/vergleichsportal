@@ -68,7 +68,7 @@ class Cart < ActiveRecord::Base
       if article.get_price(provider) == -1
         return -1
       else
-        price += article.get_price(provider)
+        price += article.get_price(provider)*self.get_count(article)
       end
     end
     price
@@ -112,48 +112,6 @@ class Cart < ActiveRecord::Base
 
   def get_last_week
     7.day.ago.to_date..Date.today
-  end
-
-
-  def provider_price_history(provider)
-    history = {}
-    start_at = self.history_beginning(provider)
-    return nil if start_at.nil?
-    step = (Time.zone.now - start_at) / 100
-    100.times do |count|
-      current = start_at + count*step
-      price = self.old_price(provider, current)
-      history = history.merge({current => price})
-    end
-    history.sort
-  end
-
-  def history_beginning(provider)
-    now = Time.zone.now
-    return nil unless history_possible?(provider, now)
-    offset = 24*60*60*14
-    while true
-      return now-offset if history_possible?(provider, now-offset)
-      offset /= 2
-      if offset < 400
-        return nil
-      end
-    end
-  end
-
-  def history_possible?(provider, time)
-    self.articles.each do |article|
-      return false unless article.old_price_available?(provider, time)
-    end
-    true
-  end
-
-  def old_price(provider, time)
-    price = 0
-    self.articles.each do |article|
-      price += article.old_price(provider, time)
-    end
-    price
   end
 
   def provider_prices_for_last_week(provider)
