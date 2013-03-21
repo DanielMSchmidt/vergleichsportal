@@ -118,8 +118,17 @@ class Cart < ActiveRecord::Base
     prices = []
     articles = self.articles
     get_last_week.each do |day|
-      prices << articles.collect{|article| article.get_price_of_day(provider.id, day) || 0}.inject(:+).to_f
+      prices << articles.collect{|article| article.get_price_of_day(provider.id, day) * quantity_of_article(article) || 0}.inject(:+).to_f
     end
     prices
+  end
+
+  def quantity_of_article(article)
+    assignment = ArticleCartAssignment.where(article_id: article.id, cart_id: self.id).first
+    if assignment.nil?
+      0
+    else
+      assignment.quantity
+    end
   end
 end
