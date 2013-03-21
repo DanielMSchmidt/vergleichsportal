@@ -11,6 +11,19 @@ en:
     add_text: "add"
     remove_text: "delete"
     send_text: "send"
+    use_text: "use"
+    user_text: "user"
+    advertisment_text: "advertisement"
+    activ_text: "active"
+    inactiv_text: "inactive"
+    locked_text: "locked"
+    online_text: "online"
+    offline_text: "offline"
+    provider_text: "Provider"
+    statistics_text: "Statistics"
+    rate_our_providers: "Rate our providers!"
+    average_rating_text: "Average rating:"
+
 
 
   layout:
@@ -19,24 +32,51 @@ en:
     logout: "Logout"
 
   home: 
-    rate_our_providers: "Rate our providers!"
     search_result: "Search results for "
+    activate: "activate"
+    deactivate: "deactivate"
+    manage_user: "Manage User:"
+    delete_user: "Delete user"
+    lock_text: "lock"
+    unlock_text: "unlock"
+    delete_admin_role: "Delete admin role"
+    add_admin_role: "Add admin role"
+    add_advertisment: "Add advertisement"
 
   users:
-    congratulation: "Congratulation"
-    successful_login: "You are successful login"
-    successful_register: "You are successful register"
+    congratulation: "Congratulations"
+    successful_login: "You are successfully logged in"
+    successful_register: "You are successfully registered"
 
   advertisments:
-    new_advertisment_text: "New advertisment"
-    activated: "Advertisment is activated!"
-    delete_advertisment_text: "Advertisment ís delete!"
-    added: "Advertisment was added!"
-    updated: "Advertisment is updated!"
+    new_advertisment_text: "New advertisement"
+    activated: "Advertisement is activated!"
+    delete_advertisment_text: "Advertisement is delete!"
+    added: "Advertisement was added!"
+    updated: "Advertisement is updated!"
 
   articles:
-    average_rating_text: "average rating:"
     new_comment: "new comment:"
     comment_thanks: "Thanks for your rating!"
-    comment_error: "The comment should be longer or shorter! BEARBEITE MICH" 
+    comment_error: "The comment should be longer or shorter!" 
     new_article: "new article"
+
+  carts:
+    article_added: "Article added!"
+    carts_added: "Added a new cart!"
+    carts_delete: "Cart deleted!"
+    new_cart: "New cart"
+    article_removed: "Article removed!"
+
+  passwort_reset:
+    reset_my_password: "Reset my password!"
+
+  shared:
+    change_delete_cart: "Change / Delete cart"
+    compare_provider: "Compare provider"
+    find_text: "Search!"
+    advanced_search: "Advanced search"
+    login_text: "Login"
+
+  provider:
+    open_text: "Open"

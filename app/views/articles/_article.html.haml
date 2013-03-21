@@ -51,7 +51,7 @@
                         = radio_button_tag :value, 3, active[2], :class => "star auto-submit-star"
                         = radio_button_tag :value, 4, active[3], :class => "star auto-submit-star"
                         = radio_button_tag :value, 5, active[4], :class => "star auto-submit-star"
-                      = t "articles.average_rating_text" 
+                      = t "general.average_rating_text" 
                       = article.average_rating
                       
     %hr
@@ -77,8 +77,5 @@
           .row
           =form_tag article_add_comment_path(article), remote: true, :method => :put do
             = text_field_tag :value
-<<<<<<< HEAD
             = button_tag (t "general.send_text")
-=======
-            = button_tag "Senden", class: "button"
->>>>>>> develop
+
