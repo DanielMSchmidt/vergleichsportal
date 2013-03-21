@@ -16,7 +16,7 @@ de:
     successful_login: "Sie haben sich erfolgreich angemeldet"
     successful_register: "Sie haben sich erfolgreich registriert"
 
-  advertisment:
+  advertisments:
     confirm_text: "Sind sie sich sicher?"
     delete_text: "löschen"
     show_text: "Anzeigen"
@@ -27,3 +27,12 @@ de:
     delete_advertisment_text: "Werbung wurde gelöscht!"
     added: "Werbung wurde hinzugefügt!"
     updated: "Werbung wurde aktualisiert!"
+
+  articles:
+    add_text: "Hinzufügen"
+    remove_text: "Entfernen"
+    average_rating_text: "Durchschnittliche Bewertung:"
+    new_comment: "Neuer Kommentar:"
+    send_text: "Senden"
+    comment_thanks: "Danke für die Bewertung!"
+    comment_error: "Der Kommentar ist zu kurz oder zu lang!"

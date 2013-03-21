@@ -14,7 +14,7 @@
           %p
             =article.description
         .two.columns.offset-by-one
-          =link_to 'add', add_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
+          =link_to (t "articles.add_text"), add_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
       -else #view in cart
 
         -active = Array.new(5,false)
@@ -30,7 +30,7 @@
               = @active_cart.get_count(article)
           .row
             .six.columns
-              =link_to 'remove', remove_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
+              =link_to (t "articles.remove_text"), remove_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
             .five.columns.offset-by-one
               -if has_permission?("create_rating")
                 %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "200"}
@@ -42,9 +42,9 @@
                         = radio_button_tag :value, 3, active[2], :class => "star auto-submit-star"
                         = radio_button_tag :value, 4, active[3], :class => "star auto-submit-star"
                         = radio_button_tag :value, 5, active[4], :class => "star auto-submit-star"
-                      Durchschnittliche Bewertung:
+                      = t "atricles.average_rating_text" 
                       = article.average_rating
-                      Sterne
+                      Sterne #--------------------------------------------
     %hr
     -if has_permission?("create_comment")
       .row
@@ -63,9 +63,9 @@
           .row
             .ten.columns
               %h7
-                Neuer Kommentar:
+                = t "articles.new_comment"
             %hr
           .row
           =form_tag article_add_comment_path(article), remote: true, :method => :put do
             = text_field_tag :value
-            = button_tag "Senden"
+            = button_tag (t "articles.send_text")

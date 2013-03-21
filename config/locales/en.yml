@@ -16,10 +16,17 @@ en:
     successful_login: "You are successful login"
     successful_register: "You are successful register"
 
-  advertisment:
+  advertisments:
     confirm_text: "Are you sure?"
     delete_text: "delete"
     show_text: "show"
     back_text: "back"
     edit_text: "edit"
     new_advertisment_text: "New advertisment"
+    activated: "Advertisment is activated!"
+    delete_advertisment_text: "Advertisment ís delete!"
+    added: "Advertisment was added!"
+    updated: "Advertisment is updated!"
+
+  articles:
+    add_text: "add"

@@ -14,10 +14,10 @@
       %td= advertisment.img_url
       %td= advertisment.link_url
       %td= advertisment.active
-      %td= link_to (t "advertisment.show_text"), advertisment
-      %td= link_to (t "advertisment.edit_text"), edit_advertisment_path(advertisment)
-      %td= link_to (t "advertisment.destroy_text")'Destroy', advertisment, :method => :delete, :data => { :confirm => (t "advertisment.confirm_text") }
+      %td= link_to (t "advertisments.show_text"), advertisment
+      %td= link_to (t "advertisments.edit_text"), edit_advertisment_path(advertisment)
+      %td= link_to (t "advertisments.destroy_text")'Destroy', advertisment, :method => :delete, :data => { :confirm => (t "advertisments.confirm_text") }
 
 %br
 
-= link_to (t "advertisment.new_advertisment_text"), new_advertisment_path
+= link_to (t "advertisments.new_advertisment_text"), new_advertisment_path
