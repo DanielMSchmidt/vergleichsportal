@@ -35,7 +35,7 @@
 
                   -# Lock button
                   .three.columns
-                    = simple_form_for(user, remote: false) do |f|
+                    = simple_form_for(user, remote: true) do |f|
                       = f.error_notification
                       -if user.active
                         .form-inputs

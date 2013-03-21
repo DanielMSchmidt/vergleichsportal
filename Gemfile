@@ -12,6 +12,7 @@ gem 'nokogiri', '~> 1.5.6'
 gem 'sorcery', '~> 0.8.1'
 gem "sidekiq", "~> 2.8.0"
 gem 'slim'
+gem 'active_model_serializers', '~> 0.7.0'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'chartjs-rails'
 

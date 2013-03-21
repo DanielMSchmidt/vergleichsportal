@@ -203,7 +203,7 @@ describe HomeController do
     end
   end
 
-  describe "#getAllNewestesPrices" do
+  describe "#getAllNewPrices" do
     before(:each) do
       @searcher = Search.new(search_query.value)
       @searching = BuchDeSearch.new
