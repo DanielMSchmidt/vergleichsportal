@@ -50,6 +50,8 @@ en:
     successful_register: "You are successfully registered"
     reset_passwort: "Reset Passwort"
     create_user: "Create User"
+    login_error: "Login failed, check your inputs!"
+    role_changed: "Role changed!"
 
   advertisments:
     new_advertisment_text: "New advertisement"
@@ -90,3 +92,4 @@ en:
 
   provider:
     open_text: "Open"
+    add_provider: "An email was send to the Develop Team"

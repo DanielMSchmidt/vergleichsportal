@@ -52,6 +52,8 @@ de:
     successful_register: "Sie haben sich erfolgreich registriert"
     reset_passwort: "Passwort zurücksetzten"
     create_user: "Erstelle Nutzer"
+    login_error: "Anmeldung ist gescheitert überprüfen Sie die Angaben!"
+    role_changed: "Rolle geändert!"
 
   advertisments:
     new_advertisment_text: "Neue Werbung"
@@ -91,5 +93,6 @@ de:
 
   provider:
     open_text: "Öffnen"
+    add_provider: "Die Mail an das Develop Team wurde versendet"
 
 

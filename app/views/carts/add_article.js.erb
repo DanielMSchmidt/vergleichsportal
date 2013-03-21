@@ -6,5 +6,5 @@ $("#cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/m
 $("#compare-cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/compare_cart') %>"); 
 
 $("#cart-modal").reveal();
-errornote((t "carts.article_added"), "success");
+errornote("<%= (t "carts.article_added") %>", "success");
 reloadStars();

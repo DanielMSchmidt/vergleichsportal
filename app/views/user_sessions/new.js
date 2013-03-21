@@ -1,1 +1,1 @@
-alert("Anmeldung ist gescheitert überprüfen Sie die Angaben!");
+alert('<%= t "users.login_error">');

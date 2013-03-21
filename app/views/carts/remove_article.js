@@ -7,5 +7,5 @@ $("#compare-cart-modal").replaceWith("<%= escape_javascript(render :partial => '
 
 $("#cart-modal").reveal();
 
-errornote((t "carts.article_removed"), "success");
+errornote('<%=(t "carts.article_removed")%>', "success");
 reloadStars();
