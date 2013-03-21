@@ -94,5 +94,8 @@ describe Article do
     it "should be -1 if the provider does not provide the article" do
       article.get_price(provider).should == -1
     end
+    it "should be the right string" do
+      article.to_s.should match /^ID: #{article.id}, Name: #{article.name}, Author: #{article.author}$/
+    end
   end
 end
