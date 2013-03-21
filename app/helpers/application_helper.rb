@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def right_permission?(permission)
+  def has_permission?(permission)
 
     permission = Permission.where(value: permission).first
     # intersection of both arrays

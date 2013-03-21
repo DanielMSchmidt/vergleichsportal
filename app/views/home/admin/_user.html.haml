@@ -10,17 +10,17 @@
           %li.user{:id => user.id}
             - if user.active
               %span.success.label
-                %a{"data-reveal-id" => "user-delete-modal"+user.id.to_s, :style => "color: white; cursor: pointer;"} 
+                %a{"data-reveal-id" => "user-delete-modal"+user.id.to_s, :style => "color: white; cursor: pointer;"}
                   = user.email
             - else
               %span.alert.label
-                %a{"data-reveal-id" => "user-delete-modal"+user.id.to_s, :style => "color: white; cursor: pointer;"} 
+                %a{"data-reveal-id" => "user-delete-modal"+user.id.to_s, :style => "color: white; cursor: pointer;"}
                   = user.email
 
 
 
             -# generate Modals
-            - content_for :modal do 
+            - content_for :modal do
               .reveal-modal.medium{:id => "user-delete-modal"+user.id.to_s}
                 %h3
                   Manage User:
@@ -65,8 +65,4 @@
         %span.secondary.label Offline
         %br/
         %span.alert.label
-          Noch nicht bestätigt /
-          %br/
           gesperrt
-
-

@@ -3,7 +3,7 @@
     %h5
       =article.name
     %small
-      ISBN-13:
+      EAN:
       =article.ean
   .content
     .row
@@ -18,7 +18,7 @@
       -else #view in cart
 
         -active = Array.new(5,false)
-        -# Activate the right star 
+        -# Activate the right star
         -if @current_rating and @current_rating.where(:rateable_id => article.id).last
           -active[@current_rating.where(:rateable_id => article.id).last.value - 1] = true
 
@@ -32,7 +32,7 @@
             .six.columns
               =link_to 'remove', remove_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
             .five.columns.offset-by-one
-              -if right_permission?("create_rating")
+              -if has_permission?("create_rating")
                 %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "200"}
                   %tr
                     %td
@@ -46,7 +46,7 @@
                       = article.average_rating
                       Sterne
     %hr
-    -if right_permission?("create_comment")
+    -if has_permission?("create_comment")
       .row
         .six.columns.offset-by-one
           -article.comments.each do |comment|
@@ -65,7 +65,7 @@
               %h7
                 Neuer Kommentar:
             %hr
-          .row        
+          .row
           =form_tag article_add_comment_path(article), remote: true, :method => :put do
             = text_field_tag :value
             = button_tag "Senden"

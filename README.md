@@ -22,6 +22,7 @@ and get a coffee, this one will take a while.
      $ vim config/database.yml
      $ gem install mailcatcher
      $ mkdir app/assets/javascript/templates
+     $ rake db:initialize
 
 To start the development you have to do each time
 

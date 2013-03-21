@@ -346,8 +346,9 @@ describe HomeController do
 
   describe "active user" do
     describe "not logged in" do
-        get 'index'
+
       it "should have a user which is a guest" do
+        get 'index'
         assigns(:active_user).should be_a(User)
         assigns(:active_user).guest?.should be_true
       end

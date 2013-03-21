@@ -28,7 +28,9 @@ Vergleichsportal::Application.routes.draw do
 
   get "carts/:id/use" => "carts#use", as: 'use_cart'
 
-  get "cart/add/:cart_id" => "UsersController#addCart", :as => 'add_cart_to_user'
+  get "cart/add/:cart_id" => "users#addCart", as: 'add_cart_to_user'
+
+  get "cart/add-compare" => "home#track_compare", as: 'track_compare'
 
   resources :users do
     member do
