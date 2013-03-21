@@ -4,6 +4,6 @@
     .row
       .ten.columns
         %p &copy; Copyright no one at all. Go to town.
-      .two.columns 
-        =link_to_if(@active_user.admin?, "Admin Dashboard", admin_home_path)
-
+      .two.columns
+        - if @active_user.admin?
+          =link_to  "Admin Dashboard", admin_home_path
