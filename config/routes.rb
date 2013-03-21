@@ -72,7 +72,6 @@ Vergleichsportal::Application.routes.draw do
   # Android API routes
 
   post "android/login" => "android#check_auth"
-  get "android/login" => "android#check_auth"
   post "android/register" => "android#register"
 
   get "android/provider" => "android#provider"
@@ -80,13 +79,15 @@ Vergleichsportal::Application.routes.draw do
 
   post "android/article/rate" => "android#rate_article"
   post "android/article/comment" => "android#comment_article"
-  post "android/article/comments" => "android#article_comments"
+  post "android/article/comments" => "android#comments_for_article"
   
-  get "android/debug" => "android#article_comments"
+  get "android/debug" => "android#debug"
 
   post "android/search" => "android#search"
 
-  get "android/carts" => "android#all_carts"
+  post "android/carts" => "android#all_carts"
+  post "android/cart/articles" => "android#articles_for_cart"
+  post "android/cart/articles/add" => "android#add_article"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

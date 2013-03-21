@@ -85,14 +85,21 @@ class AndroidController < ApplicationController
 	end
 
 	def search
-		@term = params[:options][:title]
-		@options = {}
+		if params[:options].has_key?(:ean)
+			@term = params[:options][:ean]
+			@options = {}
+		else
+			@term = params[:options][:title]
+			@options = {}
+		end
 	    search = Search.new(@term, @options)
 	    @result = search.find.reject{|result| result == false || result.id.nil?}.uniq # TODO: Check where nils come from (see home#search_results)
 	    # cache the query
 	    query = SearchQuery.create(value: @term, options: @options)
 	    query.articles = @result unless @result.nil?
 	    SearchQueryWorker.perform_in(2.hours, query)
+	    # filter the result for active providers
+	    @result.select!{|article| article.available_for_any(Provider.where(active: true))} unless @result.nil?
 	    # render result
 	    render json: @result, each_serializer: ArticleForAndroidSerializer, status: :ok
 	end
@@ -106,7 +113,7 @@ class AndroidController < ApplicationController
 		    @rating.save
 		    @article.ratings << @rating
 		    @article.save
-		    render json: ["rating" => @article.average_rating, "ratecount" => @article.ratings.size], status: :accepted
+		    render json: ["rating" => @article.average_rating, "ratecount" => @article.ratings.size], status: :created
 		else
 			render json: [], status: :not_found
 		end
@@ -119,18 +126,31 @@ class AndroidController < ApplicationController
 		if (@article != nil)
 		    @comment = Comment.new(:value => params[:comment],:user_id => params[:user_id], :commentable_id => @article.id, :commentable_type => "article")
 		    @article.add_comment(@comment)
-		    render json: [], status: :accepted
+		    render json: [], status: :created
 		else
 			render json: [], status: :not_found
 		end
 	end
 
-	def article_comments
-		@comments = Comment.where(commentable_id: params[:article_id], commentable_type: "Article")
+	def comments_for_article
+		@comments = Comment.where(commentable_id: params[:article_id], commentable_type: "article")
 		if (@comments != nil)
 			render json: @comments, each_serializer: ArticleCommentForAndroidSerializer, status: :ok
 		else
 			render json: [], status: :ok
+		end
+	end
+
+	def articles_for_cart
+		if (params[:cart_id]==-1)
+			render json: [], status: :ok
+		else
+			@cart = Cart.find(params[:cart_id])
+			if (@cart != nil)
+				render json: @cart.article_cart_assignments, each_serializer: ArticleInCartForAndroidSerializer, status: :ok
+			else
+				render json: [], status: :ok
+			end
 		end
 	end
 
@@ -142,6 +162,26 @@ class AndroidController < ApplicationController
 			render json: @carts, each_serializer: CartForAndroidSerializer, status: :ok
 		else
 			render json: [], status: :ok
+		end
+	end
+
+	def add_article
+		if (params[:cart_id]==-1)
+			@cart = Cart.new(:user_id => params[:user_id])
+			@cart.save
+		else
+			@cart = Cart.find(params[:cart_id])
+		end
+		if (@cart != nil) 
+			@article = Article.find(params[:article_id])
+			if (@article != nil)
+				@cart.add_article(@article)
+				render json: [{"article_count"=>@cart.get_count(@article),"cart_id"=>@cart.id}], status: :ok
+			else
+				render json: ["article"], status: :not_found
+			end
+		else
+			render json: ["cart"], status: :not_found
 		end
 	end
 
