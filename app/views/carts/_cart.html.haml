@@ -10,6 +10,6 @@
             %li
               =article.name
       .four.columns
-        = link_to "Auswählen", use_cart_path(cart.id), remote: true, :class => "button expand", :style => "margin-left: 50px; margin-bottom: 15px;"
-        = link_to "Löschen", delete_cart_path(cart.id), remote: true, :class => "button expand", :style => "margin-left: 50px;"
+        = link_to (t "general.select_text"), use_cart_path(cart.id), remote: true, :class => "button expand", :style => "margin-left: 50px; margin-bottom: 15px;"
+        = link_to (t "general.delete_text"), delete_cart_path(cart.id), remote: true, :class => "button expand", :style => "margin-left: 50px;"
       .two.colums

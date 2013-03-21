@@ -8,5 +8,6 @@ $("#compare-cart-modal").replaceWith("<%= escape_javascript(render :partial => '
 $("#cart-modal").reveal();
 
 
-errornote("Ein neuer Warenkorb wurde hinzugefügt!", "success");
+errornote((t "carts.carts_added:"), "success");
 reloadStars();
+

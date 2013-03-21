@@ -7,7 +7,8 @@
   .three.columns
     %img{:src => provider.image_url, :style => "margin-top:18px;"}/
   .three.columns
-    %a.button.extend{:href => provider.url, :style => "margin-top:10px;"} Öffnen
+    %a.button.extend{:href => provider.url, :style => "margin-top:10px;"} 
+      = t "provider.open_text" 
   .six.columns
     %table{:bgcolor => "#", :cellpadding => "0", :cellspacing => "0", :width => "200"}
       %tr
@@ -18,6 +19,6 @@
             = radio_button_tag :value, 3, active[2], :class => "star auto-submit-star"
             = radio_button_tag :value, 4, active[3], :class => "star auto-submit-star"
             = radio_button_tag :value, 5, active[4], :class => "star auto-submit-star"
-          Durchschnittliche Bewertung:
+          = t "general.average_rating_text"
           = provider.average_rating
-          Sterne
+          

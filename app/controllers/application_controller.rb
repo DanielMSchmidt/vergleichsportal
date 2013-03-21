@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
   before_filter :fetch_add
   before_filter :set_providers
   before_filter :set_cart_providers
+  before_filter :set_locale
   before_filter :log_locked_user_out
+
 
   after_filter :setGuestUserInCookies
   after_filter :setActiveCartInCookies
@@ -88,6 +90,17 @@ class ApplicationController < ActionController::Base
   def log_locked_user_out
     logout unless @active_user.active
   end
+
+  private
+  def set_locale  
+    I18n.locale = params[:locale] if params[:locale].present?
+    
+  end
+
+  def default_url_options(options = {})
+    {locale: I18n.locale}
+  end
+
 
   protect_from_forgery
 end
