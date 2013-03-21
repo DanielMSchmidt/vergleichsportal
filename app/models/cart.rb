@@ -28,10 +28,10 @@ class Cart < ActiveRecord::Base
   def remove_article(article)
     article_cart_assignment = ArticleCartAssignment.find_for_article_and_cart(article.id, self.id).first
     unless article_cart_assignment.nil?
-      if article_cart_assignmet.quantity == 1
-	article_cart_assignment.destroy
+      if article_cart_assignment.quantity == 1
+	      article_cart_assignment.destroy
       else
-	self.change_article_count(article, article_cart_assignment.quantity - 1)
+	      self.change_article_count(article, article_cart_assignment.quantity - 1)
       end
     end
   end
