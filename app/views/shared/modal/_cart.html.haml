@@ -4,12 +4,13 @@
     =render @active_cart.articles, search: false
   .row
     .three.columns
-      = link_to 'Neuer Warenkorb', add_new_path, remote: true, :class => "button expand"
+      = link_to (t "carts.new_cart"), add_new_path, remote: true, :class => "button expand"
     .three.columns.offset-by-one
       -if has_permission?("switch_cart")
-        %a.button.expand{"data-reveal-id" => "switch-cart-modal", :href => "#"} Ändere / Lösche Warenkorb
+        %a.button.expand{"data-reveal-id" => "switch-cart-modal", :href => "#"} 
+          =t "shared.change_delete_cart"  
     .three.columns.offset-by-one
       -if has_permission?("compare_cart")
-        =link_to 'Vergleiche Anbieter', track_compare_path ,remote: true, :class => "button expand", "data-reveal-id" => "compare-cart-modal"
+        = link_to (t "shared.compare_provider"), track_compare_path ,remote: true, :class => "button expand", "data-reveal-id" => "compare-cart-modal"
     .one.columns
   %a.close-reveal-modal ×

@@ -15,7 +15,13 @@ de:
     use_text: "Anwenden"
     user_text: "Nutzer"
     advertisment_text: "Werbung"
-    aktiv_text: "Aktiv"
+    activ_text: "Aktiv"
+    inactiv_text: "Inaktiv"
+    locked_text: "gesperrt"
+    online_text: "Online"
+    offline_text: "Offline"
+    provider_text: "Anbieter"
+    statistics_text: "Statistiken"
 
 
   layout:
@@ -35,6 +41,7 @@ de:
     delete_admin_role: "Lösche Admin Rolle"
     add_admin_role: "Admin Rolle hinzufügen"
     add_advertisment: "Werbung hinzufügen"
+
 
   users:
     congratulation: "Herzlichen Glückwunsch"
@@ -64,3 +71,8 @@ de:
 
   passwort_reset:
     reset_my_password: "Setzt mein Passwort zurück!"
+
+  shared:
+    change_delete_cart: "Ändere / Lösche Warenkorb"
+    compare_provider: "Vergleiche Anbieter"
+    find_text: "Finden!"

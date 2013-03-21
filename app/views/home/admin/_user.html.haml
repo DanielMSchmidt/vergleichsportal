@@ -1,5 +1,6 @@
 .title
-  =%h5 (t "general.user_text")
+  %h5 
+    = (t "general.user_text")
 .content
   .row
     .five.columns
@@ -60,9 +61,11 @@
     -# Status index
     .three.columns.offset-by-two
       %p
-        %span.success.label Online
+        %span.success.label 
+          = t "general.online_text"
         %br/
-        %span.secondary.label Offline
+        %span.secondary.label 
+          = t "general.offline_text"
         %br/
         %span.alert.label
-          gesperrt
+          = t "general.locked_text"
