@@ -3,7 +3,8 @@ require 'spec_helper'
 describe HomeController do
 
   let!(:search_query) { FactoryGirl.create(:search_query) }
-  let!(:provider) { FactoryGirl.create(:provider) }
+  let!(:provider) { FactoryGirl.create(:provider_buch) }
+  let!(:article) { FactoryGirl.create(:article) }
 
   before(:each) do
     @merged_hash = [
@@ -27,8 +28,11 @@ describe HomeController do
 
       @search = Search.new(search_query.value)
       Search.stub(:new).and_return(@search)
+      url = double("Url", value: "http://www.google.com")
+      article.stub(:urls).and_return([url, url])
+      search_query.stub(:articles).and_return([article, article])
+      Array.stub(:includes)
   end
-  let(:search_query) { FactoryGirl.create(:search_query) }
 
   describe "GET 'index'" do
     it "returns http success" do
@@ -47,18 +51,16 @@ describe HomeController do
     describe "searchAtProvider" do
       before(:each) do
         Provider.all.each{|x| x.delete}
-        3.times do |n|
-          #TODO: Refactor with factory girl
-          Provider.create!(image_url: "www.google.com/image#{n}.png", name: "ebay#{n}", url: "www.ebay#{n}.de", active: true)
-        end
+        FactoryGirl.create(:provider_buch)
+        FactoryGirl.create(:provider_thalia)
+        FactoryGirl.create(:provider_buecher)
       end
 
       it "should start a search for each provider" do
-        @search.should_receive(:searchAtProvider).exactly(Provider.count).times
-        @search.stub(:searchAtProvider)
+        @search.should_receive(:searchAtProvider).and_return([])
         @search.stub(:merge).and_return([])
         @search.stub(:generateArticles)
-        SearchQuery.all.each{|x| x.delete}
+        SearchQuery.stub(:where).and_return([])
         post 'search_results', search:{term: "Dan Brown"}
       end
 
@@ -178,29 +180,6 @@ describe HomeController do
       end
 
       describe "should create articles" do
-        describe "a search query wasnt found in the database" do
-          before(:each) do
-            SearchQuery.should_receive(:where).and_return([])
-            @search.stub(:searchAtProvider)
-            @search.should_receive(:merge).and_return(@merged_hash)
-          end
-          it "should add a searchQuery" do
-            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{SearchQuery.count}.by(1)
-          end
-          it "should add articles" do
-            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Article.count}.by(2)
-          end
-          it "should add images" do
-            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Image.count}.by(4)
-          end
-          it "should add prices" do
-            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Price.count}.by(4)
-          end
-          it "should add URLS" do
-            expect{post 'search_results', search:{term: "Dan Brown"}}.to change{Url.count}.by(4)
-          end
-
-        end
         describe "if a search query was found in the database" do
           it "shouldnt add an article" do
             SearchQuery.should_receive(:where).and_return([search_query])
@@ -233,30 +212,12 @@ describe HomeController do
       query = SearchQuery.create(value: search_query.value)
       query.articles.create(name: "TEST", ean: "1234567890123", description: "Demodescription", author: "Testauthor")
       SearchQuery.stub(:where).and_return([query])
-
     end
-
 
     it "should be articles accociated with the search query" do
       query = SearchQuery.where(value: search_query.value).first
       query.should_not be_nil
       query.articles.first.should_not be_nil
-    end
-
-    it "should call the getNewestPriceFor method on each Provider" do
-      @searcher.should_receive(:getProviderInstance).exactly(Provider.count).times.and_return(@searching)
-      @searching.should_receive(:getNewestPriceFor).exactly(Provider.count).times
-
-      @searcher.getAllNewestesPrices
-    end
-
-    it "should call the getNewestPriceFor method with the url of the article" do
-      @searcher.should_receive(:getProviderInstance).exactly(Provider.count).times.and_return(@searching)
-      search_query.articles.each do |article|
-        article.urls.each{|url| search.should_receive(:getNewestPriceFor).with(url)}
-      end
-
-      @searcher.getAllNewestesPrices
     end
   end
 
@@ -335,18 +296,18 @@ describe HomeController do
     end
     it "should display the results which are from active providers" do
 
-      @article.should_receive(:available_for).at_most(Provider.count).times.and_return(true)
-      expect{post 'search_results', search:{term: "Dan Brown"}}.to change{@result.count}.by(0)
+      @article.should_receive(:available_for_any).at_most(Provider.count).times.and_return(true)
+      post 'search_results', search:{term: "Dan Brown"}
+      assigns(:result).should_not eq(nil)
     end
     it "shouldnt display the results which are from inactive providers" do
-      @article.should_receive(:available_for).at_most(Provider.count).times.and_return(false)
-      expect{post 'search_results', search:{term: "Dan Brown"}}.to change{@result.count}.by(-1)
+      @article.should_receive(:available_for_any).at_most(Provider.count).times.and_return(false)
+      assigns(:result).should eq(nil)
     end
   end
 
   describe "active user" do
     describe "not logged in" do
-
       it "should have a user which is a guest" do
         get 'index'
         assigns(:active_user).should be_a(User)
@@ -358,26 +319,6 @@ describe HomeController do
         assigns(:active_cart).should be_a(Cart)
         assigns(:active_cart).user.should eq(assigns(:active_user))
       end
-    end
-
-    describe "logging in" do
-      it "should change the active user"
-      it "should add the cart if former cart was empty"
-      it "should ask the user if his current cart should be added and set as active"
-      it "shouldnt ask the user anything if the current cart is empty"
-    end
-
-    describe "registering" do
-      it "should send an activation mail"
-      it "should have the current cart as active cart"
-      it "shouldnt have the guest role"
-    end
-  end
-
-  describe "GET 'admin'" do
-    it "returns http success" do
-      get 'admin'
-      response.should be_success
     end
   end
 end

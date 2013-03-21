@@ -4,4 +4,4 @@ $("#cart").append("<%= escape_javascript(render @active_cart.articles, search: f
 $("#switch-cart-modal #change-cart").append("<%= escape_javascript(render @active_user.carts.reject{|cart| cart == @active_cart}) %>");
 $('#switch-cart-modal').trigger('reveal:close');
 $("#cart-modal-button").trigger('click');
-reloadStars();
+location.reload();
