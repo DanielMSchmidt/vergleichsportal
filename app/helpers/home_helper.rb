@@ -16,7 +16,6 @@ module HomeHelper
   def getCompares
     compares_per_day = []
     getLastWeek.each do |day|
-      puts day
       compares_per_day << Compare.where(created_at: day.beginning_of_day..day.end_of_day).count
       puts compares_per_day
     end
@@ -26,9 +25,7 @@ module HomeHelper
   def getSearches
     queries_per_day = []
     getLastWeek.each do |day|
-      puts day
       queries_per_day << SearchQuery.where(created_at: day.beginning_of_day..day.end_of_day).count
-      puts queries_per_day
     end
     queries_per_day.to_s
   end

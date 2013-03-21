@@ -10,19 +10,30 @@ class EbaySearch
 
   def searchByKeywords(searchTerm, options={})
     Rails.logger.info "EbaySearch#searchByKeywords called for #{searchTerm} with #{options}"
-    links = self.getBookLinksFor(searchTerm, options)
+    options.delete(:article_type)
+    if options.empty?
+      links = self.getArticleLinksFor(searchTerm)
+    else
+      links = getAdvancedArticleLinksFor(searchTerm, options) #MAYBE you need an 'self.'
+    end
+        
     items = []
-    links.take(options[:count] || 5).each{|link| items << getBookDataFor(link)}
+    #is there a max number of results?
+      if options[:count].nil?
+        links.each{|link| items << getArticleDataFor(link)}
+      else
+        links.take(options[:count]).each{|link| items << getArticleDataFor(link)}
+      end
     return items
   end
 
   def getNewestPriceFor(link)
     Rails.logger.info "EbaySearch#getNewestPriceFor called for #{link}"
-    getBookDataFor(link)[:price]
+    getArticleDataFor(link)[:price]
   end
 
-  def getBookLinksFor(searchTerm, options)
-    Rails.logger.info "EbaySearch#getBookLinksFor called for #{searchTerm} with #{options}"
+  def getArticleLinksFor(searchTerm)
+    Rails.logger.info "EbaySearch#getArticleLinksFor called for #{searchTerm}"
 
     #                 Suchbegriff                                      Neuwertig              Sofortkauf
     #                 |                                                |                      |             Deutsche Anbieter
@@ -33,10 +44,28 @@ class EbaySearch
     return page.links_with(:class => "vip").collect{|link| link.href}
   end
 
-  def getBookDataFor(url)
-    Rails.logger.info "EbaySearch#getBookDataFor called for #{url}"
-    book = {}
-    return book unless valid?(url)
+  def getAdvancedArticleLinksFor(searchTerm, options)
+    #The results get filtered later in search.rb
+    Rails.logger.info "EbaySearch#getAdvancedArticleLinksFor called for #{searchTerm} with #{options}"
+    title =  ((options[:title].nil?) ? '' : options[:title]) 
+    author = ((options[:author].nil?) ? '' : options[:author])
+
+    searchTerm = title+' '+author
+    #                 Suchbegriff                                      Neuwertig              Sofortkauf
+    #                 |                                                |                      |             Deutsche Anbieter
+    #                 |                                                |                      |             |
+    search_options = "&_nkw=" + URI.escape(searchTerm).tr(' ', '+') + "&LH_ItemCondition=3" + "&LH_BIN=1" + "&LH_PrefLoc=1"
+    page = @agent.get("http://www.ebay.de/sch/i.html?#{search_options}")
+
+    return page.links_with(:class => "vip").collect{|link| link.href}
+  end
+
+
+  def getArticleDataFor(url)
+    Rails.logger.info "EbaySearch#getArticleDataFor called for #{url}"
+    article = {}
+
+  
     page = @agent.get(url)
 
     details_array = []
@@ -54,16 +83,17 @@ class EbaySearch
       shipping_price = 0
     end
 
-    book[:ean] = details["EAN: "] ||= details["ISBN-13: "] ||= details["ISBN: "]
-    book[:author] = details["Autor: "]
-    book[:name] = details["Titel: "]
-    book[:price] = (shipping_price || 0) + (normal_price || 0)
-    book[:image] = nil
-    book[:description] = nil
-    book[:url] = url
+    article[:ean] = details["EAN: "] ||= details["ISBN-13: "] ||= details["ISBN: "]
+    article[:author] = details["Autor: "]
+    article[:name] = details["Titel: "]
+    article[:price] = (shipping_price || 0) + (normal_price || 0)
+    article[:image] = nil
+    article[:description] = nil
+    article[:url] = url
+    #article[:type] = details["Format: "]
 
-    Rails.logger.info "EbaySearch#getBookDataFor called for #{url} returns #{book}"
-    return book
+    Rails.logger.info "EbaySearch#getArticleDataFor called for #{url} returns #{article}"
+    return article
   end
 
   def valid?(uri)

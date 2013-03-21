@@ -69,6 +69,8 @@ Vergleichsportal::Application.routes.draw do
 
   put "providers/:id/add_rating" => "providers#add_rating", :as => 'provider_add_rating'
 
+  put "providers/add/provider" => "providers#add_provider", :as => 'add_provider'
+
   root to: 'home#index'
 
 
