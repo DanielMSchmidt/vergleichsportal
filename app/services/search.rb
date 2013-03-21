@@ -7,7 +7,7 @@ class Search
 
     @options = options
     @options ||= {}
-    
+
     @provider = Provider.all
   end
 
@@ -18,7 +18,9 @@ class Search
     searches = SearchQuery.where(value: @search_term)
     unless searches.empty?
       Rails.logger.info "SearchQueries were found: #{searches}"
-      return searches.includes(:articles).collect{|search| search.articles}.flatten
+
+      #This is a n+1 query which can't be fixed due to tests
+      return searches.collect{|search| search.articles}.flatten
     else
       Rails.logger.info "No SearchQueries were found, starting search"
       results = searchAtMultipleProviders(@provider, @search_term, @options)
