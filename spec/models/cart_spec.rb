@@ -1,21 +1,22 @@
+#encoding: utf-8
 require 'spec_helper'
 
 describe Cart do
   let(:cart) { FactoryGirl.create(:cart) }
   let(:article) { FactoryGirl.create(:article) }
-  cart_w_books = Cart.create()
-  cart_wo_books = Cart.create()
-  book = FactoryGirl.create(:article_book)
-  article = FactoryGirl.create(:article_not_a_book)
-  buch = FactoryGirl.create(:provider_buch)
-  buecher = FactoryGirl.create(:provider_buecher)
-  thalia = FactoryGirl.create(:provider_thalia)
-  ebay = FactoryGirl.create(:provider_ebay)
+  let(:cart_w_books) { FactoryGirl.create(:cart) }
+  let(:cart_wo_books) { FactoryGirl.create(:cart) }
+  let(:book) { FactoryGirl.create(:article_book) }
+  let(:blurays) { FactoryGirl.create(:article_not_a_book) }
+  let(:buch) { FactoryGirl.create(:provider_buch) }
+  let(:buecher) { FactoryGirl.create(:provider_buecher) }
+  let(:thalia) { FactoryGirl.create(:provider_thalia) }
+  let(:ebay) { FactoryGirl.create(:provider_ebay) }
   
-  Price.create(:article_id => article.id, :provider_id => buch.id, :value => "9.99")
-  Price.create(:article_id => article.id, :provider_id => buecher.id, :value => "20.02")
-  Price.create(:article_id => article.id, :provider_id => thalia.id, :value => "7.99")
-  Price.create(:article_id => article.id, :provider_id => ebay.id, :value => "19.99")
+  Price.create(:article_id => blurays.id, :provider_id => buch.id, :value => "9.99")
+  Price.create(:article_id => blurays.id, :provider_id => buecher.id, :value => "20.02")
+  Price.create(:article_id => blurays.id, :provider_id => thalia.id, :value => "7.99")
+  Price.create(:article_id => blurays.id, :provider_id => ebay.id, :value => "19.99")
   
   Price.create(:article_id => book.id, :provider_id => buch.id, :value => "9.99")
   Price.create(:article_id => book.id, :provider_id => buecher.id, :value => "9.99")
@@ -23,8 +24,8 @@ describe Cart do
   Price.create(:article_id => book.id, :provider_id => ebay.id, :value => "19.99")
 
   ArticleCartAssignment.create(:article_id => book.id, :cart_id => cart_w_books.id)
-  ArticleCartAssignment.create(:article_id => article.id, :cart_id => cart_w_books.id)
-  ArticleCartAssignment.create(:article_id => article.id, :cart_id => cart_wo_books.id)
+  ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_w_books.id)
+  ArticleCartAssignment.create(:article_id => blurays.id, :cart_id => cart_wo_books.id)
   describe "relations" do
     it "should have many articles" do
       should have_many(:articles).through(:article_cart_assignments)
@@ -100,6 +101,19 @@ describe Cart do
 	cart.add_article(book)
 	cart.change_article_count(book, -1)
 	cart.get_count(book).should == 1
+      end
+    end
+    describe "empty?" do
+      it "should return true if no article in cart" do
+	cart.empty?.should == true
+      end
+      it "should return false if there is an article in cart" do
+	cart_w_books.empty?.should == false
+      end
+    end
+    describe "price_history" do
+      it "shoudl work" do
+	cart.price_history.sort.should == {:data=>[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], :labels=>"[\"Mar 14\", \"Mar 15\", \"Mar 16\", \"Mar 17\", \"Mar 18\", \"Mar 19\", \"Mar 20\", \"Mar 21\"]", :provider_names=>["Ebay.de", "Buch.de", "Thalia.de", "Bücher.de"]}.sort
       end
     end
   end

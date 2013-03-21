@@ -68,7 +68,7 @@ class Cart < ActiveRecord::Base
       if article.get_price(provider) == -1
         return -1
       else
-        price += article.get_price(provider)
+        price += article.get_price(provider)*self.get_count(article)
       end
     end
     price
