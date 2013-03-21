@@ -7,6 +7,7 @@ class CartsController < ApplicationController
 
     respond_to do |format|
       if @active_cart.save
+        set_cart_providers
         format.html { redirect_to @active_cart, notice: 'Cart was successfully created.' }
         format.json { render json: @active_cart, status: :created, location: @active_cart }
       else
@@ -76,6 +77,7 @@ class CartsController < ApplicationController
   def use
     new_cart = Cart.find(params[:id])
     @active_cart = new_cart
+    set_cart_providers
     respond_to :js
   end
 
@@ -85,7 +87,8 @@ class CartsController < ApplicationController
     @active_cart = Cart.find(params[:id])
     @cart_id = @active_cart.id
     @active_cart.destroy
-
+    set_active_cart
+    set_cart_providers
     respond_to do |format|
       format.html { redirect_to carts_url }
       format.json { head :no_content }
@@ -97,10 +100,14 @@ class CartsController < ApplicationController
     Rails.logger.info "CartsController#add_new called, adding new cart to active user"
     empty_cart = @active_user.get_empty_cart
     if empty_cart
+      @active_cart = Cart.find(empty_cart.id)
+      set_cart_providers
       redirect_to use_cart_path(empty_cart.id)
     else
       new_cart = @active_user.carts.create!
       cookies[:active_cart] = new_cart.id
+      @active_cart = Cart.find(new_cart.id)
+      set_cart_providers
       respond_to :js
     end
   end

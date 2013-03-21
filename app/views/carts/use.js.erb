@@ -1,8 +1,9 @@
-$("#cart li").remove();
-$("#switch-cart-modal #change-cart li").remove();
-$("#cart").append("<%= escape_javascript(render @active_cart.articles, search: false) %>");
-$("#switch-cart-modal #change-cart").append("<%= escape_javascript(render @active_user.carts.reject{|cart| cart == @active_cart}) %>");
-$('#switch-cart-modal').trigger('reveal:close');
-$("#compare-cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/compare_cart') %>"); 
-$("#cart-modal-button").trigger('click');
+$("#switch-cart-modal").trigger('reveal:close');
+
+<% # refresh modals %>
+$("#switch-cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/switch_cart') %>"); 
+$("#cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/cart') %>"); 
+$("#compare-cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/compare_cart') %>");
+
+$("#cart-modal").reveal();
 reloadStars();
