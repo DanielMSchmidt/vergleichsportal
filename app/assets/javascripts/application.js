@@ -90,6 +90,7 @@ function activateStars(){
 
 function reloadStars(){
   activateStars();
+  
 }
 
 activateStars();
