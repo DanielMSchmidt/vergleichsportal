@@ -168,19 +168,21 @@ class Search
   end
 
   def filterByOptions(results)
+    results.reject!{|a| a == false}
+
     if @options.has_key?(:author)
       results.select!{|article| article.author == @options[:author]}
     end
     if @options.has_key?(:title)
       results.select!{|article| article.name == @options[:title]}
     end
-    if @options.has_key?(:min_price)
+    if @options.has_key?(:min_price) && !@options[:min_price].empty?
       results.select!{|article| ishigher?(article)}
     end
-    if @options.has_key?(:max_price)
+    if @options.has_key?(:max_price) && !@options[:max_price].empty?
       results.select!{|article| islower?(article)}
     end
-    if @options.has_key?(:article_type)
+    if @options.has_key?(:article_type) && !@options[:article_type].empty?
       results.select!{|article| article.article_type == @options[:article_type]}
     end
     results
@@ -188,12 +190,12 @@ class Search
   end
 
   def ishigher?(article)
-    result = article.price.collect{|provider_price| @options[:min_price] < provider_price }
+    result = article.prices.collect{|provider_price| @options[:min_price].tr(',','.').to_f < provider_price.value.to_f }
     result.include?(true)
   end
 
   def islower?(article)
-    result = article.price.collect{|provider_price| @options[:max_price] > provider_price }
+    result = article.prices.collect{|provider_price| @options[:max_price].tr(',','.').to_f > provider_price.value.to_f }
     result.include?(true)
   end
 end
