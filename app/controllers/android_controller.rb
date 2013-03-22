@@ -76,11 +76,11 @@ class AndroidController < ApplicationController
 	def rate_provider
 		provider = Provider.find(params[:provider_id])
 		if (provider != nil)
-			rating = Rating.new(:value => params[:rating],:user_id => params[:user_id], :provider_id => provider.id)
+			rating = Rating.new(:value => params[:rating],:user_id => params[:user_id], :rateable_id => provider.id, :rateable_type => "provider")
 			rating.save
 		    provider.ratings << rating
 		    provider.save
-		    render json: ["rating" => provider.average_rating, "ratecount" => provider.ratings.size], status: :accepted
+		    render json: ["rating" => provider.average_rating, "ratecount" => provider.ratings.size], status: :created
 		else
 			render json: [], status: :not_found
 		end
@@ -209,27 +209,34 @@ class AndroidController < ApplicationController
 	end
 
 	def remove_article
-		if (params[:cart_id]==-1)
-			render json: ["cart_id must not be -1"], status: :forbidden
-		else
-			cart = Cart.find(params[:cart_id])
-			if (cart != nil) 
-				article = Article.find(params[:article_id])
-				if (article != nil)
-#					if (cart.change_article_count(article, cart.get_count(article)-1))
-#						render json: [{"article_count"=>cart.get_count(article)}], status: :ok
-#					else
-#						cart.remove_article(article)
-#						render json: [{"article_count"=>0}], status: :ok
-#					end
-					cart.remove_article(article)
-					render json: [{"article_count"=>cart.get_count(article)}], status: :ok
-				else
-					render json: [], status: :not_found
-				end
+		cart = Cart.find(params[:cart_id])
+		if (cart != nil) 
+			article = Article.find(params[:article_id])
+			if (article != nil)
+				cart.remove_article(article)
+				render json: [{"article_count"=>cart.get_count(article)}], status: :ok
 			else
 				render json: [], status: :not_found
 			end
+		else
+			render json: [], status: :not_found
+		end
+	end
+
+	def edit_article
+		cart = Cart.find(params[:cart_id])
+		if (cart != nil) 
+			article = Article.find(params[:article_id])
+			if (article != nil)
+				unless cart.change_article_count(article, params[:new_count])
+					cart.remove_article(article)
+				end
+				render json: [{"article_count"=>cart.get_count(article)}], status: :ok
+			else
+				render json: [], status: :not_found
+			end
+		else
+			render json: [], status: :not_found
 		end
 	end
 
@@ -238,6 +245,22 @@ class AndroidController < ApplicationController
 		unless cart.nil?
 			cart.destroy
 			render json: [], status: :ok
+		else
+			render json: [], status: :not_found
+		end
+	end
+
+	def compare_cart
+		cart = Cart.find(params[:cart_id])
+		unless cart.nil?
+			providers = Provider.all
+			prices = []
+		    providers.each do |provider|
+				if provider.active && cart.available_for(provider)
+		        	prices << {"id" => provider.id, "display_name" => provider.display_name, "url" => provider.url, "rating" => provider.average_rating, "ratecount" => provider.ratings.size ,"price" => cart.calculate_overall_price(provider)}
+		      	end
+		    end
+		    render json: prices, status: :ok
 		else
 			render json: [], status: :not_found
 		end
