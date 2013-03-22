@@ -35,6 +35,8 @@ Vergleichsportal::Application.routes.draw do
 
     get "cart/add-compare" => "home#track_compare", as: 'track_compare'
 
+    get "provider/add" => "providers#add_provider", as: 'add_provider'
+
     resources :users do
       member do
         get :activate
@@ -90,7 +92,7 @@ Vergleichsportal::Application.routes.draw do
   post "android/article/rate" => "android#rate_article"
   post "android/article/comment" => "android#comment_article"
   post "android/article/comments" => "android#comments_for_article"
-  
+
   get "android/debug" => "android#debug"
 
   post "android/search" => "android#search"
