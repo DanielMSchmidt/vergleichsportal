@@ -4,7 +4,6 @@ class Advertisment < ActiveRecord::Base
   validates_presence_of :img_url, :link_url
   validates :img_url, image_url: true
   validates :link_url, url: true
-  validates :active, :inclusion => {:in =>[true,false]}
 
   scope :active, where(:active => true)
   scope :inactive, where(:active => false)
