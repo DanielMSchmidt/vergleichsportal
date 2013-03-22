@@ -172,7 +172,7 @@ class Search
       results.select!{|article| article.author == @options[:author]}
     end
     if @options.has_key?(:title)
-      results.select!{|article| article.title == @options[:title]}
+      results.select!{|article| article.name == @options[:title]}
     end
     if @options.has_key?(:min_price)
       results.select!{|article| ishigher?(article)}
