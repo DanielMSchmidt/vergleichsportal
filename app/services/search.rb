@@ -171,10 +171,10 @@ class Search
     results.reject!{|a| a == false}
 
     if @options.has_key?(:author)
-      results.select!{|article| article.author == @options[:author]}
+      results.select!{|article| article.author.split(" ").join(" ") == @options[:author].split(" ").join(" ")}
     end
     if @options.has_key?(:title)
-      results.select!{|article| article.name == @options[:title]}
+      results.select!{|article| article.name.split(" ").join(" ") == @options[:title].split(" ").join(" ")}
     end
     if @options.has_key?(:min_price) && !@options[:min_price].empty?
       results.select!{|article| ishigher?(article)}
