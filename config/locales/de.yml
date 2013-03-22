@@ -1,0 +1,98 @@
+# Sample localization file for German. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  general:
+    confirm_text: "Sind Sie sich sicher?"
+    delete_text: "Löschen"
+    show_text: "Anzeigen"
+    back_text: "Zurück"
+    edit_text: "Bearbeiten"
+    add_text: "Hinzufügen"
+    remove_text: "Entfernen"
+    send_text: "Senden"
+    select_text: "Auswählen"
+    use_text: "Anwenden"
+    user_text: "Nutzer"
+    advertisment_text: "Werbung"
+    activ_text: "Aktiv"
+    inactiv_text: "Inaktiv"
+    locked_text: "gesperrt"
+    online_text: "Online"
+    offline_text: "Offline"
+    provider_text: "Anbieter"
+    statistics_text: "Statistiken"
+    rate_our_providers: "Bewerte unsere Provider!"
+    average_rating_text: "Durchschnittliche Bewertung:"
+
+
+
+  layout:
+    admin_dashboard: "Adminübersicht"
+    login_register: "Anmelden / Registrieren"
+    logout: "Abmelden"
+
+  home: 
+    search_result: "Suchergebnisse für "
+    activate: "aktivieren"
+    deactivate: "deaktivieren"
+    manage_user: "Nutzer Verwalten:"
+    delete_user: "Nutzer löschen"
+    lock_text: "Sperren"
+    unlock_text: "Freigeben"
+    delete_admin_role: "Lösche Adminrolle"
+    add_admin_role: "Adminrolle hinzufügen"
+    add_advertisment: "Werbung hinzufügen"
+    search_result_text: "Suchergebnisse"
+
+
+  users:
+    congratulation: "Herzlichen Glückwunsch"
+    successful_login: "Sie haben sich erfolgreich angemeldet"
+    successful_register: "Sie haben sich erfolgreich registriert"
+    reset_passwort: "Passwort zurücksetzten"
+    create_user: "Erstelle Nutzer"
+    login_error: "Anmeldung ist gescheitert überprüfen Sie die Angaben!"
+    role_changed: "Rolle geändert!"
+
+  advertisments:
+    new_advertisment_text: "Neue Werbung"
+    activated: "Werbung wurde aktiviert!"
+    delete_advertisment_text: "Werbung wurde gelöscht!"
+    added: "Werbung wurde hinzugefügt!"
+    updated: "Werbung wurde aktualisiert!"
+
+  articles:
+    new_comment: "Neuer Kommentar:"
+    comment_thanks: "Danke für die Bewertung!"
+    comment_error: "Der Kommentar ist zu kurz oder zu lang!"
+    new_article: "Neuer Artikel"
+
+  carts:
+    article_added: "Artikel wurde hinzugefügt!"
+    carts_added: "Ein neuer Warenkorb wurde hinzugefügt!"
+    carts_delete: "Der Warenkorb wurde erfolgreich gelöscht!"
+    new_cart: "Neuer Warenkorb"
+    article_removed: "Artikel wurde entfernt!"
+
+  passwort_reset:
+    reset_my_password: "Setzt mein Passwort zurück!"
+
+  shared:
+    change_delete_cart: "Ändere / Lösche Warenkorb"
+    compare_provider: "Vergleiche Anbieter"
+    find_text: "Finden!"
+    advanced_search: "Erweiterte Suche"
+    login_text: "Anmelden"
+    have_account: "Haben Sie noch kein Konto?"
+    register_text: "Registrieren!"
+    password_forget: "Wenn Sie ihr Password vergessen haben:"
+    click_here: "Klick Hier!"
+    item_in_cart: "Artikel im Warenkorb"
+    send_email: "Sende E-Mail"
+
+  provider:
+    open_text: "Öffnen"
+    add_provider: "Die Mail an das Develop Team wurde versendet"
+
+

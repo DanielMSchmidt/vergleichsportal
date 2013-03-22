@@ -15,11 +15,11 @@
       .four.columns
         %img{:src => article.images.first.url}/
       -if search #view in search!
-        .four.columns.offset-by-one
+        .four.columns
           %p
             =article.description
-        .two.columns.offset-by-one
-          =link_to 'add', add_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
+        .three.columns.offset-by-one
+          =link_to (t "general.add_text"), add_article_path(cart_id: @active_cart.id, article_id: article.id), remote: true, class: 'button'
       -else #view in cart
 
         -active = Array.new(5,false)
@@ -51,9 +51,9 @@
                         = radio_button_tag :value, 3, active[2], :class => "star auto-submit-star"
                         = radio_button_tag :value, 4, active[3], :class => "star auto-submit-star"
                         = radio_button_tag :value, 5, active[4], :class => "star auto-submit-star"
-                      Durchschnittliche Bewertung:
+                      = t "general.average_rating_text" 
                       = article.average_rating
-                      Sterne
+                      
     %hr
     -if has_permission?("create_comment")
       .row
@@ -72,9 +72,10 @@
           .row
             .ten.columns
               %h7
-                Neuer Kommentar:
+                = t "articles.new_comment"
             %hr
           .row
           =form_tag article_add_comment_path(article), remote: true, :method => :put do
             = text_field_tag :value
-            = button_tag "Senden", class: "button"
+            = button_tag (t "general.send_text")
+

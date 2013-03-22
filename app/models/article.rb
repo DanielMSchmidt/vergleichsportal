@@ -64,7 +64,7 @@ class Article < ActiveRecord::Base
 
   def get_price(provider)
     price = self.prices.where(provider_id: provider)
-    return price.first.value unless price.nil?
+    return price.first.value unless price.first.nil?
     -1
   end
 
@@ -97,14 +97,5 @@ class Article < ActiveRecord::Base
     else
       0
     end
-  end
-
-
-  def old_price_available?(provider, time)
-    Price.where(:article_id => self.id, :provider_id => provider.id).where("created_at <= ?", time).any?
-  end
-
-  def old_price(provider, time)
-    Price.where(:article_id => self.id, :provider_id => provider.id).where("created_at <= ?", time).first.value
   end
 end

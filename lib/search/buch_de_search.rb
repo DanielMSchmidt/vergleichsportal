@@ -12,7 +12,7 @@ class BuchDeSearch
   end
 
   def searchByKeywords(searchTerm, options={})
-    #Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
+    Rails.logger.info "BuchDeSearch#searchByKeywords called for #{searchTerm} with #{options}"
     options.delete(:article_type)
     if options.empty?
       links = getArticleLinksFor(searchTerm)
@@ -35,14 +35,14 @@ class BuchDeSearch
   end
 
   def getNewestPriceFor(link)
-    #Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
+    Rails.logger.info "BuchDeSearch#getNewestPriceFor called for #{link}"
     getArticleDataFor(link)[:price]
   end
 
 
 
   def getArticleLinksFor(searchTerm)
-    #Rails.logger.info "BuchDeSearch#getArticleLinksFor called for #{searchTerm}
+    Rails.logger.info "BuchDeSearch#getArticleLinksFor called for #{searchTerm}"
     page = @agent.get(@provider[:url])
 
     search_form = page.form(@provider[:search_form])
@@ -84,7 +84,7 @@ class BuchDeSearch
   end
 
   def getArticleDataFor(link)
-    #Rails.logger.info "BuchDeSearch#getArticleDataFor called for #{link}"
+    Rails.logger.info "BuchDeSearch#getArticleDataFor called for #{link}"
     page = @agent.get(link)
     article = {}
     @provider[:book].each do |key, value|
@@ -96,7 +96,7 @@ class BuchDeSearch
     article[:price] = article[:price].tr(',','.').to_f
     article[:article_type] = getType(page)
 
-    #Rails.logger.info "BuchDeSearch#getArticleDataFor called for #{link} returns #{article}"
+    Rails.logger.info "BuchDeSearch#getArticleDataFor called for #{link} returns #{article}"
     article
   end
 

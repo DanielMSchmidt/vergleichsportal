@@ -10,13 +10,17 @@ class SearchQuery < ActiveRecord::Base
   validates :value, presence: true
 
   def get_options
-  	JSON.parse(self.options)
+    JSON.parse(self.options) unless self.options.nil?
   end
 
   private
 
-  	def parse_options_to_db
-  		self.options = self.options.to_json
-  	end
+  def parse_options_to_db
+    unless self.options.nil?
+      self.options = self.options.to_json
+    else
+      self.options = {}.to_json
+    end
+  end
 
 end

@@ -1,3 +1,11 @@
-$("#change-cart li#cart-<%= @cart_id %>").hide("slow").remove()
-errornote("Der Warenkorb wurder erfolgreich gelöscht!", "success");
+$("#switch-cart-modal").trigger('reveal:close');
+
+<% # refresh modals %>
+$("#switch-cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/switch_cart') %>"); 
+$("#cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/cart') %>"); 
+$("#compare-cart-modal").replaceWith("<%= escape_javascript(render :partial => 'shared/modal/compare_cart') %>"); 
+
+$("#cart-modal").reveal();
+
+errornote('<%=(t "carts.carts_delete")%>', "success");
 reloadStars();

@@ -90,6 +90,10 @@ function activateStars(){
 
 function reloadStars(){
   activateStars();
+  var options = {}
+  $("#compare-cart-modal-button").click(function() {
+      return new Chart($("#compare-cart-modal canvas").get(0).getContext("2d")).Line(price_history_graph_data, options);
+  });
   
 }
 

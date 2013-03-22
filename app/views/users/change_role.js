@@ -1,1 +1,1 @@
-alert("Rolle geändert!");
+alert('<%= t users.role_changed" %>');

@@ -3,7 +3,7 @@
 /[if IE 7 ] <html class="ie7" lang="en">
 /[if IE 8 ] <html class="ie8" lang="en">
 / [if (gte IE 9)|!(IE)]><!
-%html{:lang => "de"}
+%html
   / <![endif]
   %head
     %meta{:charset => "utf-8"}/
@@ -19,11 +19,12 @@
     .row
       .three.columns
         %h1
-          %a{:href=> "/home/index"}
+          %a{:href=> ""}
             %img{:src => "/assets/logo.png"}/
       .two.columns.offset-by-seven
-        %img{:src => "/assets/ger.gif"}/
-        %img{:src => "/assets/gb.gif"}/
+        = link_to_unless_current raw('<img src="/assets/ger.gif" />'), locale: 'de'
+        = link_to_unless_current raw('<img src="/assets/gb.gif" />'), locale: 'en'       
+     
     .row
       .three.columns
         - if logged_in?
@@ -55,10 +56,8 @@
 
     = yield :modal
 
-    -if logged_in?
-      = render :partial => "shared/modal/edit_user"
 
-    -else
+    -unless logged_in?
       = render :partial => "shared/modal/register"
       = render :partial => "shared/modal/login"
       = render :partial => "shared/modal/forgot_password"

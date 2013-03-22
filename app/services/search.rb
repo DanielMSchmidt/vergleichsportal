@@ -13,8 +13,8 @@ class Search
 
   def find
     Rails.logger.info "Search#Find called for #{@search_term} with #{@options}"
-    searches = SearchQuery.where(value: @search_term)
-    searches = searches.select { |v| v.get_options.eql?(@options) }
+    searches = getSearchQueries
+
     unless searches.empty?
       Rails.logger.info "SearchQueries were found: #{searches}"
 
@@ -24,7 +24,15 @@ class Search
       Rails.logger.info "No SearchQueries were found, starting search"
       results = searchAtMultipleProviders(@provider, @search_term, @options)
     end
-    results #= filterByOptions(results)
+    results = filterByOptions(results)
+  end
+
+  def getSearchQueries
+      Rails.logger.info "Search#getSearchQueries called for #{@search_term} with #{@options}"
+      searches = SearchQuery.where(value: @search_term)
+      searches.select { |search| search.get_options.eql?(@options) unless search.get_options.nil? }
+      Rails.logger.info "Search#getSearchQueries returns #{searches}"
+      return searches
   end
 
   def getAllNewPrices(query_args=SearchQuery.where(value: @search_term, options: @options).first)
@@ -82,8 +90,9 @@ class Search
   end
 
   def searchAtProvider(provider, search_term, options={})
-    Rails.logger.info "Search#searchAtProvider called"
+    Rails.logger.info "Search#searchAtProvider called with term: #{search_term} and options: #{options}"
     instance = getProviderInstance(provider)
+    Rails.logger.info "Search#searchAtProvider instance is: #{instance} of class #{instance.class}"
     instance.searchByKeywords(search_term, options)
   end
 
@@ -168,7 +177,7 @@ class Search
     if @options.has_key?(:min_price)
       results.select!{|article| ishigher?(article)}
     end
-    if @options.has_key?(:min_price)
+    if @options.has_key?(:max_price)
       results.select!{|article| islower?(article)}
     end
     if @options.has_key?(:article_type)

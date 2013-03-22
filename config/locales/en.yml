@@ -2,4 +2,94 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  general:
+    confirm_text: "Are you sure?"
+    delete_text: "delete"
+    show_text: "show"
+    back_text: "back"
+    edit_text: "edit"
+    add_text: "add"
+    remove_text: "delete"
+    send_text: "send"
+    use_text: "use"
+    user_text: "user"
+    advertisment_text: "advertisement"
+    activ_text: "active"
+    inactiv_text: "inactive"
+    locked_text: "locked"
+    online_text: "online"
+    offline_text: "offline"
+    provider_text: "Provider"
+    statistics_text: "Statistics"
+    rate_our_providers: "Rate our providers!"
+    average_rating_text: "Average rating:"
+
+
+
+  layout:
+    admin_dashboard: "Admin Dashboard"
+    login_register: "Login / Register"
+    logout: "Logout"
+
+  home: 
+    search_result: "Search results for "
+    activate: "activate"
+    deactivate: "deactivate"
+    manage_user: "Manage User:"
+    delete_user: "Delete user"
+    lock_text: "lock"
+    unlock_text: "unlock"
+    delete_admin_role: "Delete admin role"
+    add_admin_role: "Add admin role"
+    add_advertisment: "Add advertisement"
+    search_result_text: "Search results"
+
+  users:
+    congratulation: "Congratulations"
+    successful_login: "You are successfully logged in"
+    successful_register: "You are successfully registered"
+    reset_passwort: "Reset Passwort"
+    create_user: "Create User"
+    login_error: "Login failed, check your inputs!"
+    role_changed: "Role changed!"
+
+  advertisments:
+    new_advertisment_text: "New advertisement"
+    activated: "Advertisement is activated!"
+    delete_advertisment_text: "Advertisement is delete!"
+    added: "Advertisement was added!"
+    updated: "Advertisement is updated!"
+
+  articles:
+    new_comment: "new comment:"
+    comment_thanks: "Thanks for your rating!"
+    comment_error: "The comment should be longer or shorter!" 
+    new_article: "new article"
+
+  carts:
+    article_added: "Article added!"
+    carts_added: "Added a new cart!"
+    carts_delete: "Cart deleted!"
+    new_cart: "New cart"
+    article_removed: "Article removed!"
+
+  passwort_reset:
+    reset_my_password: "Reset my password!"
+
+  shared:
+    change_delete_cart: "Change / Delete cart"
+    compare_provider: "Compare provider"
+    find_text: "Search!"
+    advanced_search: "Advanced search"
+    login_text: "Login"
+    have_account: "Didn't you have an account?"
+    register_text: "Register!"
+    password_forget: "If you forgot your password"
+    click_here: "Click here!"
+    item_in_cart: "Items in cart"
+    send_email: "send e-mail"
+
+
+  provider:
+    open_text: "Open"
+    add_provider: "An email was send to the Develop Team"

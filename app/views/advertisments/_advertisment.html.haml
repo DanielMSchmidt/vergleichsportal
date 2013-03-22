@@ -17,4 +17,4 @@
       .form-actions
         .row
           = f.button :submit, :class => "seven columns" 
-          = link_to 'löschen', advertisment, :class => "button four columns", :method => :delete, :remote => true, :data => { :confirm => 'Sind sie sich sicher?' }
+          = link_to (t "general.delete_text"), advertisment, :class => "button four columns", :method => :delete, :remote => true, :data => { :confirm => (t "general.confirm_text") }

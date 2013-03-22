@@ -33,7 +33,7 @@ class BuecherDeSearch
   end
 
 	def getNewestPriceFor(link)
-    #Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
+    Rails.logger.info "ThailaDeSearch#getNewestPriceFor called for #{link}"
     getArticleDataFor(link)[:price]
  	end
 
