@@ -260,6 +260,7 @@ class AndroidController < ApplicationController
 		        	prices << {"id" => provider.id, "display_name" => provider.display_name, "url" => provider.url, "rating" => provider.average_rating, "ratecount" => provider.ratings.size ,"price" => cart.calculate_overall_price(provider)}
 		      	end
 		    end
+		    Compare.create(cart_id: cart.id)
 		    render json: prices, status: :ok
 		else
 			render json: [], status: :not_found
